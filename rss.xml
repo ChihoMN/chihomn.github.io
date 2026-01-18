@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>云烟成雨</title>
+        <subtitle>年轻就像防御塔的镀层，而你的人生早晚都会来到14分钟的路口。你是要因为二级的那波失误而自责不已，惦记着B三狼徘徊不前；还是要放手一搏，掀开若子的大手，逃出德州的肖申克？</subtitle>
+        <icon>https://chihomn.github.io/images/favicon.ico</icon>
+        <link>https://chihomn.github.io</link>
+        <author>
+          <name>Edward Chan</name>
+        </author>
+        <description>技术博客/生活分享</description>
+        <language>zh-CN</language>
+        <pubDate>Sat, 17 Jan 2026 20:57:02 +0800</pubDate>
+        <lastBuildDate>Sat, 17 Jan 2026 20:57:02 +0800</lastBuildDate>
+        <category term="个人博客" />
+        <category term="计算机" />
+        <category term="编程" />
+        <item>
+            <guid isPermalink="true">https://chihomn.github.io/2026/01/17/hello-world/</guid>
+            <title>Hello World</title>
+            <link>https://chihomn.github.io/2026/01/17/hello-world/</link>
+            <pubDate>Sat, 17 Jan 2026 20:57:02 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;Welcome to &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvLw==&#34;&gt;Hexo&lt;/span&gt;! This is your very first post. Check &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3Mv&#34;&gt;documentation&lt;/span&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3MvdHJvdWJsZXNob290aW5nLmh0bWw=&#34;&gt;troubleshooting&lt;/span&gt; or you can ask me on &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2hleG9qcy9oZXhvL2lzc3Vlcw==&#34;&gt;GitHub&lt;/span&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;quick-start&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#quick-start&#34;&gt;#&lt;/a&gt; Quick Start&lt;/h2&gt;
+&lt;h3 id=&#34;create-a-new-post&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#create-a-new-post&#34;&gt;#&lt;/a&gt; Create a new post&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo new &lt;span class=&#34;string&#34;&gt;&amp;quot;My New Post&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;More info: &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvd3JpdGluZy5odG1s&#34;&gt;Writing&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;run-server&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#run-server&#34;&gt;#&lt;/a&gt; Run server&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;More info: &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvc2VydmVyLmh0bWw=&#34;&gt;Server&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;generate-static-files&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#generate-static-files&#34;&gt;#&lt;/a&gt; Generate static files&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;More info: &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3MvZ2VuZXJhdGluZy5odG1s&#34;&gt;Generating&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deploy-to-remote-sites&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#deploy-to-remote-sites&#34;&gt;#&lt;/a&gt; Deploy to remote sites&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;More info: &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9oZXhvLmlvL2RvY3Mvb25lLWNvbW1hbmQtZGVwbG95bWVudC5odG1s&#34;&gt;Deployment&lt;/span&gt;&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://chihomn.github.io/2024/03/11/Untitled/</guid>
+            <title>测试文章</title>
+            <link>https://chihomn.github.io/2024/03/11/Untitled/</link>
+            <pubDate>Mon, 11 Mar 2024 21:37:00 +0800</pubDate>
+            <description><![CDATA[ &lt;p&gt;&lt;em&gt;由 GPT4 生成&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;我现在要发布一篇个人博客的测试文章，请你随便想点什么内容帮我写一篇&lt;/p&gt;
+&lt;p&gt;ChatGPT&lt;/p&gt;
+&lt;p&gt;当然可以。让我们创作一篇关于时间管理的简短博客文章。这个主题既实用又能吸引广泛的读者。文章会包含一些基本的时间管理策略，帮助读者更高效地利用他们的时间。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h1 id=&#34;如何高效管理您的时间三个简单策略&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#如何高效管理您的时间三个简单策略&#34;&gt;#&lt;/a&gt; 如何高效管理您的时间：三个简单策略&lt;/h1&gt;
+&lt;p&gt;在这个繁忙的世界里，时间仿佛总是不够用。每个人都有 24 小时，但为什么有些人似乎做了很多事，而我们却常常感觉手忙脚乱，事半功倍呢？关键在于时间管理。这不仅仅是关于规划的技巧，更是一种让生活更有序、减少压力的艺术。以下是三个简单但强大的时间管理策略，可以帮助您更高效地使用每一分每一秒。&lt;/p&gt;
+&lt;h3 id=&#34;1-制定优先级清单&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-制定优先级清单&#34;&gt;#&lt;/a&gt; 1. 制定优先级清单&lt;/h3&gt;
+&lt;p&gt;了解什么最重要是时间管理的核心。试着将任务分为四类：重要且紧急、重要但不紧急、不重要但紧急、不重要也不紧急。这样做可以帮助您识别哪些任务应该首先完成，哪些可以稍后处理，哪些可以委托给他人，以及哪些可以直接剔除。&lt;/p&gt;
+&lt;h3 id=&#34;2-采用番茄工作法&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2-采用番茄工作法&#34;&gt;#&lt;/a&gt; 2. 采用番茄工作法&lt;/h3&gt;
+&lt;p&gt;番茄工作法是一种简单有效的时间管理工具，它鼓励人们将工作时间分割成 25 分钟的工作时间和 5 分钟的休息时间，每四个这样的周期后再休息更长时间。这种方法不仅可以提高集中力，还能确保休息，避免疲劳。&lt;/p&gt;
+&lt;h3 id=&#34;3-学会说不&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3-学会说不&#34;&gt;#&lt;/a&gt; 3. 学会说 “不”&lt;/h3&gt;
+&lt;p&gt;这可能是最困难但也是最重要的一点。学会拒绝那些不重要或不紧急的事情，可以让您有更多时间专注于真正重要的任务。记住，每次说 “是” 的时候，您实际上是在用您宝贵的时间和精力做交换。确保这是值得的。&lt;/p&gt;
+&lt;h3 id=&#34;结语&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#结语&#34;&gt;#&lt;/a&gt; 结语&lt;/h3&gt;
+&lt;p&gt;时间管理并不意味着您需要把每一分每一秒都安排得满满当当，而是要确保您花时间做的事情既有意义又有价值。通过实施这些策略，您不仅可以提高生产力，还可以享受到更平衡、更充实的生活。记住，高效管理时间的关键在于规划、执行和调整。开始行动吧，让您的时间为您工作。&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
