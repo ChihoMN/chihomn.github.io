@@ -42,9 +42,9 @@ export default defineConfig({
       {
         "title": "云烟成雨",
         "url": "https://chihomn.github.io/",
-        "author": "Edward Chan",
+        "author": "Edward Chen",
         "avatar": "/images/avatar.jpg",
-        "desc": "大连理工大学 / 软件工程",
+        "desc": "香港城市大学 / 计算机科学",
         "color": "#66CCFF"
       },
       {
