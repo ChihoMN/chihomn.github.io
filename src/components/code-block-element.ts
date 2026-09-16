@@ -272,7 +272,7 @@ const CODEBLOCK_CSS = `
     border-radius: 0.5rem;
     overflow: hidden;
     box-shadow: var(--codeblock-shadow);
-    font-family: "Maple Mono", "Courier New", monospace;
+    font-family: "JetBrains Mono", "Courier New", monospace;
   }
   .dark.codeblock { box-shadow: none; }
   .codeblock.in-group { margin: 0; border-radius: 0; box-shadow: none; }
@@ -336,7 +336,7 @@ const CODEBLOCK_CSS = `
     50% { transform: translateX(-50%) translateY(-6px); }
   }
   .content-wrapper {
-    font-family: "Maple Mono", "Courier New", monospace;
+    font-family: "JetBrains Mono", "Courier New", monospace;
   }
   .fullscreen {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;

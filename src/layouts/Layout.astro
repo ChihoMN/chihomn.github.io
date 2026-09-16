@@ -240,14 +240,17 @@ import HyacineOutlet from "@hyacine/plugin-astro/components/HyacineOutlet.astro"
     </script>
     <script>
       import { css } from "@/assets/fonts/LXGWWenKai-Regular.ttf?subsets";
+      import { css as monoCss } from "@/assets/fonts/JetBrainsMono-Regular.ttf?subsets";
 
       document.addEventListener("pagereveal", () => {
         document.body.style.fontFamily = css.family as string;
         document.documentElement.style.setProperty("--pf-font", css.family as string);
+        document.documentElement.style.setProperty("--default-monoFont-family", monoCss.family as string);
       });
       document.addEventListener("DOMContentLoaded", () => {
         document.body.style.fontFamily = css.family as string;
         document.documentElement.style.setProperty("--pf-font", css.family as string);
+        document.documentElement.style.setProperty("--default-monoFont-family", monoCss.family as string);
       });
     </script>
     <div class="hidden">
