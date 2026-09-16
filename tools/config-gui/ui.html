@@ -577,6 +577,82 @@
         max-height: 340px;
         overflow: auto;
       }
+      .post-main {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .post-thumb {
+        flex: 0 0 54px;
+        width: 54px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid var(--line);
+      }
+      .cover-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-top: 4px;
+      }
+      .cover-prev {
+        flex: 0 0 132px;
+        width: 132px;
+        height: 74px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+        background: #f2f3f5;
+      }
+      .cover-inputs {
+        flex: 1;
+      }
+      .cover-inputs input {
+        max-width: none;
+      }
+      .cover-tools {
+        display: flex;
+        gap: 6px;
+        margin-top: 5px;
+      }
+      .cover-tools button {
+        font-size: 11.5px;
+        padding: 3px 9px;
+      }
+      .cover-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .cover-pick {
+        padding: 0;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+      }
+      .cover-pick.on {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+      .cover-pick img {
+        display: block;
+        width: 100%;
+        height: 62px;
+        object-fit: cover;
+        background: #f2f3f5;
+      }
+      .cover-pick span {
+        display: block;
+        font-size: 10.5px;
+        color: var(--dim);
+        padding: 3px 5px;
+        word-break: break-all;
+      }
       .spinner {
         display: inline-block;
         width: 10px;
@@ -2473,10 +2549,51 @@
         return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
       };
 
+      /** 文章在 src/posts 里的深度 → 引用 src/assets 需要的 ../ 前缀 */
+      const assetPrefix = (postPath) =>
+        "../".repeat(String(postPath).split("/").length) + "assets/";
+
+      /** 封面值 → /asset 能认的相对路径（只认 src/assets 里的图，其它返回 null） */
+      function coverAssetRel(value, postPath) {
+        const v = String(value ?? "").trim();
+        if (!v || /^[a-z]+:/i.test(v)) return null; // 远程 URL
+        const prefix = assetPrefix(postPath);
+        if (v.startsWith(prefix)) return v.slice(prefix.length);
+        if (v.startsWith("./")) return null; // 文章同目录的图片，/asset 取不到
+        if (v.startsWith("/")) return null; // public 路径（.asset 路由不提供）
+        return null;
+      }
+
+      const coverThumbHTML = (p) => {
+        const rel = coverAssetRel(p.cover, p.path);
+        return rel
+          ? `<img class="post-thumb" src="/asset?rel=${encodeURIComponent(rel)}" alt="" loading="lazy" />`
+          : "";
+      };
+
+      /** 图库：src/assets 里的图片，点一下就填成该文章可用的相对路径 */
+      const coverGalleryHTML = (p) => {
+        const prefix = assetPrefix(p.path);
+        const imgs = assets.images ?? [];
+        if (!imgs.length)
+          return '<span class="hint">图库里没有图片（把图片放进 src/assets/images/ 即可）</span>';
+        return imgs
+          .map(
+            (
+              x,
+            ) => `<button type="button" class="cover-pick${p.cover === prefix + x.rel ? " on" : ""}" data-cover-value="${esc(prefix + x.rel)}" title="${esc(prefix + x.rel)}">
+              <img src="/asset?rel=${encodeURIComponent(x.rel)}" alt="" loading="lazy" />
+              <span>${esc(x.name)}</span>
+            </button>`,
+          )
+          .join("");
+      };
+
       const postRow = (
         p,
       ) => `<div class="post-row${p.draft ? " draft" : ""}" data-post-path="${esc(p.path)}">
           <div class="post-main">
+            ${coverThumbHTML(p)}
             <div class="post-title">${esc(p.title)}
               ${p.draft ? '<span class="badge draft">草稿</span>' : ""}
               ${p.sticky ? '<span class="badge sticky">置顶</span>' : ""}
@@ -2608,7 +2725,27 @@
             return;
           }
           row.insertAdjacentHTML("beforeend", editorHTML(p));
+          updateCoverPreview(row);
           btn.textContent = "收起";
+          return;
+        }
+        if (btn.hasAttribute("data-cover-pick")) {
+          const box = row.querySelector("[data-cover-gallery]");
+          if (box) box.hidden = !box.hidden;
+          return;
+        }
+        if (btn.classList.contains("cover-pick")) {
+          const input = row.querySelector('[data-edit="cover"]');
+          input.value = btn.dataset.coverValue;
+          updateCoverPreview(row);
+          const box = row.querySelector("[data-cover-gallery]");
+          if (box) box.hidden = true;
+          return;
+        }
+        if (btn.hasAttribute("data-cover-clear")) {
+          const input = row.querySelector('[data-edit="cover"]');
+          input.value = "";
+          updateCoverPreview(row);
           return;
         }
         if (btn.hasAttribute("data-editor-cancel")) {
@@ -2631,6 +2768,7 @@
               .map((s) => s.trim())
               .filter(Boolean),
             description: val("description").value.trim(),
+            cover: val("cover").value.trim(),
             draft: val("draft").checked,
             sticky: val("sticky").checked,
           };
@@ -2640,12 +2778,41 @@
         }
       });
 
+      /** 封面预览：能换算成 src/assets 路径的就显示缩略图，远程/其它就藏起来 */
+      function updateCoverPreview(row) {
+        const input = row.querySelector('[data-edit="cover"]');
+        const img = row.querySelector("[data-cover-prev]");
+        if (!input || !img) return;
+        const rel = coverAssetRel(input.value, row.dataset.postPath);
+        if (rel) {
+          img.src = `/asset?rel=${encodeURIComponent(rel)}`;
+          img.hidden = false;
+        } else {
+          img.removeAttribute("src");
+          img.hidden = true;
+        }
+      }
+
       const editorHTML = (p) => `<div class="post-editor">
           <label>标题<span></span><input type="text" data-edit="title" value="${esc(p.title)}" /></label>
           <label>日期<span></span><input type="datetime-local" data-edit="date" value="${toLocalInput(p.date)}" /></label>
           <label>分类<span></span><input type="text" data-edit="categories" list="cats" value="${esc(p.categories.join(", "))}" /></label>
           <label>标签<span></span><input type="text" data-edit="tags" value="${esc(p.tags.join(", "))}" /></label>
           <label class="wide">摘要<span></span><textarea data-edit="description">${esc(p.description)}</textarea></label>
+          <label class="wide">封面
+            <span class="hint">相对文章文件的路径（如 ../assets/images/cover-2.avif），也可以填远程 https 地址；留空＝用主题默认封面</span>
+            <div class="cover-row">
+              <img class="cover-prev" alt="" data-cover-prev hidden />
+              <div class="cover-inputs">
+                <input type="text" data-edit="cover" placeholder="../assets/images/cover-2.avif" value="${esc(p.cover ?? "")}" />
+                <div class="cover-tools">
+                  <button type="button" data-cover-pick>从图库选</button>
+                  <button type="button" data-cover-clear>清空（用默认）</button>
+                </div>
+              </div>
+            </div>
+            <div class="cover-gallery" data-cover-gallery hidden>${coverGalleryHTML(p)}</div>
+          </label>
           <div class="editor-tools">
             <label class="post-toggle"><input type="checkbox" data-edit="draft" ${p.draft ? "checked" : ""} /> 草稿</label>
             <label class="post-toggle"><input type="checkbox" data-edit="sticky" ${p.sticky ? "checked" : ""} /> 置顶</label>
@@ -2669,6 +2836,11 @@
         clearTimeout(flash.t);
         flash.t = setTimeout(() => (el.textContent = ""), 8000);
       }
+
+      $("post-list").addEventListener("input", (e) => {
+        if (e.target.matches('[data-edit="cover"]'))
+          updateCoverPreview(e.target.closest("[data-post-path]"));
+      });
 
       $("post-filter").addEventListener("input", renderPosts);
       $("post-scope").addEventListener("change", renderPosts);

@@ -46,6 +46,7 @@ const stubPosts = {
       sticky: false,
       hasFrontmatter: true,
       gitStatus: "M",
+      cover: "../assets/images/cover-1.avif",
       mtime: 1,
       bytes: 100,
     },
@@ -61,6 +62,7 @@ const stubPosts = {
       sticky: false,
       hasFrontmatter: true,
       gitStatus: null,
+      cover: "",
       mtime: 2,
       bytes: 200,
     },
@@ -80,10 +82,18 @@ const dom = new JSDOM(html, {
   runScripts: "dangerously",
   beforeParse(window) {
     window.confirm = () => false; // 弹窗在 jsdom 里没实现，测试时按「取消」处理
+    window.__calls = []; // 记录每次请求，便于断言保存时发出去的字段
     // 注意：必须给页面一份深拷贝。页面里的 collect() 会就地修改 state，
     // 若共用同一对象，测试自己的期望值会被改写，导致断言莫名失败。
-    window.fetch = async (url) => {
+    window.fetch = async (url, init) => {
       const u = String(url);
+      let sentBody;
+      try {
+        sentBody = init?.body ? JSON.parse(init.body) : undefined;
+      } catch {
+        sentBody = undefined;
+      }
+      window.__calls.push({ url: u, body: sentBody });
       const body = u.includes("/api/state")
         ? {
             state: structuredClone(state),
@@ -198,6 +208,8 @@ const strayTextareas = [...doc.querySelectorAll("#form textarea")].filter(
   (t) => !t.dataset.key && !t.closest(".field"),
 ).length;
 const catRows = rowsOf("home.selectedCategories").length;
+// 首页分类条数跟着配置走：用户会在界面里加分类，别把期望值写死
+const catBase = state.theme?.home?.selectedCategories?.length ?? 2;
 const navRows = rowsOf("nav").length;
 const navSubRows = listOf("nav")?.querySelectorAll(".list.nested [data-row]").length ?? 0;
 // 友链条数跟着 state.json 走：配置里有覆盖就用覆盖的条数，没有就是主题默认 4 条
@@ -424,6 +436,31 @@ if (emailInput) {
   setInput(emailInput, orig);
 }
 
+// ── 封面：编辑器里能看、能从图库选、保存时写进 frontmatter ──
+const row0 = postRows()[0];
+click(row0.querySelector("[data-post-edit]"));
+await tick(140);
+const coverInput = row0.querySelector('[data-edit="cover"]');
+const coverVal = coverInput?.value ?? null;
+const coverPrevEl = row0.querySelector("[data-cover-prev]");
+const coverPrevSrc = coverPrevEl && !coverPrevEl.hidden ? coverPrevEl.getAttribute("src") : null;
+const rowThumbs = doc.querySelectorAll(".post-thumb").length;
+click(row0.querySelector("[data-cover-pick]"));
+const gallery = row0.querySelector("[data-cover-gallery]");
+const galleryOpen = gallery ? !gallery.hidden : false;
+const pickBtns = [...row0.querySelectorAll(".cover-pick")];
+const lastPickValue = pickBtns.at(-1)?.dataset.coverValue ?? null;
+if (pickBtns.length) click(pickBtns.at(-1));
+const pickedValue = coverInput.value;
+const galleryClosedAfterPick = gallery ? gallery.hidden : false;
+const callsBeforeSave = (dom.window.__calls ?? []).length;
+click(row0.querySelector("[data-editor-save]"));
+await tick(160);
+const saveCall = (dom.window.__calls ?? [])
+  .slice(callsBeforeSave)
+  .find((c) => String(c.url).includes("/api/posts/update"));
+const savedCover = saveCall?.body?.patch?.cover ?? null;
+
 const checks = [
   ["站点名 = 你的值", textOf("siteName"), state.theme.siteName],
   [
@@ -453,7 +490,7 @@ const checks = [
   ["下拉选 token 会同步到文本框", selSynced, "var(--color-pink)"],
   ["已无手写 JSON 的字段", jsonBoxes, 0],
   ["多行框都在带标签的字段里", strayTextareas, 0],
-  ["首页分类 = 2 行", catRows, 2],
+  ["首页分类行数 = 配置里的条数", catRows, catBase],
   ["导航 = 6 行", navRows, 6],
   ["导航下拉子项 = 3 个", navSubRows, 3],
   ["友链行数 = 配置里的条数", friendRows, friendBase],
@@ -508,6 +545,14 @@ const checks = [
   ["邮箱输入框显示明文", emailShown, "zianchen4-c@my.cityu.edu.hk"],
   ["邮箱预览显示密文", emailPreview, "mvnapura4-p@zl.pvglh.rqh.ux"],
   ["保存时邮箱写成密文", emailSaved, "fbzrbar@rknzcyr.pbz"],
+  ["编辑器带出封面值", coverVal, "../assets/images/cover-1.avif"],
+  ["封面缩略图走 /asset 路由", String(coverPrevSrc).startsWith("/asset?rel="), true],
+  ["列表行显示封面缩略图", rowThumbs, 1],
+  ["点「从图库选」展开图库", galleryOpen, true],
+  ["图库路径按文章深度算", lastPickValue, "../assets/images/avatar.jpg"],
+  ["选图后填进输入框", pickedValue, "../assets/images/avatar.jpg"],
+  ["选完自动收起图库", galleryClosedAfterPick, true],
+  ["保存时把封面写进 patch", savedCover, "../assets/images/avatar.jpg"],
 ];
 
 let bad = 0;

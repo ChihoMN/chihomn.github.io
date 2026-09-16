@@ -15,6 +15,7 @@ export const EDITABLE_FIELDS = [
   "description",
   "tags",
   "categories",
+  "cover",
   "draft",
   "sticky",
 ];
@@ -118,6 +119,7 @@ export function parsePost(text, rel) {
     date: date ? date.toISOString() : null,
     dateRaw: String(readField(entries, "date") ?? ""),
     description: String(readField(entries, "description") ?? ""),
+    cover: String(readField(entries, "cover") ?? ""),
     tags: asList(readField(entries, "tags")),
     categories: asList(readField(entries, "categories")),
     draft: readField(entries, "draft") === true || String(readField(entries, "draft")) === "true",
@@ -135,6 +137,10 @@ function fieldLines(key, value) {
   }
   if (key === "draft" || key === "sticky") {
     return value ? [`${key}: true`] : []; // 为 false 时干脆不写这一行
+  }
+  if (key === "cover") {
+    const v = String(value ?? "").trim();
+    return v === "" ? [] : [`cover: ${yamlScalar(v)}`];
   }
   if (key === "date") {
     const d = parseDate(value);
@@ -217,7 +223,7 @@ export function readPost(postsDir, rel) {
 /** 新建文章：返回相对路径；同名文件已存在时报错，不覆盖 */
 export function createPost(
   postsDir,
-  { title, slug, tags = [], categories = [], folder = "", draft = false, date } = {},
+  { title, slug, tags = [], categories = [], folder = "", cover = "", draft = false, date } = {},
 ) {
   const name = slugify(slug || title || "");
   if (!name) throw new Error("标题不能为空");
@@ -230,6 +236,7 @@ export function createPost(
   if (!dir.startsWith(postsDir)) throw new Error("目录超出 src/posts");
   const abs = path.join(dir, `${name}.md`);
   if (fs.existsSync(abs)) throw new Error(`已经有同名文件了：${toRel(postsDir, abs)}`);
+  const coverValue = validateCover(postsDir, toRel(postsDir, abs), cover);
   const lines = [
     "---",
     `title: ${yamlScalar(title || name)}`,
@@ -238,6 +245,7 @@ export function createPost(
   if (asList(tags).length) lines.push(`tags: [${asList(tags).map(yamlScalar).join(", ")}]`);
   if (asList(categories).length)
     lines.push(`categories: [${asList(categories).map(yamlScalar).join(", ")}]`);
+  if (coverValue) lines.push(`cover: ${yamlScalar(coverValue)}`);
   if (draft) lines.push("draft: true");
   lines.push("---", "", "");
   fs.mkdirSync(dir, { recursive: true });
@@ -245,11 +253,39 @@ export function createPost(
   return toRel(postsDir, abs);
 }
 
+/**
+ * 校验封面值：主题把 frontmatter 的 cover 交给 Astro 的 image() 解析，
+ * 所以只接受「相对文章文件的路径」（文件必须存在）或远程 URL；
+ * 写成 /images/xxx.jpg 这类 public 路径会让 astro build 直接失败（ImageNotFound）。
+ */
+export function validateCover(postsDir, rel, value) {
+  const v = String(value ?? "").trim();
+  if (v === "") return "";
+  if (/^https?:\/\//i.test(v)) return v;
+  if (v.startsWith("/")) {
+    throw new Error(
+      "封面不能用 /images/xxx.jpg 这种 public 路径（构建会报 ImageNotFound），请用相对路径（如 ../assets/images/xxx.jpg）或 https 地址",
+    );
+  }
+  const postAbs = safeJoin(postsDir, rel); // 文章本身必须在 src/posts 内
+  const abs = path.resolve(path.dirname(postAbs), v); // 封面可以指向 src/assets（所以在 posts 之外）
+  const repoRoot = path.resolve(postsDir, "..", "..");
+  if (!abs.startsWith(repoRoot + path.sep)) throw new Error(`封面路径超出了项目目录：${v}`);
+  if (!fs.existsSync(abs)) {
+    throw new Error(
+      `封面文件不存在：${v}（路径要相对于这篇文章，比如 ../assets/images/cover-2.avif）`,
+    );
+  }
+  return v;
+}
+
 /** 改文章信息：只动 patch 里给出的字段 */
 export function updatePost(postsDir, rel, patch) {
   const abs = safeJoin(postsDir, rel);
   if (!fs.existsSync(abs)) throw new Error("文章不存在");
-  const next = updateFrontmatter(fs.readFileSync(abs, "utf8"), patch);
+  const clean = { ...patch };
+  if ("cover" in clean) clean.cover = validateCover(postsDir, rel, clean.cover);
+  const next = updateFrontmatter(fs.readFileSync(abs, "utf8"), clean);
   fs.writeFileSync(abs, next, "utf8");
   return toRel(postsDir, abs);
 }
