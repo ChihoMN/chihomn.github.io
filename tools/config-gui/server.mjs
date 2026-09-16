@@ -17,14 +17,7 @@ import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn, spawnSync } from "node:child_process";
-import {
-  createPost,
-  deletePost,
-  listPosts,
-  readPost,
-  safeJoin,
-  updatePost,
-} from "./posts.mjs";
+import { createPost, deletePost, listPosts, readPost, safeJoin, updatePost } from "./posts.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../..");
@@ -107,7 +100,8 @@ function gitStatus() {
   // 与「部署远端」比较（当前分支的 upstream 是主题上游，跟发布无关）
   const remoteRef = `refs/remotes/${DEPLOY_REMOTE}/${DEPLOY_BRANCH}`;
   const hasRemote = git(["rev-parse", "--verify", "--quiet", remoteRef]).code === 0;
-  const count = (range) => (hasRemote ? Number(git(["rev-list", "--count", range]).out.trim() || 0) || 0 : 0);
+  const count = (range) =>
+    hasRemote ? Number(git(["rev-list", "--count", range]).out.trim() || 0) || 0 : 0;
   const ahead = count(`${remoteRef}..HEAD`);
   const behind = count(`HEAD..${remoteRef}`);
   const last = git(["log", "-1", "--format=%h%x09%s"]).out;
@@ -120,7 +114,8 @@ function gitStatus() {
     .map((f) => f.slice("src/posts/".length).replace(/\.mdx?$/i, ""));
   const byPath = new Map(safeListPosts().map((p) => [p.path.replace(/\.mdx?$/i, ""), p.title]));
   let suggestion = "chore: 站点内容更新";
-  if (touchedPosts.length === 1) suggestion = `post: ${byPath.get(touchedPosts[0]) ?? touchedPosts[0]}`;
+  if (touchedPosts.length === 1)
+    suggestion = `post: ${byPath.get(touchedPosts[0]) ?? touchedPosts[0]}`;
   else if (touchedPosts.length > 1) suggestion = `post: 更新 ${touchedPosts.length} 篇文章`;
   else if (changed.length > 0) suggestion = "chore: 站点更新";
 
@@ -177,19 +172,33 @@ function onOutput(text) {
 }
 
 function startJob(kind, label, task) {
-  if (job && job.status === "running") throw new Error("已经有一个任务在跑，先等它结束或点「停止」");
-  job = { kind, label, status: "running", log: "", code: null, url: null, sha: null, startedAt: Date.now(), endedAt: null, stopped: false };
+  if (job && job.status === "running")
+    throw new Error("已经有一个任务在跑，先等它结束或点「停止」");
+  job = {
+    kind,
+    label,
+    status: "running",
+    log: "",
+    code: null,
+    url: null,
+    sha: null,
+    startedAt: Date.now(),
+    endedAt: null,
+    stopped: false,
+  };
   const started = job;
   Promise.resolve()
-    .then(() => task({
-      shell: (command, opts) => stream("/bin/sh", ["-lc", command], opts),
-      run: (args, opts = {}) => {
-        appendLog(`\n$ ${["git", ...args].join(" ")}\n`);
-        return stream("git", args, opts);
-      },
-      log: appendLog,
-      stopped: () => started.stopped,
-    }))
+    .then(() =>
+      task({
+        shell: (command, opts) => stream("/bin/sh", ["-lc", command], opts),
+        run: (args, opts = {}) => {
+          appendLog(`\n$ ${["git", ...args].join(" ")}\n`);
+          return stream("git", args, opts);
+        },
+        log: appendLog,
+        stopped: () => started.stopped,
+      }),
+    )
     .then((code) => {
       started.code = typeof code === "number" ? code : 0;
       started.status = started.stopped ? "stopped" : started.code === 0 ? "done" : "failed";
@@ -276,7 +285,8 @@ function probe(host, port) {
 
 /** 提交并推送：git add → commit → push，成功后交给 GitHub Actions 构建发布 */
 function jobDeploy(message) {
-  const note = String(message ?? "").trim() || `chore: 站点更新 ${new Date().toLocaleString("zh-CN")}`;
+  const note =
+    String(message ?? "").trim() || `chore: 站点更新 ${new Date().toLocaleString("zh-CN")}`;
   return startJob("deploy", "提交并部署", async (ctx) => {
     ctx.log(`提交说明：${note}\n`);
     const add = await ctx.run(["add", "-A"]);
@@ -302,7 +312,9 @@ function jobDeploy(message) {
 
     const push = await ctx.run(["push", DEPLOY_REMOTE, DEPLOY_BRANCH]);
     if (push !== 0) {
-      ctx.log("\n推送失败。如果提示权限问题，检查一下 git 凭据（钥匙串里的 GitHub token 是否过期）。\n");
+      ctx.log(
+        "\n推送失败。如果提示权限问题，检查一下 git 凭据（钥匙串里的 GitHub token 是否过期）。\n",
+      );
       return push;
     }
     job.sha = git(["rev-parse", "HEAD"]).out.trim();
@@ -317,8 +329,16 @@ async function deployRun(sha) {
   if (!slug || !sha) return { ok: false, reason: "no-remote" };
   const url = `https://api.github.com/repos/${slug}/actions/runs?head_sha=${encodeURIComponent(sha)}&per_page=5`;
   try {
-    const res = await fetch(url, { headers: { accept: "application/vnd.github+json", "user-agent": "blog-console" }, signal: AbortSignal.timeout(8000) });
-    if (!res.ok) return { ok: false, reason: res.status === 403 ? "rate-limit" : `http-${res.status}`, repo: slug };
+    const res = await fetch(url, {
+      headers: { accept: "application/vnd.github+json", "user-agent": "blog-console" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok)
+      return {
+        ok: false,
+        reason: res.status === 403 ? "rate-limit" : `http-${res.status}`,
+        repo: slug,
+      };
     const data = await res.json();
     const run = (data.workflow_runs ?? []).find((r) => r.head_sha === sha);
     if (!run) return { ok: true, pending: true, repo: slug };
@@ -367,7 +387,10 @@ function postsPayload() {
   const dirty = new Map();
   for (const c of status.changed) if (c.file.startsWith("src/posts/")) dirty.set(c.file, c.status);
   return {
-    posts: safeListPosts().map((p) => ({ ...p, gitStatus: dirty.get(`src/posts/${p.path}`) ?? null })),
+    posts: safeListPosts().map((p) => ({
+      ...p,
+      gitStatus: dirty.get(`src/posts/${p.path}`) ?? null,
+    })),
     categories: listCategories(),
     git: status,
   };
@@ -384,7 +407,9 @@ const server = http.createServer((req, res) => {
 
   // 提供 Remix Icon 图标（界面上的社媒图标直接取自项目里的图标集）
   if (req.method === "GET" && url.pathname === "/icon") {
-    const name = (url.searchParams.get("name") ?? "").replace(/^i-ri-/, "").replace(/[^a-z0-9-]/gi, "");
+    const name = (url.searchParams.get("name") ?? "")
+      .replace(/^i-ri-/, "")
+      .replace(/[^a-z0-9-]/gi, "");
     try {
       if (!iconCache) {
         iconCache = JSON.parse(
@@ -399,7 +424,10 @@ const server = http.createServer((req, res) => {
       const w = iconCache.width ?? 24;
       const h = iconCache.height ?? 24;
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="#333" color="#333">${ic.body}</svg>`;
-      res.writeHead(200, { "content-type": "image/svg+xml; charset=utf-8", "cache-control": "max-age=3600" });
+      res.writeHead(200, {
+        "content-type": "image/svg+xml; charset=utf-8",
+        "cache-control": "max-age=3600",
+      });
       return res.end(svg);
     } catch (e) {
       res.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
@@ -431,7 +459,11 @@ const server = http.createServer((req, res) => {
         ".woff2": "font/woff2",
       }[ext] ?? "application/octet-stream";
     const buf = fs.readFileSync(abs);
-    res.writeHead(200, { "content-type": mime, "content-length": buf.length, "cache-control": "no-cache" });
+    res.writeHead(200, {
+      "content-type": mime,
+      "content-length": buf.length,
+      "cache-control": "no-cache",
+    });
     return res.end(buf);
   }
 
@@ -485,7 +517,12 @@ const server = http.createServer((req, res) => {
       try {
         const rel = createPost(postsDir, body);
         if (body.open !== false) openInEditor(path.join(postsDir, rel));
-        return sendJson(res, 200, { ok: true, path: rel, log: `已创建 src/posts/${rel}`, ...postsPayload() });
+        return sendJson(res, 200, {
+          ok: true,
+          path: rel,
+          log: `已创建 src/posts/${rel}`,
+          ...postsPayload(),
+        });
       } catch (e) {
         return sendJson(res, 400, { ok: false, log: e.message });
       }
@@ -498,7 +535,12 @@ const server = http.createServer((req, res) => {
       if (!body) return sendJson(res, 400, { ok: false, log: "请求不是合法 JSON" });
       try {
         const rel = updatePost(postsDir, body.path, body.patch ?? {});
-        return sendJson(res, 200, { ok: true, path: rel, log: `已更新 src/posts/${rel}`, ...postsPayload() });
+        return sendJson(res, 200, {
+          ok: true,
+          path: rel,
+          log: `已更新 src/posts/${rel}`,
+          ...postsPayload(),
+        });
       } catch (e) {
         return sendJson(res, 400, { ok: false, log: e.message });
       }
@@ -511,7 +553,11 @@ const server = http.createServer((req, res) => {
       if (!body) return sendJson(res, 400, { ok: false, log: "请求不是合法 JSON" });
       try {
         const removed = deletePost(postsDir, body.path, { withAssets: body.withAssets !== false });
-        return sendJson(res, 200, { ok: true, log: `已删除 ${removed.join("、")}`, ...postsPayload() });
+        return sendJson(res, 200, {
+          ok: true,
+          log: `已删除 ${removed.join("、")}`,
+          ...postsPayload(),
+        });
       } catch (e) {
         return sendJson(res, 400, { ok: false, log: e.message });
       }

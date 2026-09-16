@@ -96,6 +96,7 @@ export const DEFAULT_THEME_CONFIG: ShokaXThemeConfig = {
   },
   widgets: {
     randomPosts: true,
+    randomPostsLimit: 3,
     recentComments: true,
     recentCommentsLimit: 10,
   },

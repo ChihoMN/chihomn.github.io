@@ -80,7 +80,11 @@ export function splitFrontmatter(text) {
   return { entries, body: text.slice(m[0].length) };
 }
 
-const stripQuotes = (s) => String(s).trim().replace(/^["']|["']$/g, "").trim();
+const stripQuotes = (s) =>
+  String(s)
+    .trim()
+    .replace(/^["']|["']$/g, "")
+    .trim();
 
 /** 取一个字段的值：块状数组 / 行内数组 / 单行标量都能认 */
 function readField(entries, key) {
@@ -93,7 +97,10 @@ function readField(entries, key) {
   if (rest.startsWith("[")) {
     const inner = rest.replace(/^\[|\]$/g, "").trim();
     if (!inner) return [];
-    return inner.split(",").map(stripQuotes).filter((x) => x !== "");
+    return inner
+      .split(",")
+      .map(stripQuotes)
+      .filter((x) => x !== "");
   }
   return stripQuotes(rest);
 }
@@ -114,7 +121,8 @@ export function parsePost(text, rel) {
     tags: asList(readField(entries, "tags")),
     categories: asList(readField(entries, "categories")),
     draft: readField(entries, "draft") === true || String(readField(entries, "draft")) === "true",
-    sticky: readField(entries, "sticky") === true || String(readField(entries, "sticky")) === "true",
+    sticky:
+      readField(entries, "sticky") === true || String(readField(entries, "sticky")) === "true",
     hasFrontmatter: Boolean(fm),
   };
 }
@@ -169,7 +177,8 @@ export function updateFrontmatter(text, patch) {
 export function safeJoin(postsDir, rel) {
   const clean = String(rel ?? "").replace(/^[/\\]+/, "");
   const abs = path.resolve(postsDir, clean);
-  if (abs !== postsDir && !abs.startsWith(postsDir + path.sep)) throw new Error("路径超出 src/posts");
+  if (abs !== postsDir && !abs.startsWith(postsDir + path.sep))
+    throw new Error("路径超出 src/posts");
   if (!isPostFile(abs)) throw new Error("只支持 .md / .mdx 文件");
   return abs;
 }
@@ -193,7 +202,10 @@ export function listPosts(postsDir) {
     }
   };
   walk(postsDir);
-  return out.toSorted((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")) || a.path.localeCompare(b.path));
+  return out.toSorted(
+    (a, b) =>
+      String(b.date ?? "").localeCompare(String(a.date ?? "")) || a.path.localeCompare(b.path),
+  );
 }
 
 export function readPost(postsDir, rel) {
@@ -203,17 +215,29 @@ export function readPost(postsDir, rel) {
 }
 
 /** 新建文章：返回相对路径；同名文件已存在时报错，不覆盖 */
-export function createPost(postsDir, { title, slug, tags = [], categories = [], folder = "", draft = false, date } = {}) {
+export function createPost(
+  postsDir,
+  { title, slug, tags = [], categories = [], folder = "", draft = false, date } = {},
+) {
   const name = slugify(slug || title || "");
   if (!name) throw new Error("标题不能为空");
-  const sub = String(folder ?? "").trim().replace(/^[/\\]+|[/\\]+$/g, "");
-  const dir = sub ? safeJoin(postsDir, path.join(sub, "placeholder.md")).replace(/placeholder\.md$/, "") : postsDir;
+  const sub = String(folder ?? "")
+    .trim()
+    .replace(/^[/\\]+|[/\\]+$/g, "");
+  const dir = sub
+    ? safeJoin(postsDir, path.join(sub, "placeholder.md")).replace(/placeholder\.md$/, "")
+    : postsDir;
   if (!dir.startsWith(postsDir)) throw new Error("目录超出 src/posts");
   const abs = path.join(dir, `${name}.md`);
   if (fs.existsSync(abs)) throw new Error(`已经有同名文件了：${toRel(postsDir, abs)}`);
-  const lines = ["---", `title: ${yamlScalar(title || name)}`, `date: ${localISO(date ? parseDate(date) ?? new Date() : new Date())}`];
+  const lines = [
+    "---",
+    `title: ${yamlScalar(title || name)}`,
+    `date: ${localISO(date ? (parseDate(date) ?? new Date()) : new Date())}`,
+  ];
   if (asList(tags).length) lines.push(`tags: [${asList(tags).map(yamlScalar).join(", ")}]`);
-  if (asList(categories).length) lines.push(`categories: [${asList(categories).map(yamlScalar).join(", ")}]`);
+  if (asList(categories).length)
+    lines.push(`categories: [${asList(categories).map(yamlScalar).join(", ")}]`);
   if (draft) lines.push("draft: true");
   lines.push("---", "", "");
   fs.mkdirSync(dir, { recursive: true });

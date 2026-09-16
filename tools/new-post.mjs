@@ -24,7 +24,9 @@ for (let i = 0; i < argv.length; i++) {
 
 const title = rest.join(" ").trim();
 if (!title) {
-  console.error('用法：pnpm new-post "文章标题" [--slug 文件名] [--tags 标签1,标签2] [--categories 分类] [--folder 子目录] [--draft]');
+  console.error(
+    '用法：pnpm new-post "文章标题" [--slug 文件名] [--tags 标签1,标签2] [--categories 分类] [--folder 子目录] [--draft]',
+  );
   process.exit(1);
 }
 
@@ -53,11 +55,17 @@ const slug = path.basename(rel).replace(/\.mdx?$/i, "");
 console.log(`已创建：src/posts/${rel}`);
 console.log("");
 console.log("接下来：");
-console.log(`  1. 用 Typora 打开这个文件写正文（图片建议放在同目录的 ${slug}.assets/ 里，插入时选相对路径）`);
+console.log(
+  `  1. 用 Typora 打开这个文件写正文（图片建议放在同目录的 ${slug}.assets/ 里，插入时选相对路径）`,
+);
 console.log("  2. pnpm dev        —— 本地预览，改完刷新即可（或直接点控制台的「本地预览」）");
 console.log(`  3. git add -A && git commit -m "post: ${title}" && git push site main`);
-console.log("     —— 推送后 GitHub Actions 会自动构建并发布到 https://chihomn.github.io （约 2 分钟）");
+console.log(
+  "     —— 推送后 GitHub Actions 会自动构建并发布到 https://chihomn.github.io （约 2 分钟）",
+);
 if (flags.get("draft") === "true") {
   console.log("");
-  console.log("注意：draft: true 的文章本地预览时也不会出现（整个页面不会被生成），写完了把它删掉或改成 false 再推。");
+  console.log(
+    "注意：draft: true 的文章本地预览时也不会出现（整个页面不会被生成），写完了把它删掉或改成 false 再推。",
+  );
 }

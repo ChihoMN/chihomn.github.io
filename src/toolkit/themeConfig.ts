@@ -178,10 +178,16 @@ interface FooterConfig {
 interface WidgetsConfig {
   /**
    * 是否显示随机文章小部件。
-   * - true：在页脚区域显示随机推荐的 10 篇文章
+   * - true：在页脚区域显示随机推荐的文章
    * - false：不显示
    */
   randomPosts?: boolean;
+
+  /**
+   * 随机文章小部件显示几条。
+   * - 默认 3
+   */
+  randomPostsLimit?: number;
 
   /**
    * 是否显示最新评论小部件。

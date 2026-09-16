@@ -35,19 +35,40 @@ const stubPosts = {
   ok: true,
   posts: [
     {
-      path: "hello-world.md", title: "Hello World!", date: "2025-12-06T04:00:00.000Z", dateRaw: "2025-12-06",
-      description: "第一篇", tags: ["welcome", "astro"], categories: ["Getting Started"],
-      draft: false, sticky: false, hasFrontmatter: true, gitStatus: "M", mtime: 1, bytes: 100,
+      path: "hello-world.md",
+      title: "Hello World!",
+      date: "2025-12-06T04:00:00.000Z",
+      dateRaw: "2025-12-06",
+      description: "第一篇",
+      tags: ["welcome", "astro"],
+      categories: ["Getting Started"],
+      draft: false,
+      sticky: false,
+      hasFrontmatter: true,
+      gitStatus: "M",
+      mtime: 1,
+      bytes: 100,
     },
     {
-      path: "Untitled.md", title: "测试文章", date: "2024-03-11T13:37:00.000Z", dateRaw: "2024-03-11T21:37:00+08:00",
-      description: "", tags: [], categories: [], draft: true, sticky: false, hasFrontmatter: true, gitStatus: null,
-      mtime: 2, bytes: 200,
+      path: "Untitled.md",
+      title: "测试文章",
+      date: "2024-03-11T13:37:00.000Z",
+      dateRaw: "2024-03-11T21:37:00+08:00",
+      description: "",
+      tags: [],
+      categories: [],
+      draft: true,
+      sticky: false,
+      hasFrontmatter: true,
+      gitStatus: null,
+      mtime: 2,
+      bytes: 200,
     },
   ],
   categories: ["Getting Started", "测试"],
   git: {
-    branch: "main", ahead: 1,
+    branch: "main",
+    ahead: 1,
     changed: [{ status: "M", file: "src/posts/hello-world.md" }],
     lastCommit: { sha: "abc1234", subject: "post: Hello World!" },
     suggestion: "post: Hello World!",
@@ -64,7 +85,11 @@ const dom = new JSDOM(html, {
     window.fetch = async (url) => {
       const u = String(url);
       const body = u.includes("/api/state")
-        ? { state: structuredClone(state), assets, categories: ["Tutorial", "Frontend", "公告", "测试", "开发", "指南"] }
+        ? {
+            state: structuredClone(state),
+            assets,
+            categories: ["Tutorial", "Frontend", "公告", "测试", "开发", "指南"],
+          }
         : u.includes("/api/posts")
           ? structuredClone(stubPosts)
           : u.includes("/api/job")
@@ -95,7 +120,8 @@ const log = doc.getElementById("log")?.textContent?.trim() ?? "";
 
 const thumbs = doc.querySelectorAll(".thumb").length;
 const fontPreviews = doc.querySelectorAll(".font-preview").length;
-const checkedAvatar = doc.querySelector('.ctrl[data-path="avatar"] input[type="radio"]:checked')?.value ?? null;
+const checkedAvatar =
+  doc.querySelector('.ctrl[data-path="avatar"] input[type="radio"]:checked')?.value ?? null;
 
 console.log(
   `  区块数: ${sections}   字段数: ${fields}   「已覆盖」标记: ${overrides}` +
@@ -149,20 +175,28 @@ console.log(`  颜色联动: 色板→文本框 ${pickSynced}，保存值 ${pick
 
 // ── 列表编辑器：以前要在文本框里手写结构化 JSON 的几处，现在逐项填 ──
 const listOf = (p) => ctrl(p)?.querySelector(".list");
-const rowsOf = (p) => [...(listOf(p)?.querySelector(".list-body")?.children ?? [])].filter((el) => el.hasAttribute("data-row"));
+const rowsOf = (p) =>
+  [...(listOf(p)?.querySelector(".list-body")?.children ?? [])].filter((el) =>
+    el.hasAttribute("data-row"),
+  );
 const click = (el) => el.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
 const setInput = (el, v) => {
   el.value = v;
   el.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
 };
-const addBtn = (p) => [...(listOf(p)?.querySelectorAll(".list-tools button") ?? [])].find((b) => b.dataset.listAdd !== undefined);
+const addBtn = (p) =>
+  [...(listOf(p)?.querySelectorAll(".list-tools button") ?? [])].find(
+    (b) => b.dataset.listAdd !== undefined,
+  );
 const field = (row, key) => row.querySelector(`.list-fields [data-key="${key}"]`);
 const themeOf = () => dom.window.collect?.()?.theme ?? {};
 
 const jsonBoxes = doc.querySelectorAll('.ctrl[data-type="json"]').length;
 // 列表里的「描述」是多行框，属正常；要确认的是"没有多出来的、需要手写 JSON 的多行框"
 // 多行框现在不止副标题（公告正文、关于页正文、对话答复都是），改判"没有游离在字段外的多行框"
-const strayTextareas = [...doc.querySelectorAll("#form textarea")].filter((t) => !t.dataset.key && !t.closest(".field")).length;
+const strayTextareas = [...doc.querySelectorAll("#form textarea")].filter(
+  (t) => !t.dataset.key && !t.closest(".field"),
+).length;
 const catRows = rowsOf("home.selectedCategories").length;
 const navRows = rowsOf("nav").length;
 const navSubRows = listOf("nav")?.querySelectorAll(".list.nested [data-row]").length ?? 0;
@@ -178,7 +212,8 @@ const navSubTitles = [...(listOf("nav")?.querySelectorAll(".list.nested .list-ti
   .join("/");
 
 // ── 页面内容：公告与关于页（以前只能手改文件，现在在界面上编辑）──
-const sectionByTitle = (t) => [...doc.querySelectorAll("section")].find((s) => s.querySelector("h2")?.textContent.trim() === t);
+const sectionByTitle = (t) =>
+  [...doc.querySelectorAll("section")].find((s) => s.querySelector("h2")?.textContent.trim() === t);
 const contentFields = sectionByTitle("页面内容")?.querySelectorAll(".field").length ?? 0;
 const annTitle = textOf("content.announcement.title") ?? "";
 const annBody = textOf("content.announcement.body") ?? "";
@@ -190,7 +225,9 @@ let aboutBodySaved = null;
   if (box) {
     const orig = box.value;
     setInput(box, orig + "\n\n（测试追加一行）");
-    aboutBodySaved = String(dom.window.collect?.()?.content?.about?.body ?? "").includes("测试追加一行");
+    aboutBodySaved = String(dom.window.collect?.()?.content?.about?.body ?? "").includes(
+      "测试追加一行",
+    );
     setInput(box, orig);
   }
 }
@@ -207,7 +244,9 @@ if (catFirst) {
 }
 
 // 友链：加一行 → 填值 → 保存结果里应多一条；删掉后回到原来的条数
-let friendAfterAdd = null, friendAddedTitle = null, friendAfterDel = null;
+let friendAfterAdd = null,
+  friendAddedTitle = null,
+  friendAfterDel = null;
 if (addBtn("friends.links")) {
   click(addBtn("friends.links"));
   const row = rowsOf("friends.links").at(-1);
@@ -231,7 +270,10 @@ let navAfterMove = null;
 
 // 把带下拉子菜单的那一项（文章）挪一下：父项的文字/链接/图标必须还是它自己的，
 // 不能被子菜单的值顶掉（这里曾经出过 bug：父项被最后一个子项覆盖成"归档"）
-let navMovedText = null, navMovedSubs = null, navMovedFirstSub = null, navUntouched = null;
+let navMovedText = null,
+  navMovedSubs = null,
+  navMovedFirstSub = null,
+  navUntouched = null;
 {
   const rows = rowsOf("nav");
   const i = rows.findIndex((r) => r.querySelector(".list.nested [data-row]"));
@@ -257,7 +299,8 @@ let orderAfterMove = null;
 }
 
 // 封面列表（字符串数组）与歌单
-let coverOut = null, playlistAfterAdd = null;
+let coverOut = null,
+  playlistAfterAdd = null;
 if (addBtn("cover.coverUrls")) {
   click(addBtn("cover.coverUrls"));
   const row = rowsOf("cover.coverUrls").at(-1);
@@ -276,7 +319,9 @@ if (addBtn("nyxPlayer.urls")) {
 let socialExtraOut = null;
 {
   const list = doc.querySelector('.ctrl[data-path="sidebar.social"] .social-extra .list');
-  const add = [...(list?.querySelectorAll(".list-tools button") ?? [])].find((b) => b.dataset.listAdd !== undefined);
+  const add = [...(list?.querySelectorAll(".list-tools button") ?? [])].find(
+    (b) => b.dataset.listAdd !== undefined,
+  );
   if (add) {
     click(add);
     const row = [...list.querySelector(".list-body").children].at(-1);
@@ -300,7 +345,10 @@ const tabConfig = doc.querySelector('.tab[data-tab="config"]');
 
 // 默认停在站点配置页，文章页是隐藏的
 const tabCount = doc.querySelectorAll(".tab").length;
-const defaultTab = { configVisible: !doc.getElementById("view-config").hidden, postsHidden: doc.getElementById("view-posts").hidden };
+const defaultTab = {
+  configVisible: !doc.getElementById("view-config").hidden,
+  postsHidden: doc.getElementById("view-posts").hidden,
+};
 
 // 切到「文章与发布」：列表、git 摘要、分类候选都要出来
 click(tabPosts);
@@ -317,10 +365,20 @@ const commitMsg = doc.getElementById("commit-msg").value;
 const catOptions = doc.querySelectorAll("#cats option").length;
 
 // 三颗按钮 + 初始状态
-const actionButtons = ["btn-preview", "btn-build", "btn-deploy"].every((id) => doc.getElementById(id));
+const actionButtons = ["btn-preview", "btn-build", "btn-deploy"].every((id) =>
+  doc.getElementById(id),
+);
 const deployEnabled = doc.getElementById("btn-deploy").disabled === false;
 const stopDisabled = doc.getElementById("btn-stop").disabled === true;
-const newPostFields = ["np-title", "np-slug", "np-folder", "np-categories", "np-tags", "np-draft", "btn-create"].filter((id) => doc.getElementById(id)).length;
+const newPostFields = [
+  "np-title",
+  "np-slug",
+  "np-folder",
+  "np-categories",
+  "np-tags",
+  "np-draft",
+  "btn-create",
+].filter((id) => doc.getElementById(id)).length;
 
 // 改信息：点开编辑器 → 字段带出当前值 → 取消后收起
 click(postRows()[0].querySelector("[data-post-edit]"));
@@ -346,15 +404,26 @@ const restored = postRows().length;
 // 切回站点配置页，原来的表单与按钮要复原
 click(tabConfig);
 await tick(120);
-const backToConfig = !doc.getElementById("view-config").hidden && doc.getElementById("view-posts").hidden && doc.getElementById("save").hidden === false;
+const backToConfig =
+  !doc.getElementById("view-config").hidden &&
+  doc.getElementById("view-posts").hidden &&
+  doc.getElementById("save").hidden === false;
 
 const checks = [
   ["站点名 = 你的值", textOf("siteName"), state.theme.siteName],
-  ["副标题 = 你的值", (textOf("brand.subtitle") ?? "").slice(0, 6), state.theme.brand.subtitle.slice(0, 6)],
+  [
+    "副标题 = 你的值",
+    (textOf("brand.subtitle") ?? "").slice(0, 6),
+    state.theme.brand.subtitle.slice(0, 6),
+  ],
   ["建站年份 = 2022", textOf("footer.since"), String(state.theme.footer.since)],
   ["标签云起始色 = 你的值", textOf("tagCloud.startColor"), state.theme.tagCloud.startColor],
   ["ICP 开关 = 关闭", boolOf("footer.icp.enable"), false],
-  ["运行时间起始 = 你的值", textOf("siteUptime.siteCreatedAt"), state.plugins.siteUptime.siteCreatedAt],
+  [
+    "运行时间起始 = 你的值",
+    textOf("siteUptime.siteCreatedAt"),
+    state.plugins.siteUptime.siteCreatedAt,
+  ],
   ["头像卡片数 = 候选图数", thumbs, assets.images.length],
   ["头像选中项 = 当前值", checkedAvatar, state.avatar],
   ["字体预览数 = 2", fontPreviews, 2],
@@ -382,7 +451,11 @@ const checks = [
   ["公告标题 = 配置值", annTitle, state.content.announcement.title],
   ["公告正文 = 配置值", annBody.slice(0, 12), state.content.announcement.body.slice(0, 12)],
   ["关于页正文 = 配置值", aboutBody.slice(0, 12), state.content.about.body.slice(0, 12)],
-  ["对话答复 = 配置值", stackAnswer.slice(0, 12), state.content.about.dialog.nodes.stack.slice(0, 12)],
+  [
+    "对话答复 = 配置值",
+    stackAnswer.slice(0, 12),
+    state.content.about.dialog.nodes.stack.slice(0, 12),
+  ],
   ["改关于页正文会写回配置", aboutBodySaved, true],
   ["加一行后友链 +1", friendAfterAdd, friendBase + 1],
   ["新行的值确实写进去了", friendAddedTitle, "小明的小站"],
@@ -427,7 +500,9 @@ for (const [name, got, want] of checks) {
     bad++;
     badValues++;
   }
-  console.log(`  ${ok ? "✓" : "✗"} ${name}  (显示 ${JSON.stringify(got)}${ok ? "" : "，应为 " + JSON.stringify(want)})`);
+  console.log(
+    `  ${ok ? "✓" : "✗"} ${name}  (显示 ${JSON.stringify(got)}${ok ? "" : "，应为 " + JSON.stringify(want)})`,
+  );
 }
 
 // 关于页是给访客看的，不许出现工具链的字眼（工具的话写在源码注释里）
@@ -443,7 +518,9 @@ if (aboutSrc) {
   const hits = TOOL_WORDS.filter((w) => aboutSrc.includes(w));
   const ok = hits.length === 0;
   if (!ok) bad++;
-  console.log(`  ${ok ? "✓" : "✗"} 关于页无工具痕迹  (${ok ? "干净" : "命中 " + JSON.stringify(hits)})`);
+  console.log(
+    `  ${ok ? "✓" : "✗"} 关于页无工具痕迹  (${ok ? "干净" : "命中 " + JSON.stringify(hits)})`,
+  );
 }
 
 if (fields === 0) {
@@ -455,7 +532,9 @@ if (log.startsWith("✗")) {
   process.exit(1);
 }
 if (badValues > 0) {
-  console.error(`\n✗ ${badValues} 项显示值不对（界面显示的可能是默认值而非你的配置，那样保存会清空配置）`);
+  console.error(
+    `\n✗ ${badValues} 项显示值不对（界面显示的可能是默认值而非你的配置，那样保存会清空配置）`,
+  );
 }
 if (bad > badValues) {
   console.error("\n✗ 关于页混进了工具链的字眼——那是给访客看的页面，这类说明只写在源码注释里");

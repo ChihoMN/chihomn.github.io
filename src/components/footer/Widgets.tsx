@@ -23,6 +23,7 @@ interface RecentCommentItem {
 interface WidgetsProps {
   posts?: Post[];
   enableRandomPosts?: boolean;
+  randomPostsLimit?: number;
   enableRecentComments?: boolean;
   recentCommentsLimit?: number;
   walineServerURL?: string;
@@ -137,9 +138,10 @@ function Widgets(props: WidgetsProps) {
   onMount(() => {
     let destroyRecentComments: (() => void) | undefined;
 
-    // 随机文章
+    // 随机文章：条数由 widgets.randomPostsLimit 决定
+    const randomPostsLimit = Math.max(1, props.randomPostsLimit ?? 3);
     if (props.enableRandomPosts !== false && (props.posts?.length ?? 0) > 0) {
-      setRandomPosts(shuffle([...props.posts!]).slice(0, 10));
+      setRandomPosts(shuffle([...props.posts!]).slice(0, randomPostsLimit));
     }
 
     // 从 Waline 拉取近期评论

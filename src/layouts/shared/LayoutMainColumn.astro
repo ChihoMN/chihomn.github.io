@@ -4,6 +4,7 @@ import Widgets from "@/components/footer/Widgets";
 
 interface WidgetsConfig {
   randomPosts?: boolean;
+  randomPostsLimit?: number;
   recentComments?: boolean;
   recentCommentsLimit?: number;
   recentCommentsServerURL?: string;
@@ -29,6 +30,7 @@ const {
       client:idle
       posts={posts}
       enableRandomPosts={widgetsConfig.randomPosts !== false}
+      randomPostsLimit={widgetsConfig.randomPostsLimit ?? 3}
       enableRecentComments={widgetsConfig.recentComments === true}
       recentCommentsLimit={widgetsConfig.recentCommentsLimit || 6}
       walineServerURL={widgetsConfig.recentCommentsServerURL || ""}
