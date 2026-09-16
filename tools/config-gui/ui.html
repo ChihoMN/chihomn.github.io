@@ -867,10 +867,10 @@
           fields: [
             {
               root: "state",
-              path: "contact.email",
-              label: "联系邮箱（明文）",
+              path: "contact.emailCipher",
+              label: "联系邮箱",
               type: "email",
-              hint: "填明文就行。保存时会自动 ROT13 加密后写进「关于」页面，解密方法也会一并写在页面上——博客产物里不会出现明文。",
+              hint: "照常填明文即可。保存时只把 ROT13 密文写进 state.json（仓库是公开的），关于页上也只出现密文。",
             },
           ],
         },
@@ -2097,9 +2097,10 @@
                 )}</div>
                 <span class="hint">上面 25 个平台不够用时在这里自己加：键名随你取，图标填 Remix Icon 名（如 i-ri-pixiv-fill）。</span>`;
                 } else if (f.type === "email") {
-                  const shown = rot13(val ?? "");
-                  ctrl = `<input type="text" id="${id}" placeholder="you@example.com" value="${(val ?? "").replace(/"/g, "&quot;")}" />
-                <div class="cipher">博客上会显示（ROT13 密文）：<code id="${id}_c">${shown || "（未填写）"}</code></div>`;
+                  // state 里存的是密文，界面上显示明文，保存时再编码回去
+                  const plain = rot13(val ?? "");
+                  ctrl = `<input type="text" id="${id}" placeholder="you@example.com" value="${plain.replace(/"/g, "&quot;")}" />
+                <div class="cipher">博客上会显示（ROT13 密文）：<code id="${id}_c">${(val ?? "") || "（未填写）"}</code></div>`;
                 } else if (f.type === "list") {
                   ctrl = listHTML(f, val);
                 } else if (f.type === "order") {
@@ -2374,7 +2375,8 @@
               const radio = wrap.querySelector('input[type="radio"]:checked');
               const sel = wrap.querySelector("select");
               v = radio ? radio.value : sel ? sel.value : "";
-            } else v = input.value;
+            } else if (f.type === "email") v = rot13(input.value.trim());
+            else v = input.value;
 
             if (f.root === "theme") {
               if (!sameJSON(v, f.def)) setPath(nextTheme, f.path, v);

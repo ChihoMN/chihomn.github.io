@@ -409,6 +409,21 @@ const backToConfig =
   doc.getElementById("view-posts").hidden &&
   doc.getElementById("save").hidden === false;
 
+// 联系邮箱：state 里只存 ROT13 密文，界面显示明文，保存时编码回去
+const emailWrap = ctrl("contact.emailCipher");
+const emailInput = emailWrap?.querySelector('input[type="text"]');
+const emailShown = emailInput?.value ?? null;
+const emailPreview = emailInput
+  ? (doc.getElementById(`${emailInput.id}_c`)?.textContent?.trim() ?? null)
+  : null;
+let emailSaved = null;
+if (emailInput) {
+  const orig = emailInput.value;
+  setInput(emailInput, "someone@example.com");
+  emailSaved = dom.window.collect?.()?.contact?.emailCipher ?? null;
+  setInput(emailInput, orig);
+}
+
 const checks = [
   ["站点名 = 你的值", textOf("siteName"), state.theme.siteName],
   [
@@ -490,6 +505,9 @@ const checks = [
   ["搜索标题筛出 1 篇", searched, 1],
   ["清空筛选恢复 2 篇", restored, 2],
   ["切回配置页后按钮复原", backToConfig, true],
+  ["邮箱输入框显示明文", emailShown, "zianchen4-c@my.cityu.edu.hk"],
+  ["邮箱预览显示密文", emailPreview, "mvnapura4-p@zl.pvglh.rqh.ux"],
+  ["保存时邮箱写成密文", emailSaved, "fbzrbar@rknzcyr.pbz"],
 ];
 
 let bad = 0;

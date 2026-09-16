@@ -186,7 +186,7 @@ docs/                 上游主题的原始 README
 - **依赖补丁**（`patches/`，`pnpm install` 时自动应用）：Waline 初始化参数名错误（`serverURL` → `serverUrl`，否则评论区永远挂载不出来）、Umami 增加 `data-domains`
 - **CI**：Node 24（`.nvmrc` 写的 22.12 低于 pnpm 11 要求的 22.13）、`include-hidden-files: true`（否则 `dist/.nojekyll` 会被过滤掉，Jekyll 会吃掉 `_astro/`）
 
-维护约定：主题源码/默认值非必要不改；站点产物里不出现工具与流程的字眼（这类说明只写在源码注释和本文件里）；提交身份用 `ChihoMN <ChihoMN@users.noreply.github.com>`。
+维护约定：主题源码/默认值非必要不改；站点产物里不出现工具与流程的字眼（这类说明只写在源码注释和本文件里）；提交身份用 `ChihoMN <ChihoMN@users.noreply.github.com>`；**个人邮箱在 `state.json` 里只存 ROT13 密文**（这个仓库是公开的），界面上照常填明文、保存时自动编码。
 
 ---
 

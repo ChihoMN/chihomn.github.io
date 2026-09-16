@@ -21,7 +21,8 @@ const root = path.resolve(here, "../..");
 const statePath = path.join(here, "state.json");
 const CHECK = process.argv.includes("--check");
 
-const GENERATED_BY = "此文件由配置 GUI 生成（tools/config-gui）—— 请用 `pnpm config-gui` 修改，勿手工编辑";
+const GENERATED_BY =
+  "此文件由配置 GUI 生成（tools/config-gui）—— 请用 `pnpm config-gui` 修改，勿手工编辑";
 
 /** 读取状态 */
 function readState() {
@@ -71,7 +72,9 @@ function genPluginConfig(state) {
   if (on("articleAgeWarning")) {
     imports.push("articleAgeWarning");
     const o = p.articleAgeWarning ?? {};
-    calls.push(`    articleAgeWarning({\n      maxAgeDays: ${Number(o.maxAgeDays ?? 180)},\n    })`);
+    calls.push(
+      `    articleAgeWarning({\n      maxAgeDays: ${Number(o.maxAgeDays ?? 180)},\n    })`,
+    );
   }
   if (on("vercount")) {
     imports.push("vercount");
@@ -124,7 +127,10 @@ function genPluginConfig(state) {
 
   const importLines = [
     ...localImports,
-    ...imports.map((name) => `import ${name} from "@hyacine/plugin-${name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}";`),
+    ...imports.map(
+      (name) =>
+        `import ${name} from "@hyacine/plugin-${name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}";`,
+    ),
   ].join("\n");
 
   return `// ${GENERATED_BY}
@@ -155,7 +161,10 @@ ${calls.join(",\n")},
 
 /** 改写 astro.config.mjs 里的 site */
 function patchAstroConfig(src, url) {
-  return src.replace(/^(\s*)site:\s*(?:"[^"]*"|'[^']*'|`[^`]*`)/m, `$1site: ${JSON.stringify(url)}`);
+  return src.replace(
+    /^(\s*)site:\s*(?:"[^"]*"|'[^']*'|`[^`]*`)/m,
+    `$1site: ${JSON.stringify(url)}`,
+  );
 }
 
 /** 改写 hyacine.yml 里的 fonts 与 images 第一项 */
@@ -216,11 +225,10 @@ function rot13(text) {
   });
 }
 
-/** 生成关于页的「联系方式」段落：由明文算出 ROT13 密文，并附上解密说明 */
-function genContactSection(email) {
-  const addr = String(email ?? "").trim();
-  if (!addr) return "{/* contact-email:start */}\n{/* contact-email:end */}";
-  const cipher = rot13(addr);
+/** 生成关于页的「联系方式」段落：state 里存的就是 ROT13 密文，直接写进页面并附上解密说明 */
+function genContactSection(cipherText) {
+  const cipher = String(cipherText ?? "").trim();
+  if (!cipher) return "{/* contact-email:start */}\n{/* contact-email:end */}";
   return `{/* contact-email:start */}
 ## 联系方式
 
@@ -244,7 +252,7 @@ function patchAboutMdx(src, state) {
   if (!re.test(src)) {
     throw new Error("src/content/about.mdx 里没找到 contact-email 标记，无法写入联系方式");
   }
-  return src.replace(re, genContactSection(state.contact?.email));
+  return src.replace(re, genContactSection(state.contact?.emailCipher));
 }
 
 // ── 页面内容：公告卡片与关于页 ────────────────────────────────
@@ -335,7 +343,7 @@ ${String(about.body ?? "").trim()}
   nodes={aboutDialogNodes}
 />
 
-${genContactSection(state.contact?.email)}
+${genContactSection(state.contact?.emailCipher)}
 `;
 }
 
@@ -347,7 +355,10 @@ function run() {
     { file: "hyacine.plugin.ts", content: genPluginConfig(state) },
     {
       file: "astro.config.mjs",
-      content: patchAstroConfig(fs.readFileSync(path.join(root, "astro.config.mjs"), "utf8"), state.site?.url),
+      content: patchAstroConfig(
+        fs.readFileSync(path.join(root, "astro.config.mjs"), "utf8"),
+        state.site?.url,
+      ),
     },
     {
       file: "hyacine.yml",
@@ -386,7 +397,9 @@ function run() {
   console.log(changes.join("\n"));
 
   // 提示：plugin / site / yml 的改动不会热重载
-  console.log("\n注意：hyacine.plugin.ts、astro.config.mjs、hyacine.yml 的改动需要重启开发服务器才生效。");
+  console.log(
+    "\n注意：hyacine.plugin.ts、astro.config.mjs、hyacine.yml 的改动需要重启开发服务器才生效。",
+  );
 }
 
 run();

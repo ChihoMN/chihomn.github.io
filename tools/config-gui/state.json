@@ -129,8 +129,8 @@
   },
   "avatar": "images/avatar.jpg",
   "contact": {
-    "email": "zianchen4-c@my.cityu.edu.hk",
-    "_说明": "这里填明文；生成器会自动 ROT13 加密后写进关于页面，并把解密方法一并写上"
+    "emailCipher": "mvnapura4-p@zl.pvglh.rqh.ux",
+    "_说明": "这里存的是 ROT13 密文（仓库是公开的，明文不进版本控制）；界面上照常填明文，保存时会自动编码"
   },
   "content": {
     "announcement": {
