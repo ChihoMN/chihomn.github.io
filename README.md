@@ -31,6 +31,7 @@ pnpm dev               # 本地预览站点 → http://localhost:4321
 | 只验证能不能构建                                    | 控制台点 **本地构建**，或 `pnpm build`                                           |
 | 改错了想回退                                        | `git revert <提交>`，再点一次「提交并部署」                                      |
 | 备份一份完整快照                                    | `tar -czf ~/blog-backup-$(date +%F).tar.gz -C /Users/cza blog`（备份放在仓库外） |
+| 想用作者自带的图形界面                              | 文档里是 `hyc serve` + 官方网页控制台，当前版本还起不来 —— 见下面 2.3 那节       |
 
 ---
 
@@ -70,6 +71,27 @@ pnpm dev               # 本地预览站点 → http://localhost:4321
 - **删除** —— 会连同同名的 `xxx.assets/` 图片目录一起删（删除会在下次部署时同步到线上）
 
 **新建文章**：填标题、文件名、子目录、分类（可从现有分类挑）、标签、是否草稿 → 创建并自动用 Typora 打开。
+
+### 3）作者自带的 HyC 控制台（另一个图形界面，目前起不来）
+
+主题作者另有一套图形化配置界面 + 本地轻量 CMS：网页端是他托管的官方控制台，本地跑一个服务用「认证码」对接（默认 3789 端口）。上游 README 与官方文档给的启动方式是：
+
+```bash
+pnpm add -g @hyacine/cli     # 或在项目里 pnpm add -D @hyacine/cli 后用 pnpm hyc
+hyc serve                    # 起本地服务，会打印端口和 16 位认证码
+# 然后浏览器打开 https://hyc.kaitaku.xyz/ ，输入那串认证码即可在网页里改主题配置
+```
+
+同一份文档里还提到 `hyc sync`（同步数据库与内容集合）、`hyc new "标题"`、`hyc publish "标题"`、`hyc sort category`。仓库里的 `src/theme.config.template.txt` 就是留给它的配置模板。
+
+**现状：这个界面现在起不来**，原因都在上游包里（我在本机实测过）：
+
+- npm 上 `@hyacine/cli` 最新就是 **0.1.1**，这一版里**没有 `serve`**（`--help` 里没有这个命令，包内也没有任何 HTTP 服务端代码），同样没有 `publish` / `sort` —— 文档描述的是更新的版本
+- 该版本的 `bin` 指向 `dist/index.js`，而实际文件叫 `dist/index.mjs`，所以 `pnpm hyc` / `hyc` 都是 `command not found`；直接 `node node_modules/@hyacine/cli/dist/index.mjs` 跑，除 `--help` / `-V` 外一律报 `unknown command`
+- 这一版里注册的命令有 `new` / `list` / `edit` / `rename` / `move` / `build` / `preview` / `deploy` / `backup` / `status` / `theme:config` / `collections` 等，功能上我们的控制台都已覆盖
+- 作者的工具源码在 [github.com/zkz098/hyacine](https://github.com/zkz098/hyacine)（`packages/cli` 是命令行、`apps/console` 是网页端）；翻了下 main 分支，`packages/cli` 里同样还没有 `serve` 的实现，`apps/console` 是配合云端服务的控制台面板 —— 也就是说这套「本地服务 + 认证码」还没接起来，只能等作者发版
+
+等作者发布带 `serve` 的版本再试。真用起来时注意两点：那个网页在**作者的域名**上，16 位认证码相当于对你本地项目的**写权限**，别外传；不启动 `hyc serve` 就完全不会连出去。
 
 ---
 
