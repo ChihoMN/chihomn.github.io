@@ -34,7 +34,21 @@ export default defineConfig({
     "endColor": "#ffbac3"
   },
   "home": {
-    "pageSize": 10
+    "pageSize": 10,
+    "selectedCategories": [
+      {
+        "name": "Tutorial"
+      },
+      {
+        "name": "Frontend"
+      },
+      {
+        "name": "Agent"
+      },
+      {
+        "name": "投资"
+      }
+    ]
   },
   "friends": {
     "description": "想交换友链的话，把站点信息发到我的邮箱即可。地址在「关于」页。",
