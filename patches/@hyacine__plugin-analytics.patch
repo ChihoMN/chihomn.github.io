@@ -1,0 +1,24 @@
+diff --git a/src/runtime.ts b/src/runtime.ts
+index 80c8104df5ac0b2dde801d6751c4a45498a7d450..33d3b2c23d0afce51631610d617b4bdfb0742210 100644
+--- a/src/runtime.ts
++++ b/src/runtime.ts
+@@ -5,6 +5,8 @@ export interface GoogleAnalyticsRuntimeOptions {
+ export interface UmamiRuntimeOptions {
+   websiteId?: string;
+   scriptUrl?: string;
++  /** 只在这些域名上统计（逗号分隔，匹配 window.location.hostname）；留空则不限制 */
++  domains?: string;
+ }
+ 
+ export interface AnalyticsRuntimeOptions {
+@@ -89,6 +91,10 @@ export function init(options: AnalyticsRuntimeOptions = {}): void {
+     umamiScript.defer = true;
+     umamiScript.src = scriptUrl;
+     umamiScript.dataset.websiteId = umamiId;
++    // data-domains：只在列出的域名上统计（逗号分隔，逐字匹配 window.location.hostname）。
++    // 用于把本地预览 / 预览部署排除掉，官方 tracker 配置里就是这么用的。
++    const domains = options.umami?.domains?.trim();
++    if (domains) umamiScript.dataset.domains = domains;
+     appendHead(umamiScript);
+   }
+ }

@@ -1,0 +1,15 @@
+diff --git a/src/WalineComments.astro b/src/WalineComments.astro
+index e20bf4935df26443469a097ed23e1206566ac5d1..35c8af0dffce6d50a8fdb269ec46aa7de565c241 100644
+--- a/src/WalineComments.astro
++++ b/src/WalineComments.astro
+@@ -37,7 +37,9 @@ const serializedDark = dark === undefined || dark === null ? "" : JSON.stringify
+           const el = document.querySelector<HTMLElement>(".hyacine-waline");
+           if (!el) return;
+ 
+-          const serverURL = el.dataset.serverURL || "";
++          // data-server-url 在 dataset 里对应 serverUrl（不是 serverURL），
++          // 原版读 serverURL 永远是 undefined，导致 Waline 从不初始化
++          const serverURL = el.dataset.serverUrl || "";
+           if (!serverURL) return;
+ 
+           const data: WalineMountData = { serverURL };

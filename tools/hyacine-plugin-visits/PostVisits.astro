@@ -1,0 +1,18 @@
+---
+// 单篇文章阅读量：同样由 vercount 脚本填充（它按当前页面 URL 统计 page_pv）。
+---
+
+<div class="post-visits" aria-label="阅读量">
+  <span id="vercount_container_page_pv" style="display:none">
+    阅读 <span id="vercount_value_page_pv">-</span>
+  </span>
+</div>
+
+<style>
+  .post-visits {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--grey-5, #9aa0a6);
+    margin-top: 0.25rem;
+  }
+</style>

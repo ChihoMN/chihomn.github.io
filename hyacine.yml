@@ -15,11 +15,12 @@ themeConfigTemplatePath: src/theme.config.template.txt
 fonts:
   - path: src/assets/fonts/LXGWWenKai-Regular.ttf
     type: standard
-  - path: src/assets/fonts/MapleMono-CN-Regular.ttf
+  - path: src/assets/fonts/JetBrainsMono-Regular.ttf
     type: monospace
 
 images:
-  - path: src/assets/avatar.avif
+  - path: src/assets/images/avatar.jpg
+  - path: src/assets/avatar-default.avif
   - path: src/assets/images/cover-1.avif
   - path: src/assets/images/cover-2.avif
   - path: src/assets/images/cover-3.avif

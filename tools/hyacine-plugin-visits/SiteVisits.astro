@@ -1,0 +1,28 @@
+---
+// 站点访问量：数字由主题内置的 vercount 脚本填充。
+// vercount 会寻找 id 为 vercount_container_* 的容器与 vercount_value_* 的数字节点，
+// 取到数据后把容器从 display:none 改成 inline —— 所以拿不到数据时不会留个空壳。
+---
+
+<div class="visit-stats" aria-label="访问统计">
+  <span id="vercount_container_site_uv" class="visit-item" style="display:none">
+    访客 <span id="vercount_value_site_uv">-</span>
+  </span>
+  <span id="vercount_container_site_pv" class="visit-item" style="display:none">
+    访问 <span id="vercount_value_site_pv">-</span>
+  </span>
+</div>
+
+<style>
+  .visit-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    justify-content: center;
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+  .visit-item {
+    white-space: nowrap;
+  }
+</style>

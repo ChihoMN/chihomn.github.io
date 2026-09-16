@@ -11,6 +11,10 @@ overrides:
   uuid@^8.3.1: 11.1.1
   ip@^1.1.8: 2.0.1
 
+patchedDependencies:
+  '@hyacine/plugin-analytics': 590d86c5ff56d40536525808638887cbc8a814ff928aa07f8a7b7297dd2f0cbf
+  '@hyacine/plugin-waline-comments': 6495c7229ddc25617bc24da063ed335c5a1f2f350fa9c4b8f6b9d700e3f64050
+
 importers:
 
   .:
@@ -41,7 +45,7 @@ importers:
         version: 0.1.0(astro@7.2.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.2.0)(jiti@2.7.0)(yaml@2.9.0))
       '@hyacine/plugin-analytics':
         specifier: ^0.1.0
-        version: 0.1.0
+        version: 0.1.0(patch_hash=590d86c5ff56d40536525808638887cbc8a814ff928aa07f8a7b7297dd2f0cbf)
       '@hyacine/plugin-article-age-warning':
         specifier: ^0.2.1
         version: 0.2.1
@@ -71,7 +75,7 @@ importers:
         version: 0.1.0
       '@hyacine/plugin-waline-comments':
         specifier: ^0.1.0
-        version: 0.1.0(typescript@6.0.3)
+        version: 0.1.0(patch_hash=6495c7229ddc25617bc24da063ed335c5a1f2f350fa9c4b8f6b9d700e3f64050)(typescript@6.0.3)
       '@hyacine/sdk':
         specifier: ^0.1.1
         version: 0.1.1(astro@7.2.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.2.0)(jiti@2.7.0)(yaml@2.9.0))
@@ -6283,7 +6287,7 @@ snapshots:
     transitivePeerDependencies:
       - astro
 
-  '@hyacine/plugin-analytics@0.1.0':
+  '@hyacine/plugin-analytics@0.1.0(patch_hash=590d86c5ff56d40536525808638887cbc8a814ff928aa07f8a7b7297dd2f0cbf)':
     dependencies:
       '@hyacine/contract': 0.1.1
       '@hyacine/plugin-core': 0.2.0
@@ -6345,7 +6349,7 @@ snapshots:
       '@hyacine/contract': 0.1.1
       '@hyacine/plugin-core': 0.2.0
 
-  '@hyacine/plugin-waline-comments@0.1.0(typescript@6.0.3)':
+  '@hyacine/plugin-waline-comments@0.1.0(patch_hash=6495c7229ddc25617bc24da063ed335c5a1f2f350fa9c4b8f6b9d700e3f64050)(typescript@6.0.3)':
     dependencies:
       '@hyacine/contract': 0.1.1
       '@hyacine/plugin-core': 0.2.0

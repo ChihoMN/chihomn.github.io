@@ -1,4 +1,6 @@
+// 此文件由配置 GUI 生成（tools/config-gui）—— 请用 `pnpm config-gui` 修改，勿手工编辑
 import { defineConfig } from "@hyacine/plugin-core";
+import visits from "./tools/hyacine-plugin-visits";
 import siteUptime from "@hyacine/plugin-site-uptime";
 import mouseFirework from "@hyacine/plugin-mouse-firework";
 import articleAgeWarning from "@hyacine/plugin-article-age-warning";
@@ -27,7 +29,7 @@ export default defineConfig({
   },
   plugins: [
     siteUptime({
-      siteCreatedAt: "2024-01-01T00:00:00Z",
+      siteCreatedAt: "2022-03-11T12:00:00+08:00",
       prefixText: "本站已运行",
     }),
     mouseFirework({
@@ -38,31 +40,23 @@ export default defineConfig({
       maxAgeDays: 180,
     }),
     vercount(),
+    visits(),
     analytics({
       googleAnalytics: {
         measurementId: "",
       },
       umami: {
-        websiteId: "",
+        websiteId: "0c6e42de-6c98-4259-b82d-99096d2c1772",
         scriptUrl: "",
+        domains: "chihomn.github.io",
       },
     }),
     walineComments({
-      serverURL: "",
+      serverURL: "https://waline-chihomn.vercel.app",
       lang: "zh-CN",
     }),
     aiContent({
       enable: false,
-      aiSummary: {
-        enable: true,
-        title: "AI 摘要",
-        showModel: true,
-      },
-      aiRecommend: {
-        enable: true,
-        limit: 3,
-        minSimilarity: 0.4,
-      },
     }),
     visibilityTitle({
       enable: true,
@@ -74,9 +68,9 @@ export default defineConfig({
       enable: true,
       urls: [
         {
-          name: "默认歌单",
-          url: "https://music.163.com/m/playlist?id=12834717281&creatorId=12676493230",
-        },
+          "name": "网易云音乐",
+          "url": "https://music.163.com/#/playlist?id=9419380942"
+        }
       ],
       preset: "shokax",
       darkModeTarget: ":root[data-theme=dark]",

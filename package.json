@@ -24,7 +24,10 @@
     "config:deploy": "node scripts/generate-deploy-configs.mjs",
     "config:deploy:check": "node scripts/generate-deploy-configs.mjs --check",
     "hyc": "hyc",
-    "hyc:collections": "hyc collections"
+    "hyc:collections": "hyc collections",
+    "config-gui": "node tools/config-gui/server.mjs",
+    "config-gui:check": "node tools/config-gui/generate.mjs --check",
+    "config-gui:test": "node tools/config-gui/smoke-test.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.3.3",

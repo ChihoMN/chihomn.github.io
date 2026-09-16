@@ -1,0 +1,160 @@
+{
+  "_说明": "配置 GUI 的唯一数据源。theme 段只放「你想覆盖主题默认值」的字段，其余走主题默认。改动请通过 GUI（pnpm config-gui），手改后需要重新点保存才会同步到项目文件。",
+  "site": {
+    "url": "https://chihomn.github.io"
+  },
+  "theme": {
+    "siteName": "云烟成雨",
+    "brand": {
+      "title": "云烟成雨",
+      "subtitle": "年轻就像防御塔的镀层，而你的人生早晚都会来到14分钟的路口。你是要因为二级的那波失误而自责不已，惦记着B三狼徘徊不前；还是要放手一搏，掀开若子的大手，逃出德州的肖申克？"
+    },
+    "sidebar": {
+      "author": "Edward Chen",
+      "description": "技术博客/生活分享",
+      "social": {
+        "github": {
+          "url": "https://github.com/ChihoMN",
+          "icon": "i-ri-github-fill"
+        }
+      }
+    },
+    "footer": {
+      "since": 2022,
+      "icon": {
+        "color": "#ffc0cb"
+      },
+      "icp": {
+        "enable": false,
+        "icpnumber": "暂时不需要",
+        "icpurl": "暂时不需要"
+      }
+    },
+    "tagCloud": {
+      "startColor": "#72cecf",
+      "endColor": "#ffbac3"
+    },
+    "home": {
+      "pageSize": 10
+    },
+    "friends": {
+      "description": "想交换友链的话，把站点信息发到我的邮箱即可。地址在「关于」页。",
+      "links": [
+        {
+          "title": "云烟成雨",
+          "url": "https://chihomn.github.io/",
+          "author": "Edward Chan",
+          "avatar": "/images/avatar.jpg",
+          "desc": "大连理工大学 / 软件工程",
+          "color": "#66CCFF"
+        },
+        {
+          "title": "cout>>.<",
+          "url": "https://xhsioi.github.io/",
+          "author": "xhsioi",
+          "avatar": "https://xhsioi.github.io/medias/logo.png",
+          "desc": "大连理工大学、软件工程、创中",
+          "color": "#131824"
+        },
+        {
+          "title": "For1moc",
+          "url": "https://for1moc.xlog.app/",
+          "author": "For1moc",
+          "avatar": "https://forimoc.github.io/forimoc.jpg",
+          "desc": "签到型CTFer",
+          "color": "#131824"
+        }
+      ]
+    }
+  },
+  "plugins": {
+    "siteUptime": {
+      "enabled": true,
+      "siteCreatedAt": "2022-03-11T12:00:00+08:00",
+      "prefixText": "本站已运行"
+    },
+    "mouseFirework": {
+      "enabled": true,
+      "count": 16,
+      "radius": 80
+    },
+    "articleAgeWarning": {
+      "enabled": true,
+      "maxAgeDays": 180
+    },
+    "vercount": {
+      "enabled": true
+    },
+    "analytics": {
+      "enabled": true,
+      "googleAnalytics": {
+        "measurementId": ""
+      },
+      "umami": {
+        "websiteId": "0c6e42de-6c98-4259-b82d-99096d2c1772",
+        "scriptUrl": ""
+      }
+    },
+    "walineComments": {
+      "enabled": true,
+      "serverURL": "https://waline-chihomn.vercel.app",
+      "lang": "zh-CN"
+    },
+    "aiContent": {
+      "enabled": false
+    },
+    "visibilityTitle": {
+      "enabled": true,
+      "leaveTitle": "👀 你先忙，我等你回来~",
+      "returnTitle": "🎉 欢迎回来！",
+      "restoreDelay": 3000
+    },
+    "nyxPlayer": {
+      "enabled": true,
+      "urls": [
+        {
+          "name": "网易云音乐",
+          "url": "https://music.163.com/#/playlist?id=9419380942"
+        }
+      ],
+      "preset": "shokax"
+    },
+    "articleStatistics": {
+      "enabled": true
+    }
+  },
+  "fonts": {
+    "standard": "fonts/LXGWWenKai-Regular.ttf",
+    "monospace": "fonts/JetBrainsMono-Regular.ttf"
+  },
+  "avatar": "images/avatar.jpg",
+  "contact": {
+    "email": "zianchen4-c@my.cityu.edu.hk",
+    "_说明": "这里填明文；生成器会自动 ROT13 加密后写进关于页面，并把解密方法一并写上"
+  },
+  "content": {
+    "announcement": {
+      "title": "站点公告",
+      "body": "欢迎来到这里！ 👋\n\n- 这里主要写技术笔记和生活碎片。\n- 站点刚重新搭过一遍，旧文章（？）还在慢慢搬过来。\n- 想交换友链或者随便聊聊，去「关于」页可以找到我的联系方式。"
+    },
+    "about": {
+      "title": "关于",
+      "description": "这里记录我是谁、这个博客在做什么，以及如何和我交流。",
+      "date": "2026-09-16",
+      "updated": "2026-09-16",
+      "body": "你好，欢迎来到这里。\n\n## 关于我\n\n### 教育经历\n\n> **香港城市大学** · 计算机科学 理学硕士\n> 2025.09 – 2026.10（在读，预计 2026.10 毕业）　City University of Hong Kong, M.Sc. in Computer Science\n> **大连理工大学** · 软件工程 工学学士\n> 2020.09 – 2024.06　Dalian University of Technology, B.Eng. in Software Engineering\n\n这个博客主要是我的技术笔记，投资复盘，以及生活碎片和胡思乱想。随缘更新。\n\n如果哪一篇对你有用，或者你发现错误，欢迎写信告诉我。\n\n想先快速了解，可以点开下面这个对话：",
+      "dialog": {
+        "title": "快速对话",
+        "intro": "挑一个话题，我照着回答。",
+        "nodes": {
+          "intro": "你好，欢迎来到关于页面。想先了解哪一部分？",
+          "identity": "一个普通CS学生。平时写代码、看点书，偶尔把折腾的过程记下来。",
+          "focus": "更常折腾的是编程语言、计算机基础和课程里那些绕不过去的概念；也喜欢把一件事从头做到尾、写清楚。",
+          "blog": "大致三类：技术笔记（语言、系统、工具链）、课程与项目里的整理，以及一些生活碎片和随想。",
+          "stack": "这个站点是 Astro 生成的静态站，交互组件用 SolidJS，样式走 UnoCSS，搜索用 Pagefind 在本地建索引。没有后端，全文都是静态文件。",
+          "contact": "写信给我就行！邮箱加密过，在本页末尾，旁边写了怎么解。和文章内容相关的问题我会优先回。"
+        }
+      }
+    }
+  }
+}

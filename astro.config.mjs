@@ -106,7 +106,7 @@ if (themeConfig.diagnostics?.suppressFsWatcherMaxListenersWarning !== false) {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://preview.astro.kaitaku.xyz",
+  site: "https://chihomn.github.io",
   trailingSlash: "always",
   build: {
     format: "directory",
@@ -161,6 +161,11 @@ export default defineConfig({
         "csso",
         // jiti：lib/jiti.mjs 动态 require "../dist/babel.cjs"
         "jiti",
+        // babel-preset-solid（@astrojs/solid-js → vite-plugin-solid 链）：它是 CJS，
+        // 而 src/pages/friends/index.astro 会 import astro.config.mjs 取 shiki 主题，
+        // 于是 dev 下 SSR 模块图把整条链拉进来、当 ESM 求值 → "require is not defined"，
+        // 访问 /friends/ 直接 500。external 后交给 Node 的 CJS 加载器解析。
+        "babel-preset-solid",
       ],
     },
     resolve: {
@@ -172,7 +177,7 @@ export default defineConfig({
       Font.vite({
         scanFiles: ["src/**/*.{tsx,ts,js,jsx,md,mdx,json,astro}"],
         css: {
-          fontDisplay: "optional",
+          fontDisplay: "swap",
         },
       }),
       esToolkitPlugin(),
