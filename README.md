@@ -1,266 +1,233 @@
-[English](./README.md) | [中文](./README_zh-cn.md)
+# 云烟成雨 · 博客
 
-# Astro Blog ShokaX
+<p>
+  <a href="https://chihomn.github.io">线上站点</a> ·
+  <a href="https://github.com/ChihoMN/chihomn.github.io">发布仓库</a> ·
+  维护文档（就是本文件）
+</p>
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/theme-shoka-x/astro-blog-shokax)
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?repository-url=https://github.com/theme-shoka-x/astro-blog-shokax)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/theme-shoka-x/astro-blog-shokax)
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/theme-shoka-x/astro-blog-shokax)
+用 Astro + ShokaX 主题搭的静态博客，源码就是这个仓库，推上去就自动发布。日常维护只需要两样东西：
 
-This project is a reconstruction of [Hexo Theme ShokaX](https://github.com/theme-shoka-x/hexo-theme-shokaX) on Astro, built with Astro + SolidJS + UnoCSS.
-
-[<img width="1920" height="911" alt="Three-column preview" src="https://github.com/user-attachments/assets/b8ad5bbe-43a3-4c49-a32f-45ba5ba3dcd1" />](https://preview.astro.kaitaku.xyz/)
-
-Two-column layout:
-<img width="1920" height="911" alt="Two-column preview" src="https://github.com/user-attachments/assets/df01c009-68cf-4bb3-9148-ff61afc0d159" />
-
-🌐 Live preview (three-column): [https://preview.astro.kaitaku.xyz/](https://preview.astro.kaitaku.xyz/)
-
-## ✨ Features
-
-- Elegant UI that continues the original ShokaX design language
-- Built-in light / dark theme support
-- Support for both two-column and three-column layouts
-- Interactive blog installation, configuration, and usage through HyC
-- Extensible plugin system powered by Hyacine Plugins
-- Rich Markdown / MDX enhancement features
-- Tag cloud, timeline view, and category tree support
-- Backend-free, high-performance full-text search powered by Pagefind
-- Standalone pages for friends links, article statistics, and about
-- Built-in moments / status updates support
-- Automatically generated smart table of contents (ToC)
-- AI summaries and AI article recommendations powered by HyC
-- Build-time post encryption based on AES-256-GCM and PBKDF2
-- Performance-first design and development philosophy
-- More extension capabilities — see the documentation for details
-
-## 📦 Installation
-
-We recommend using [Node.js](https://nodejs.org/) (v22.12 or higher) with [pnpm](https://pnpm.io/) to run this project.
-
-You can clone this repository directly to get started (and maybe drop us a Star 😜), or use the [interactive installation flow provided by HyC](https://docs.astro.kaitaku.xyz/start/guides/).
-
-Quick start:
+- **本地的博客控制台** —— 改站点配置、写文章、构建、发布，都在一个页面里点
+- **Git** —— 版本记录与备份
 
 ```bash
-git clone https://github.com/theme-shoka-x/astro-blog-shokax
-
-cd astro-blog-shokax
-
-pnpm install
-
-# Start the development server
-pnpm run dev
-
-# Build for production
-pnpm run build
+pnpm config-gui        # 打开控制台 → http://127.0.0.1:4399
+pnpm dev               # 本地预览站点 → http://localhost:4321
 ```
 
-Your site is now ready to use. If you'd like to customize it, check the full documentation for the next step: [ShokaX Astro Docs](https://docs.astro.kaitaku.xyz/start/guides/)
+> 旧的 Hexo 版站点已归档为 `/Users/cza/chihomn.github.io-site-archive.tar.gz`，不在本仓库里。
 
-## 📂 Project Structure
+---
 
-This project follows the standard directory conventions of Astro 5 and Vite:
+## 一、一分钟速查
 
-```tree
-astro-blog-shokax
-├── src/                          # Source files
-│   ├── assets/                   # Images / fonts
-│   │   ├── fonts/                # Fonts
-│   │   ├── images/               # 🌟 Cover images
-│   │   ├── icons/                # Part of RemixIcon assets (used for Shadow DOM)
-│   │   ├── avatar.avif           # 🌟 Site owner avatar
-│   ├── components/               # Astro / SolidJS components
-│   ├── content/                  # Content outside collections
-│   │   ├── friends-rules.md      # 🌟 Friends link rules
-│   ├── i18n/                     # i18n system
-│   ├── layouts/                  # Page layouts
-│   ├── moments/                  # 🌟 Moments / status content collection
-│   ├── pages/                    # Route pages
-│   ├── posts/                    # 🌟 Post content collection
-│   ├── satteri-plugins/          # Markdown extensions (Satteri)
-│   ├── stores/                   # Global stores
-│   ├── styles/                   # Non-component stylesheets
-│   ├── toolkit/                  # Utilities
-│   ├── content.config.ts         # Content collections config
-│   ├── covers.config.ts          # Cover image presets
-│   ├── theme.config.ts           # 🌟 Theme configuration
-│   ├── theme.config.template.txt # HyC interactive config template
-├── hyacine.plugin.ts             # 🌟 Hyacine plugin configuration
-├── hyacine.yml                   # HyC configuration
-├── astro.config.mjs              # 🌟 Astro configuration
+| 想做什么                                            | 怎么做                                                                           |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- |
+| 改站点配置（标题、导航、页脚、友链、统计、内容页…） | `pnpm config-gui` →「站点配置」→ 改完点 **保存并写入项目文件**                   |
+| 写一篇新文章                                        | 控制台「文章与发布 → 新建文章」，或 `pnpm new-post "标题"`                       |
+| 本地看效果                                          | 控制台点 **本地预览**，或 `pnpm dev`（http://localhost:4321 ）                   |
+| 传到线上                                            | 控制台点 **提交并部署**（约 2 分钟）                                             |
+| 只验证能不能构建                                    | 控制台点 **本地构建**，或 `pnpm build`                                           |
+| 改错了想回退                                        | `git revert <提交>`，再点一次「提交并部署」                                      |
+| 备份一份完整快照                                    | `tar -czf ~/blog-backup-$(date +%F).tar.gz -C /Users/cza blog`（备份放在仓库外） |
 
-# Items marked with 🌟 are the key files/folders you will likely care about when using this theme
+---
+
+## 二、博客控制台 `http://127.0.0.1:4399`
+
+`pnpm config-gui` 启动，只监听本机（127.0.0.1），不参与站点构建。两个页签：
+
+### 1）站点配置
+
+界面分 13 组：站点、联系方式、页面内容、字体、品牌与信息、侧边栏、页脚、标签云、小部件、首页、布局、导航与页面、插件（友链在「导航与页面」里，公告/关于页在「页面内容」里）。
+
+- 字段下方小字是它在配置文件里的位置，比如 `footer.since` 指 `src/theme.config.ts` 里的对应项
+- 标着 **「默认值 xx」** 的字段＝当前没有覆盖主题默认值；把它改回默认值就会自动取消覆盖
+- **保存并写入项目文件** 会重新生成 `src/theme.config.ts`、`hyacine.plugin.ts`，并改写 `astro.config.mjs` 的 site 与 `hyacine.yml` 的字体/头像
+- 公告正文、关于页正文、关于页的对话问答也能在这里改（不用手写 MDX）
+
+### 2）文章与发布
+
+**发布面板**
+
+| 按钮       | 作用                                                                                                            |
+| ---------- | --------------------------------------------------------------------------------------------------------------- |
+| 本地预览   | 4321 端口已有 dev server 就直接给链接，否则起一个（可用「停止任务」结束）                                       |
+| 本地构建   | 跑 `pnpm build`（Astro 构建 + Pagefind 搜索索引），产物在 `dist/`，**不动线上**                                 |
+| 提交并部署 | `git add -A` → `commit` → `push` → 自动盯 GitHub Actions 到出结果，成功后给「查看 Actions」「打开线上站点」链接 |
+| 停止任务   | 中断正在跑的任务                                                                                                |
+
+面板上方是「当前改动」（等价于 `git status`）和提交说明输入框（按改动的文章自动给建议，如 `post: 文章标题`），下方是完整任务日志。
+
+**文章列表**
+
+列出 `src/posts` 下全部文章，带 **草稿 / 置顶 / 未提交** 标记，支持按标题/分类/标签过滤。每篇四个按钮：
+
+- **用 Typora 打开** —— 直接编辑正文
+- **改信息** —— 就地修改标题、日期、分类、标签、摘要、草稿、置顶（只重写这几个字段，其它 frontmatter 与正文一字不动）
+- **转为草稿 / 转为发布**
+- **删除** —— 会连同同名的 `xxx.assets/` 图片目录一起删（删除会在下次部署时同步到线上）
+
+**新建文章**：填标题、文件名、子目录、分类（可从现有分类挑）、标签、是否草稿 → 创建并自动用 Typora 打开。
+
+---
+
+## 三、写一篇文章
+
+文章就是纯 Markdown，放在 `src/posts/`（可以再用子目录归档）。文件开头的 frontmatter 只有 `title` 和 `date` 是必填：
+
+```yaml
+---
+title: 文章标题
+date: 2026-09-16T15:42:57+08:00
+tags: [折腾, 记录]
+categories: [折腾]
+---
 ```
 
-## ⚙️ HyC Capabilities
+用命令建文件时这些字段会自动写好：
 
-ShokaX includes `@hyacine/cli` and the `@hyacine/plugin-*` ecosystem, providing the following capabilities:
-
-- AI recommendations and summaries
-- Interactive installation and configuration
-- Lightweight local CMS
-- Extensible blog plugins (site age, click effects, article age warning, comments, music player, visitor analytics, etc.)
-
-```shell
-# Global installation is recommended (or use `pnpm add -D @hyacine/cli` locally and `pnpm hyc`)
-pnpm add -g @hyacine/cli
-
-hyc sync # Sync database and content collections
-
-# Create a new post
-hyc new "Title"
-
-# Publish a post
-hyc publish "title/slug/file-name"
-
-# Sort posts by category
-hyc sort category
-
-# Start the local CMS and interactive configuration
-hyc serve
-# Visit the official console at https://hyc.kaitaku.xyz/ to get started
-
-# Hyacine plugins are configured in hyacine.plugin.ts
-# Supports site uptime, mouse fireworks, article age warning, vercount, waline comments, AI content, nyx player, etc.
+```bash
+pnpm new-post "文章标题" --tags 折腾,记录 --categories 折腾
+pnpm new-post "带子目录的" --folder 技术 --draft
 ```
 
-## 🚀 Performance
+**图片**：Typora → 偏好设置 → 图像 → 选「复制图片到 `./${filename}.assets` 文件夹」+ 勾「优先使用相对路径」。之后插入的图会写成 `![](./文章标题.assets/xxx.png)`，构建时 Astro 会自动优化成 `_astro/*.webp` 并生成 srcset。也可以把图放进 `src/assets/images/`，用 `../assets/images/xxx.png` 引用。
 
-We use [LHCI](https://github.com/GoogleChrome/lighthouse-ci) to test page performance, and each commit includes test results. Our minimum requirement is Lighthouse desktop Performance 92+, and in practice the score is usually around 98–100:
+**草稿**：`draft: true` 的文章**连本地预览都不会出现**（页面根本不生成）。所以写不完的就别标草稿，或者标了草稿但知道本地看不到它。
 
-<img width="1702" height="952" alt="lighthouse" src="https://github.com/user-attachments/assets/05b8768f-5f04-4204-8f4f-7f2f6f30e102" />
+**其它可用字段**：`description`（摘要）、`cover`（封面）、`sticky`（置顶）、`license`（版权协议）、`encrypted` + `password`（构建时加密）。
 
-## ⚠️ Architecture Constraints
+---
 
-Known coupling points and version pins that should be reviewed before major upgrades:
+## 四、发布到线上
 
-- **Custom Markdown pipeline.** `@astrojs/markdown-satteri` + `satteri` replace Astro's built-in Markdown/remark/rehype processing (see `astro.config.mjs` → `markdown.processor`). This is the largest coupling point for future Astro major upgrades — verify the processor chain first when bumping Astro.
-- **Pinned versions.** `astro` is pinned exactly (`7.2.4`); `pnpm-workspace.yaml` overrides pin `vite@8.1.3` and `rolldown@1.1.4`. These remain for Windows build reliability (rolldown releases break virtual modules on Windows); reassess the pins whenever the underlying packages are upgraded.
-- **Encrypted posts.** AES-256-GCM + PBKDF2 (600k iterations, OWASP 2023 recommendation). Ciphertext/salt/IV are shipped in the page HTML, so offline brute-force is always possible; use strong passwords. Encrypted posts are excluded from RSS and sitemap.
+线上是 GitHub Pages，仓库 `ChihoMN/chihomn.github.io`，由 `.github/workflows/deploy.yml` 负责构建发布。
 
-## 📦 Versioning
+**推荐路径**：控制台「文章与发布」→ 填/确认提交说明 → **提交并部署**。它会完成 `git add -A` → `commit` → `push`，然后自动轮询 Actions 状态，显示 ✓ 已发布 并给出线上链接。
 
-ShokaX Astro follows **SemVer** for version control. Each release will have a corresponding **GitHub Release** and **Git tag** (following the `vX.Y.Z` format). You can update or roll back to a specific version by checking out the corresponding tag.
+**等价的手工命令**：
 
-In this section, **API** refers to publicly exposed project scripts (such as `build`, `dev`, etc.), configurations and configuration options, and external TypeScript APIs.
-
-Specifically, our version numbers follow the format `x.y.z` and adhere to the following release strategy:
-
-### 1. `x`: Major Version
-
-This version includes changes such as:
-
-1. Removal of deprecated APIs
-2. Breaking changes to the underlying architecture or core system
-3. Changes that are also allowed in minor or patch versions
-
-When upgrading a **major version**, existing projects may fail to run without modification. Additionally, if you have modified the source code of ShokaX Astro yourself, it may cause large-scale Git conflicts that must be resolved manually.
-
-### 2. `y`: Minor Version
-
-This version includes changes such as:
-
-1. Marking specific APIs as **deprecated** (deprecated APIs will only be removed in the next major version)
-2. Introducing new features
-3. Large-scale internal refactoring that does **not** affect the public API
-4. Changes that are also allowed in patch versions
-
-Upgrading a **minor version** will not affect compatibility with existing projects. Existing projects can upgrade without modification.
-
-### 3. `z`: Patch Version
-
-This version includes changes such as:
-
-1. Bug fixes
-2. Security vulnerability fixes
-3. Performance improvements
-4. Other small, non-breaking changes
-
-Upgrading a **patch version** will not affect compatibility with existing projects. Existing projects can upgrade without modification.
-
-### Pre-release Versions
-
-Before releasing a **major version**, we may publish **pre-release versions** to gather feedback and conduct testing for new changes. The pre-release policies are:
-
-1. **`alpha` releases** follow the same strategy as major versions and may introduce breaking changes.
-2. **`beta` releases** follow the strategy of minor versions, but may introduce breaking changes if absolutely necessary.
-3. **`rc` (Release Candidate) releases** follow the strategy of minor versions.
-
-The format of a pre-release version is `x.y.z-alpha.1`, and the precedence order is:
-
-`rc` > `beta` > `alpha`
-
-It is **not recommended** to use pre-release versions in production environments.
-
-## 🖌️ Three-Column Layout
-
-We have introduced a three-column layout in ShokaX Astro:
-
-<img width="1920" height="911" alt="Three-column layout preview" src="https://github.com/user-attachments/assets/b8ad5bbe-43a3-4c49-a32f-45ba5ba3dcd1" />
-
-You can configure which cards are shown in the right sidebar and in what order. The currently supported cards are:
-
-- Announcement
-- Site search
-- Calendar
-- Recent moments
-- Random posts
-- Tag cloud
-
-You can enable it by editing the configuration file:
-
-```ts
-layout: {
-  mode: "three-column",
-  rightSidebar: {
-    order: ["announcement", "search", "calendar", "recentMoments", "randomPosts", "tagCloud"],
-    announcement: true,
-    search: true,
-    calendar: true,
-    recentMoments: true,
-    randomPosts: true,
-    tagCloud: true,
-  },
-},
+```bash
+git add -A
+git commit -m "post: 文章标题"
+git push site main          # site = https://github.com/ChihoMN/chihomn.github.io.git
 ```
 
-The right sidebar is shown only on wide screens (desktop). On mobile, the original two-column layout is used.
+推送后 Actions 会自动跑：安装依赖（应用 `patches/` 补丁）→ `pnpm build` → 上传产物 → 发布到 Pages，一般 2 分钟左右。进度在 <https://github.com/ChihoMN/chihomn.github.io/actions> 看。
 
-## 🤝 Contributing
+**远端说明**：`origin` 指向主题上游（只作参考，不推），`site` 指向自己的发布仓库。
 
-Pull requests are welcome. The project uses the following workflows to validate changes:
+**首次/换机时需要的一次性设置**：仓库 → Settings → Pages → Source 选 **GitHub Actions**（工作流里的 `configure-pages` 带了 `enablement: true`，通常会自动开启）。推送用的凭据存在 macOS 钥匙串里，classic token 需要 `repo` + `workflow` 两个 scope —— 因为仓库里有 `.github/workflows/`，缺 `workflow` scope 会被拒。
 
-- **Static Checks**: Oxlint (`pnpm run lint:ci`), Oxfmt (`pnpm run format:ci`), Astro check (`pnpm run check`), Vitest unit tests (`pnpm run test`), and deploy config consistency checks (`pnpm run config:deploy:check`)
-- **Build & Link Verification**: Site build (`pnpm run build`) and offline dead link check ([Lychee](https://lychee.cli.rs/))
-- **E2E Testing**: Multi-level end-to-end tests powered by Playwright (Smoke, Critical, Regression)
-- **Lighthouse CI**: Page performance assertions (Performance >= 0.92, Accessibility >= 0.9, Best Practices >= 0.95, SEO >= 0.95)
+---
 
-If CI does not pass, you can still submit a PR and we will help improve it.
+## 五、本地开发与检查
 
-This project is licensed under AGPL v3.
+| 命令                        | 作用                                                          |
+| --------------------------- | ------------------------------------------------------------- |
+| `pnpm dev`                  | 开发服务器，http://localhost:4321 ，改文件热更新              |
+| `pnpm build`                | 生产构建：`astro build` + Pagefind 索引，产物在 `dist/`       |
+| `pnpm check`                | Astro/TypeScript 类型检查（目前 0 错误）                      |
+| `pnpm config-gui`           | 启动控制台（4399）                                            |
+| `pnpm config-gui:test`      | 控制台冒烟测试（69 项断言，用 jsdom 真跑一遍界面）            |
+| `pnpm config-gui:check`     | 检查配置文件与 `state.json` 是否一致（期望 7 项都「无变化」） |
+| `pnpm new-post "标题"`      | 新建文章                                                      |
+| `pnpm test`                 | 主题自带的 Vitest 单元测试（`src/**/*.test.ts`）              |
+| `pnpm lint` / `pnpm format` | Oxlint / Oxfmt                                                |
 
-## 📄 Notes
+**改动这些文件后需要重启 `pnpm dev`**：`hyacine.plugin.ts`、`astro.config.mjs`、`hyacine.yml`（控制台保存时会提示）。
 
-### About assets and licensing
+**改控制台本身之后**：`pnpm config-gui:test` 过一遍，再重启控制台进程即可（界面是每次请求现读 `ui.html`，刷新浏览器就行；只有 `server.mjs` 需要重启）。
 
-- The main styles and design philosophy of this project are inspired by [Shoka](https://github.com/amehime/hexo-theme-shoka). However, this project is an independent implementation. To pay tribute, the original MIT license of Shoka is included in the `licenses` directory as `LICENSE-shoka`.
-- This project is an independently developed rewrite of [Hexo ShokaX](https://github.com/theme-shoka-x/hexo-theme-shokaX). It does not directly reuse its code or assets. It is maintained directly by the ShokaX project team, which is also why the project uses the ShokaX name.
-- The default avatar image in this project is artwork by [QuAn\_](https://www.pixiv.net/users/6657532). It is included for demonstration purposes only and remains the property of the original author. Please replace it with an asset you are authorized to use before deploying to production.
-- This project uses [Maple Mono](https://font.subf.dev/zh-cn/) and [LXGW WenKai](https://github.com/lxgw/LxgwWenKai) as the default fonts. Both are distributed under the OFL 1.1 license, with license texts available at `licenses/LICENSE-maple-mono.txt` and `licenses/OFL.txt` respectively.
-  During the build process, fonts may be subsetted, converted, and compressed in compliance with OFL 1.1.
-- The default cover images in this project come from [Unsplash](https://unsplash.com/) and are used and distributed under the [Unsplash License](https://unsplash.com/license).
-- The project's own `LICENSE` in the repository root applies only to the code assets in this project. For any non-code assets not covered above or not explicitly identified, the root license does not apply and rights should be considered reserved by the original author.
+**换一台机器时**：
 
-### 🙏 Acknowledgements
+```bash
+git clone https://github.com/ChihoMN/chihomn.github.io.git blog && cd blog
+pnpm install --frozen-lockfile     # 会自动应用 patches/ 里的补丁
+pnpm config-gui                    # 需要 Node 24（package.json 里写的是 >=22.12，但 pnpm 11 要求 ≥22.13）
+```
 
-The ShokaX development team would like to thank every open source project, user, contributor, and developer who has supported ShokaX in the past, present, and future. Without them, this project would not exist.
+---
 
-These projects in particular have provided tremendous support during development, and we would like to thank them again here (in no particular order):
+## 六、目录结构
 
-- [Astro](https://astro.build/): the foundation of this project
-- [UnoCSS](https://unocss.dev/): a modern atomic CSS engine that completely solved the icon issues that troubled the team for a long time in earlier iterations
-- [SolidJS](https://www.solidjs.com/): the frontend UI framework used in this project (JSX + signals)
-- [Mizuki](https://github.com/matsuzaka-yuki/Mizuki): directly inspired the team's Astro migration and provided an excellent example to follow
-- [Node.js](https://nodejs.org/): the runtime used in this project
-- [Shoka](https://github.com/amehime/hexo-theme-shoka): the origin of ShokaX — without Shoka, ShokaX would not exist
+```
+src/posts/            文章（Markdown / MDX），子目录可用来归档
+src/assets/           字体与图片（fonts/、images/、storage/ 旧站图片）
+src/content/          关于页、公告、友链规则等页面内容
+src/theme.config.ts   站点配置（由控制台生成，勿手改）
+hyacine.plugin.ts     插件配置（由控制台生成，勿手改）
+astro.config.mjs      构建配置（控制台只改其中的 site）
+tools/config-gui/     控制台：server.mjs（本地服务）、ui.html（界面）、posts.mjs（文章读写）、generate.mjs（写回配置文件）
+tools/new-post.mjs    新建文章命令
+tools/hyacine-plugin-visits/  本地插件：页脚访问量显示
+patches/              依赖补丁（Waline、Umami）
+public/               favicon、.nojekyll、_headers
+.github/workflows/    构建发布流程
+notes/                主题官方文档摘录（自定义教程、插件系统等，仅本机，未纳入版本控制）
+docs/                 上游主题的原始 README
+```
+
+---
+
+## 七、本站与主题默认值的差异
+
+主题作者的源码与默认值尽量不动；以下是明确调整过的部分：
+
+- **基础**：站点名「云烟成雨」、副标题、作者 Edward Chen、建站年份 2022、ICP 关闭、社交只留 GitHub
+- **字体**：正文 LXGW WenKai、代码 JetBrains Mono（`fontDisplay` 改为 `swap`，避免首屏回到系统字体）；`src/assets/fonts` 里的 MapleMono 保留未用
+- **头像**：`src/assets/images/avatar.jpg`（裁剪版）
+- **favicon**：沿用旧站的图标，`public/favicon.svg` + `public/favicon.ico`
+- **页脚访问量**：主题的 vercount 插件只注入统计脚本、没有显示位，所以加了本地插件 `tools/hyacine-plugin-visits`（沿用它约定的元素 id）
+- **随机文章条数**：`widgets.randomPostsLimit`，本站设为 3（默认值也改成 3）
+- **插件**：开启运行时间、鼠标烟花、文章时效提醒、vercount、访问量显示、Umami 统计、Waline 评论、标题切换提醒、音乐播放器、文章统计；AI 摘要关闭
+- **依赖补丁**（`patches/`，`pnpm install` 时自动应用）：Waline 初始化参数名错误（`serverURL` → `serverUrl`，否则评论区永远挂载不出来）、Umami 增加 `data-domains`
+- **CI**：Node 24（`.nvmrc` 写的 22.12 低于 pnpm 11 要求的 22.13）、`include-hidden-files: true`（否则 `dist/.nojekyll` 会被过滤掉，Jekyll 会吃掉 `_astro/`）
+
+维护约定：主题源码/默认值非必要不改；站点产物里不出现工具与流程的字眼（这类说明只写在源码注释和本文件里）；提交身份用 `ChihoMN <ChihoMN@users.noreply.github.com>`。
+
+---
+
+## 八、统计与评论
+
+- **页脚访问量（vercount）**：`站点访问量` 是 PV，**每次加载都 +1，自己刷新也算**；`访客数` 是 UV，同一浏览器靠一年期的 cookie 只算一次。所以数字看着「刷一下就涨」是正常现象。
+  - 本地 `pnpm dev` 下这个数字**没有意义**：vercount 按域名聚合，`localhost` 是全世界所有用 vercount 的人共用的池子。
+  - 旧站用的是 busuanzi，数据不通用，现在的计数从零开始。
+- **Umami**：`hyacine.plugin.ts` 里配了 websiteId（`0c6e42de-6c98-4259-b82d-99096d2c1772`）与 `domains: chihomn.github.io`，只有该域名下的访问才计入。去 Umami 后台用这个 id 对应的站点看数据；想在浏览器里排除自己：控制台执行 `localStorage.setItem('umami.disabled', 1)`。
+- **Waline 评论**：服务端在 <https://waline-chihomn.vercel.app>（免费实例会休眠，第一次打开评论可能要等几秒），管理员账号是你注册的那个。评论区的挂载依赖上面提到的 Waline 补丁。
+
+---
+
+## 九、备份与体积
+
+- 旧站归档：`/Users/cza/chihomn.github.io-site-archive.tar.gz`
+- 全站备份：`/Users/cza/blog-backup-2026-09-15.tar.gz`
+- 仓库 `.git` 约 95 MB，主要来自 `src/assets/fonts`（约 42 MB）与 `src/assets/storage`（旧站图片，约 55 MB）
+
+---
+
+## 十、常见问题
+
+**页脚、侧栏某一整块不显示** —— 大多是开发服务器跑太久、模块图陈旧（浏览器控制台能看到动态导入 404）。重启 `pnpm dev` 即可，与配置无关。
+
+**改了配置但页面没变** —— 动了 `hyacine.plugin.ts` / `astro.config.mjs` / `hyacine.yml` 需要重启 dev server；字体相关改动可能需要重启才会纳入新的字符子集。
+
+**文章没出现在列表里** —— 检查 `draft: true`（草稿不生成页面），或 frontmatter 缺少 `title` / `date`。
+
+**推送失败 403** —— 钥匙串里的 token 过期或权限不足（需要 `repo` + `workflow`）。可以先在控制台看日志确认失败原因。
+
+**Actions 挂在 Setup Node.js** —— `.nvmrc` 与 pnpm 版本不匹配，CI 已固定用 Node 24，若报错说明有人改回了 `.nvmrc`。
+
+**评论区空白** —— 确认 `hyacine.plugin.ts` 里 Waline 的 `serverURL` 正确、`patches/` 补丁已应用（`pnpm install --frozen-lockfile` 会应用），以及 Vercel 上的服务是醒着的。
+
+---
+
+## 十一、还没做的事
+
+- `src/posts` 里目前是主题自带的演示文章（15 篇）：清掉，还是留几篇当排版参考，待定
+- 旧站文章尚未迁移过来
+- 旧站的 `atom.xml` / `feed.json`（现在只有 `rss.xml`）、打赏、旧永久链接与分类 slug 方案
+
+上游主题的原始文档见 `docs/theme-readme.md`（英文）与 `docs/theme-readme.zh-cn.md`（中文），主题的详细配置说明与插件文档在 `notes/`。

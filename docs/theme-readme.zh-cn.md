@@ -1,4 +1,4 @@
-[English](./README.md) | [中文](./README_zh-cn.md)
+[English](./theme-readme.md) | [中文](./theme-readme.zh-cn.md)
 
 # Astro Blog ShokaX
 
