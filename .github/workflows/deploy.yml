@@ -1,0 +1,76 @@
+# 把站点构建并发布到 GitHub Pages。
+#
+# 用之前只需在 GitHub 上做一次设置：
+#   仓库 → Settings → Pages → Build and deployment → Source 选 **GitHub Actions**
+#   （下面的 configure-pages 带了 enablement: true，通常能自动开启；
+#     若仓库策略不允许，就手动选一次，然后可以把 enablement 去掉）
+#
+# 触发方式：推送到 main，或在 Actions 页面手动 Run workflow。
+#
+# 注意：站点要挂在 https://chihomn.github.io 这种**根域名**下，仓库名必须正好是
+# `chihomn.github.io`（用户站点仓库），此时不需要 base 路径 —— src/theme.config 里的
+# site.url 与之一致，astro.config.mjs 的 site 也由配置 GUI 写成同一个值。
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个部署，新的推送顶掉排队中的旧任务
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # 版本取自 package.json 的 packageManager 字段（pnpm@11.22.0），不要额外指定 version
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # --frozen-lockfile 同时会按 pnpm-workspace.yaml 的 patchedDependencies
+      # 应用 patches/ 里的依赖补丁（Waline 初始化、Umami data-domains）
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # pnpm build = astro build + pagefind 建索引进 dist/
+      - name: Build
+        run: pnpm build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+        with:
+          enablement: true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
