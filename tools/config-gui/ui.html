@@ -1168,6 +1168,8 @@
       let jobTimer = null;   // 任务轮询
       let runTimer = null;   // GitHub Actions 运行状态轮询
       let lastJobKey = "";
+      let lastJob = null;    // 最近一次任务（切换页签后重绘时要用）
+      let runLine = "";      // GitHub Actions 的状态行，重绘时补回去
 
       const $ = (id) => document.getElementById(id);
 
@@ -1386,7 +1388,8 @@
 
       function renderJob(job) {
         const log = $("job-log");
-        if (!job) { $("job-status").textContent = "空闲"; return; }
+        lastJob = job ?? null;
+        if (!job) { $("job-status").innerHTML = "空闲" + runLine; return; }
         log.textContent = job.log?.trim() ? job.log : "（暂无输出）";
         log.scrollTop = log.scrollHeight;
         const secs = Math.round(((job.endedAt ?? Date.now()) - (job.startedAt ?? Date.now())) / 1000);
@@ -1400,7 +1403,7 @@
           const href = job.url.startsWith("http") ? job.url : `http://${job.url}`;
           text += ` · <a href="${esc(href)}" target="_blank" rel="noreferrer">打开 ${esc(href)}</a>`;
         }
-        $("job-status").innerHTML = text;
+        $("job-status").innerHTML = text + runLine;
         const busy = running;
         for (const id of ["btn-build", "btn-deploy", "btn-preview"]) $(id).disabled = busy;
         $("btn-stop").disabled = !busy;
@@ -1430,6 +1433,7 @@
       }
 
       const startJob = async (path, body) => {
+        runLine = "";
         const d = await api(path, body);
         if (!d.ok) { flash(d.log, false); renderJob(d.job); return; }
         lastJobKey = "";
@@ -1455,29 +1459,33 @@
       });
 
       /** 推送之后盯 GitHub Actions 的运行状态 */
+      function showRun(html, job) {
+        runLine = html ? `<br>${html}` : "";
+        renderJob(job ?? lastJob);
+      }
+
       async function watchRun(sha) {
         clearTimeout(runTimer);
         const d = await (await fetch(`/api/deploy/run?sha=${encodeURIComponent(sha)}`)).json();
-        const el = $("job-status");
-        const base = el.innerHTML;
         const link = d.url ? ` · <a href="${esc(d.url)}" target="_blank" rel="noreferrer">查看 Actions</a>` : "";
         if (!d.ok) {
           const why = d.reason === "rate-limit" ? "GitHub 接口限流" : `查询失败（${esc(String(d.reason))}）`;
-          el.innerHTML = `${base}<br>Actions 状态：${why}${d.repo ? ` · <a href="https://github.com/${esc(d.repo)}/actions" target="_blank" rel="noreferrer">去仓库看</a>` : ""}`;
+          const repo = d.repo ? ` · <a href="https://github.com/${esc(d.repo)}/actions" target="_blank" rel="noreferrer">去仓库看</a>` : "";
+          showRun(`Actions 状态：${why}${repo}`);
           return;
         }
         if (d.pending) {
-          el.innerHTML = `${base}<br>Actions 状态：已排队…`;
+          showRun("Actions 状态：已排队…");
           runTimer = setTimeout(() => watchRun(sha), 6000);
           return;
         }
         const live = state?.site?.url ? ` · <a href="${esc(state.site.url.replace(/\/$/, ""))}/" target="_blank" rel="noreferrer">打开线上站点</a>` : "";
         if (d.status === "completed") {
           const okRun = d.conclusion === "success";
-          el.innerHTML = `${base}<br>Actions 状态：${okRun ? "✓ 已发布" : "✗ " + esc(String(d.conclusion))}${link}${okRun ? live : ""}`;
+          showRun(`Actions 状态：${okRun ? "✓ 已发布" : "✗ " + esc(String(d.conclusion))}${link}${okRun ? live : ""}`);
           return;
         }
-        el.innerHTML = `${base}<br>Actions 状态：${esc(d.status)}…${link}`;
+        showRun(`Actions 状态：${esc(d.status)}…${link}`);
         runTimer = setTimeout(() => watchRun(sha), 6000);
       }
 
