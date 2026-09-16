@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>博客静态配置</title>
+    <title>博客控制台</title>
     <style>
       :root {
         --bg: #f6f7f9;
@@ -124,24 +124,202 @@
       #log.err { display: block; border-left: 3px solid #dc2626; }
       .note { color: var(--dim); font-size: 12.5px; padding: 0 0 12px; }
       .note code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; }
+
+      /* ── 顶部页签 ── */
+      .tabs { display: flex; gap: 4px; background: #eef1f4; border-radius: 8px; padding: 3px; }
+      .tab {
+        border: 0; background: transparent; color: var(--dim); font-size: 13px;
+        padding: 5px 14px; border-radius: 6px;
+      }
+      .tab.on { background: #fff; color: var(--fg); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); }
+      button[hidden], .tab[hidden] { display: none; }
+
+      /* ── 文章列表 ── */
+      .post-list { padding: 6px 0; }
+      .post-row {
+        display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
+        padding: 9px 16px; border-bottom: 1px solid #f1f2f4;
+      }
+      .post-row:last-child { border-bottom: 0; }
+      .post-row.draft .post-title { color: var(--dim); }
+      .post-title { font-size: 13.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+      .post-meta { color: var(--dim); font-size: 11.5px; font-family: ui-monospace, monospace; margin-top: 2px; }
+      .post-actions { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+      .post-actions button { font-size: 11.5px; padding: 3px 9px; }
+      .badge {
+        font-size: 10.5px; padding: 1px 7px; border-radius: 999px;
+        background: #eef1f4; color: var(--dim); border: 1px solid transparent;
+      }
+      .badge.draft { background: #fffbeb; color: var(--warn); border-color: #fde68a; }
+      .badge.changed { background: #eff6ff; color: var(--accent); border-color: #bfdbfe; }
+      .badge.sticky { background: #fdf2f8; color: #9d174d; border-color: #fbcfe8; }
+      .count { color: var(--dim); font-weight: 400; }
+      .post-editor {
+        grid-column: 1 / -1; margin-top: 8px; padding: 10px 12px;
+        border: 1px solid var(--line); border-radius: 8px; background: #fcfcfd;
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 14px;
+      }
+      .post-editor label { display: block; font-size: 11.5px; color: var(--dim); }
+      .post-editor label span { display: block; margin-bottom: 2px; }
+      .post-editor label.wide { grid-column: 1 / -1; }
+      .post-editor input, .post-editor textarea, .post-editor select { max-width: none; padding: 4px 8px; font-size: 12.5px; }
+      .post-editor textarea { min-height: 52px; font-family: inherit; }
+      .post-editor .editor-tools { grid-column: 1 / -1; display: flex; gap: 6px; align-items: center; }
+      .post-toggle { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--fg); }
+      .post-toggle input { width: auto; }
+
+      /* ── 发布面板 ── */
+      .git-summary { font-size: 12.5px; }
+      .git-summary ul { margin: 4px 0 0; padding-left: 18px; color: var(--dim); font-family: ui-monospace, monospace; font-size: 11.5px; }
+      .git-summary .clean { color: var(--ok); }
+      .job-status { font-size: 12.5px; color: var(--dim); }
+      .job-status a { color: var(--accent); }
+      #job-log {
+        white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 12px;
+        background: #0d1117; color: #d1d5db; border-radius: 8px; padding: 12px;
+        margin: 0; width: 100%; max-height: 340px; overflow: auto;
+      }
+      .spinner { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); animation: pulse 1s infinite; }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
     </style>
   </head>
   <body>
     <header>
-      <h1>博客静态配置</h1>
+      <h1>博客控制台</h1>
+      <nav class="tabs">
+        <button class="tab on" data-tab="config">站点配置</button>
+        <button class="tab" data-tab="posts">文章与发布</button>
+      </nav>
       <span id="dirty" class="override"></span>
       <button id="reload">丢弃改动</button>
       <button id="save" class="primary">保存并写入项目文件</button>
     </header>
 
     <main>
-      <pre id="log"></pre>
-      <p class="note">
-        保存后会重新生成 <code>src/theme.config.ts</code>、<code>hyacine.plugin.ts</code>，并改写
-        <code>astro.config.mjs</code> 的 site 与 <code>hyacine.yml</code> 的字体/头像。
-        标着「默认值 xx」的字段＝当前没覆盖主题默认；把它改回默认值就会自动取消覆盖。
-      </p>
-      <div id="form"></div>
+      <div id="view-config">
+        <pre id="log"></pre>
+        <p class="note">
+          保存后会重新生成 <code>src/theme.config.ts</code>、<code>hyacine.plugin.ts</code>，并改写
+          <code>astro.config.mjs</code> 的 site 与 <code>hyacine.yml</code> 的字体/头像。
+          标着「默认值 xx」的字段＝当前没覆盖主题默认；把它改回默认值就会自动取消覆盖。
+        </p>
+        <div id="form"></div>
+      </div>
+
+      <div id="view-posts" hidden>
+        <section>
+          <h2>发布</h2>
+          <div class="field">
+            <label>当前改动
+              <span class="path">git status</span>
+            </label>
+            <div class="ctrl">
+              <div id="git-summary" class="git-summary">读取中…</div>
+              <button id="git-refresh" class="btn-reset">刷新</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="commit-msg">提交说明
+              <span class="path">git commit -m</span>
+            </label>
+            <div class="ctrl">
+              <input type="text" id="commit-msg" placeholder="post: 文章标题" />
+            </div>
+          </div>
+          <div class="field">
+            <label>操作
+              <span class="path">本地构建 → 远程部署</span>
+              <span class="hint">「本地构建」只在本机验证产物；「提交并部署」会把改动推上去，由 GitHub Actions 构建发布</span>
+            </label>
+            <div class="ctrl">
+              <button id="btn-preview">本地预览</button>
+              <button id="btn-build">本地构建</button>
+              <button id="btn-deploy" class="primary">提交并部署</button>
+              <button id="btn-stop" disabled>停止任务</button>
+              <span id="job-status" class="job-status">空闲</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>任务输出
+              <span class="path">完整日志</span>
+            </label>
+            <div class="ctrl">
+              <pre id="job-log">（还没有任务）</pre>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>文章 <span id="post-count" class="count"></span></h2>
+          <div class="field">
+            <label>筛选</label>
+            <div class="ctrl">
+              <input type="text" id="post-filter" placeholder="按标题 / 分类 / 标签过滤" style="max-width: 240px" />
+              <select id="post-scope" style="max-width: 150px">
+                <option value="all">全部</option>
+                <option value="published">只看已发布</option>
+                <option value="draft">只看草稿</option>
+              </select>
+              <button id="post-reload" class="btn-reset">刷新列表</button>
+              <span id="post-status" class="job-status"></span>
+            </div>
+          </div>
+          <div id="post-list" class="post-list"></div>
+        </section>
+
+        <section>
+          <h2>新建文章</h2>
+          <div class="field">
+            <label for="np-title">标题
+              <span class="path">title</span>
+            </label>
+            <div class="ctrl"><input type="text" id="np-title" placeholder="文章标题" /></div>
+          </div>
+          <div class="field">
+            <label for="np-slug">文件名
+              <span class="path">src/posts/&lt;文件名&gt;.md</span>
+              <span class="hint">留空就按标题自动生成；中文会原样保留</span>
+            </label>
+            <div class="ctrl"><input type="text" id="np-slug" placeholder="（留空自动生成）" /></div>
+          </div>
+          <div class="field">
+            <label for="np-folder">子目录
+              <span class="path">可选</span>
+              <span class="hint">放进 src/posts/技术/ 这类子目录，便于自己归档</span>
+            </label>
+            <div class="ctrl"><input type="text" id="np-folder" placeholder="（留空就放在 src/posts 根目录）" /></div>
+          </div>
+          <div class="field">
+            <label for="np-categories">分类
+              <span class="path">categories</span>
+              <span class="hint">逗号分隔；下面列的是现有文章里已经用过的分类</span>
+            </label>
+            <div class="ctrl">
+              <input type="text" id="np-categories" list="cats" placeholder="折腾, 记录" />
+              <datalist id="cats"></datalist>
+            </div>
+          </div>
+          <div class="field">
+            <label for="np-tags">标签
+              <span class="path">tags</span>
+            </label>
+            <div class="ctrl"><input type="text" id="np-tags" placeholder="Typora, 教程" /></div>
+          </div>
+          <div class="field">
+            <label>草稿</label>
+            <div class="ctrl">
+              <label class="post-toggle"><input type="checkbox" id="np-draft" /> 标为草稿（不上线，本地预览也不显示）</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>创建</label>
+            <div class="ctrl">
+              <button id="btn-create" class="primary">创建并用 Typora 打开</button>
+              <span id="np-status" class="job-status"></span>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
 
     <script>
@@ -980,7 +1158,333 @@
       });
 
       document.getElementById("reload").addEventListener("click", load);
+
+      // ══ 文章与发布 ══════════════════════════════════════════════
+      // 文章的去向：写 src/posts 里的 .md → 本地构建检查 → 推送到 GitHub → Actions 发布。
+      // 界面上永远只传「数据」（文章字段、提交说明），命令都是服务端写死的。
+
+      let posts = [];        // 当前文章列表（服务端返回）
+      let gitInfo = null;    // 工作区状态
+      let jobTimer = null;   // 任务轮询
+      let runTimer = null;   // GitHub Actions 运行状态轮询
+      let lastJobKey = "";
+
+      const $ = (id) => document.getElementById(id);
+
+      function showTab(name) {
+        $("view-config").hidden = name !== "config";
+        $("view-posts").hidden = name !== "posts";
+        document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.tab === name));
+        for (const id of ["save", "reload", "dirty"]) $(id).hidden = name !== "config";
+        if (name === "posts") { loadPosts(); pollJob(); }
+      }
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
+
+      // ── 文章列表 ──
+      function fmtDate(iso) {
+        if (!iso) return "无日期";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return "无日期";
+        const p = (n) => String(n).padStart(2, "0");
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+      }
+      const toLocalInput = (iso) => {
+        const d = iso ? new Date(iso) : new Date();
+        const p = (n) => String(n).padStart(2, "0");
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+      };
+
+      const postRow = (p) => `<div class="post-row${p.draft ? " draft" : ""}" data-post-path="${esc(p.path)}">
+          <div class="post-main">
+            <div class="post-title">${esc(p.title)}
+              ${p.draft ? '<span class="badge draft">草稿</span>' : ""}
+              ${p.sticky ? '<span class="badge sticky">置顶</span>' : ""}
+              ${p.gitStatus ? '<span class="badge changed">未提交</span>' : ""}
+              ${p.hasFrontmatter ? "" : '<span class="badge draft">缺 frontmatter</span>'}
+            </div>
+            <div class="post-meta">${fmtDate(p.date)} · ${esc(p.categories.join(" / ") || "无分类")}${p.tags.length ? " · " + esc(p.tags.map((t) => "#" + t).join(" ")) : ""} · src/posts/${esc(p.path)}</div>
+          </div>
+          <div class="post-actions">
+            <button data-post-open>用 Typora 打开</button>
+            <button data-post-edit>改信息</button>
+            <button data-post-draft>${p.draft ? "转为发布" : "转为草稿"}</button>
+            <button data-post-del>删除</button>
+          </div>
+        </div>`;
+
+      function renderPosts() {
+        const q = $("post-filter").value.trim().toLowerCase();
+        const scope = $("post-scope").value;
+        const list = posts.filter((p) => {
+          if (scope === "draft" && !p.draft) return false;
+          if (scope === "published" && p.draft) return false;
+          if (!q) return true;
+          return [p.title, p.path, ...p.categories, ...p.tags].join(" ").toLowerCase().includes(q);
+        });
+        $("post-count").textContent = `共 ${posts.length} 篇${list.length === posts.length ? "" : `，筛出 ${list.length} 篇`}`;
+        $("post-list").innerHTML = list.length
+          ? list.map(postRow).join("")
+          : '<div class="field"><label></label><div class="ctrl" style="color:var(--dim)">没有匹配的文章</div></div>';
+      }
+
+      function renderGit() {
+        const box = $("git-summary");
+        if (!gitInfo) { box.textContent = "读取失败"; return; }
+        const n = gitInfo.changed.length;
+        const head = n === 0
+          ? `<span class="clean">工作区干净，没有未提交的改动${gitInfo.ahead ? `（有 ${gitInfo.ahead} 个提交待推送）` : ""}</span>`
+          : `有 <b>${n}</b> 处改动${gitInfo.ahead ? `，另有 ${gitInfo.ahead} 个提交待推送` : ""}`;
+        const items = gitInfo.changed.slice(0, 8).map((c) => `<li>${esc(c.status)} ${esc(c.file)}</li>`).join("");
+        const more = n > 8 ? `<li>…还有 ${n - 8} 处</li>` : "";
+        box.innerHTML = `${head}<ul>${items}${more}</ul>` +
+          (gitInfo.ahead && !gitInfo.changed.length ? "" : `<div style="margin-top:2px;color:var(--dim);font-size:11.5px">最近提交：${esc(gitInfo.lastCommit?.sha ?? "")} ${esc(gitInfo.lastCommit?.subject ?? "")}</div>`);
+        // 提交说明只在用户没改过的时候自动跟随
+        const msg = $("commit-msg");
+        if (!msg.dataset.touched) msg.value = gitInfo.suggestion ?? "";
+      }
+
+      async function loadPosts() {
+        try {
+          const r = await fetch("/api/posts");
+          const d = await r.json();
+          if (!d.ok) throw new Error(d.log || "读取失败");
+          posts = d.posts ?? [];
+          gitInfo = d.git ?? null;
+          $("cats").innerHTML = (d.categories ?? []).map((c) => `<option value="${esc(c)}"></option>`).join("");
+          renderPosts();
+          renderGit();
+        } catch (e) {
+          $("post-list").innerHTML = `<div class="field"><label></label><div class="ctrl">读取文章失败：${esc(e.message)}</div></div>`;
+        }
+      }
+
+      const api = async (path, body) => {
+        const r = await fetch(path, body === undefined
+          ? undefined
+          : { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+        return r.json();
+      };
+
+      // ── 文章行上的按钮 ──
+      $("post-list").addEventListener("click", async (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        const row = btn.closest("[data-post-path]");
+        if (!row) return;
+        const p = posts.find((x) => x.path === row.dataset.postPath);
+        if (!p) return;
+
+        if (btn.hasAttribute("data-post-open")) {
+          const d = await api("/api/posts/open", { path: p.path });
+          flash(d.log, d.ok);
+          return;
+        }
+        if (btn.hasAttribute("data-post-draft")) {
+          const patch = { draft: !p.draft };
+          const d = await api("/api/posts/update", { path: p.path, patch });
+          flash(d.ok ? `${patch.draft ? "已转为草稿" : "已恢复发布"}：${p.title}` : d.log, d.ok);
+          if (d.ok) applyPosts(d);
+          return;
+        }
+        if (btn.hasAttribute("data-post-del")) {
+          const extra = `同目录的 ${p.path.replace(/\.mdx?$/i, ".assets")}/ 图片目录也会一起删除`;
+          if (!confirm(`删除「${p.title}」？\n\nsrc/posts/${p.path}\n${extra}\n\n（删除会在下次「提交并部署」时同步到线上）`)) return;
+          const d = await api("/api/posts/delete", { path: p.path });
+          flash(d.ok ? `已删除 ${p.title}` : d.log, d.ok);
+          if (d.ok) applyPosts(d);
+          return;
+        }
+        if (btn.hasAttribute("data-post-edit")) {
+          const box = row.querySelector(".post-editor");
+          if (box) { box.remove(); return; }
+          row.insertAdjacentHTML("beforeend", editorHTML(p));
+          btn.textContent = "收起";
+          return;
+        }
+        if (btn.hasAttribute("data-editor-cancel")) {
+          row.querySelector(".post-editor")?.remove();
+          row.querySelector("[data-post-edit]").textContent = "改信息";
+          return;
+        }
+        if (btn.hasAttribute("data-editor-save")) {
+          const box = row.querySelector(".post-editor");
+          const val = (k) => box.querySelector(`[data-edit="${k}"]`);
+          const patch = {
+            title: val("title").value.trim(),
+            date: val("date").value,
+            categories: val("categories").value.split(",").map((s) => s.trim()).filter(Boolean),
+            tags: val("tags").value.split(",").map((s) => s.trim()).filter(Boolean),
+            description: val("description").value.trim(),
+            draft: val("draft").checked,
+            sticky: val("sticky").checked,
+          };
+          const d = await api("/api/posts/update", { path: p.path, patch });
+          flash(d.ok ? `已更新 ${patch.title}` : d.log, d.ok);
+          if (d.ok) applyPosts(d);
+        }
+      });
+
+      const editorHTML = (p) => `<div class="post-editor">
+          <label>标题<span></span><input type="text" data-edit="title" value="${esc(p.title)}" /></label>
+          <label>日期<span></span><input type="datetime-local" data-edit="date" value="${toLocalInput(p.date)}" /></label>
+          <label>分类<span></span><input type="text" data-edit="categories" list="cats" value="${esc(p.categories.join(", "))}" /></label>
+          <label>标签<span></span><input type="text" data-edit="tags" value="${esc(p.tags.join(", "))}" /></label>
+          <label class="wide">摘要<span></span><textarea data-edit="description">${esc(p.description)}</textarea></label>
+          <div class="editor-tools">
+            <label class="post-toggle"><input type="checkbox" data-edit="draft" ${p.draft ? "checked" : ""} /> 草稿</label>
+            <label class="post-toggle"><input type="checkbox" data-edit="sticky" ${p.sticky ? "checked" : ""} /> 置顶</label>
+            <button data-editor-save class="primary">保存</button>
+            <button data-editor-cancel>取消</button>
+          </div>
+        </div>`;
+
+      /** 用服务端返回的最新列表替换当前状态（新建/改信息/删除之后） */
+      function applyPosts(d) {
+        if (d.posts) posts = d.posts;
+        if (d.git) gitInfo = d.git;
+        renderPosts();
+        renderGit();
+      }
+
+      function flash(text, ok, targetId = "post-status") {
+        const el = $(targetId);
+        el.textContent = (ok ? "✓ " : "✗ ") + (text ?? "");
+        el.style.color = ok ? "var(--ok)" : "#dc2626";
+        clearTimeout(flash.t);
+        flash.t = setTimeout(() => (el.textContent = ""), 8000);
+      }
+
+      $("post-filter").addEventListener("input", renderPosts);
+      $("post-scope").addEventListener("change", renderPosts);
+      $("post-reload").addEventListener("click", loadPosts);
+      $("git-refresh").addEventListener("click", loadPosts);
+      $("commit-msg").addEventListener("input", (e) => (e.target.dataset.touched = "1"));
+
+      $("btn-create").addEventListener("click", async () => {
+        const title = $("np-title").value.trim();
+        if (!title) return flash("先填标题", false, "np-status");
+        const body = {
+          title,
+          slug: $("np-slug").value.trim(),
+          folder: $("np-folder").value.trim(),
+          categories: $("np-categories").value.split(",").map((s) => s.trim()).filter(Boolean),
+          tags: $("np-tags").value.split(",").map((s) => s.trim()).filter(Boolean),
+          draft: $("np-draft").checked,
+        };
+        const d = await api("/api/posts/create", body);
+        if (!d.ok) return flash(d.log, false, "np-status");
+        $("np-title").value = "";
+        $("np-slug").value = "";
+        $("np-tags").value = "";
+        applyPosts(d);
+        flash(d.log, true, "np-status");
+        loadPosts();
+      });
+
+      // ── 任务：构建 / 预览 / 部署 ──
+      const JOB_LABEL = { build: "本地构建", preview: "本地预览", deploy: "提交并部署" };
+
+      function renderJob(job) {
+        const log = $("job-log");
+        if (!job) { $("job-status").textContent = "空闲"; return; }
+        log.textContent = job.log?.trim() ? job.log : "（暂无输出）";
+        log.scrollTop = log.scrollHeight;
+        const secs = Math.round(((job.endedAt ?? Date.now()) - (job.startedAt ?? Date.now())) / 1000);
+        const running = job.status === "running";
+        let text = `${JOB_LABEL[job.kind] ?? job.kind}：`;
+        if (running) text += `<span class="spinner"></span> 进行中（${secs}s）`;
+        else if (job.status === "done") text += `✓ 完成（${secs}s）`;
+        else if (job.status === "stopped") text += "已停止";
+        else text += `✗ 失败（退出码 ${job.code}）`;
+        if (job.url) {
+          const href = job.url.startsWith("http") ? job.url : `http://${job.url}`;
+          text += ` · <a href="${esc(href)}" target="_blank" rel="noreferrer">打开 ${esc(href)}</a>`;
+        }
+        $("job-status").innerHTML = text;
+        const busy = running;
+        for (const id of ["btn-build", "btn-deploy", "btn-preview"]) $(id).disabled = busy;
+        $("btn-stop").disabled = !busy;
+      }
+
+      async function pollJob() {
+        clearTimeout(jobTimer);
+        let job = null;
+        try {
+          const d = await (await fetch("/api/job")).json();
+          job = d.job;
+        } catch { /* 服务重启的瞬间忽略 */ }
+        const key = job ? `${job.kind}:${job.startedAt}:${job.status}` : "none";
+        const changed = key !== lastJobKey;
+        lastJobKey = key;
+        renderJob(job);
+        if (job?.status === "running") {
+          jobTimer = setTimeout(pollJob, 900);
+          return;
+        }
+        if (changed && job && job.kind) {
+          await loadPosts();                                   // 构建/部署后列表与 git 状态都会变
+          if (job.kind === "deploy" && job.code === 0 && job.sha) watchRun(job.sha);
+        } else if (job?.status !== "running" && !job) {
+          $("job-log").textContent = "（还没有任务）";
+        }
+      }
+
+      const startJob = async (path, body) => {
+        const d = await api(path, body);
+        if (!d.ok) { flash(d.log, false); renderJob(d.job); return; }
+        lastJobKey = "";
+        renderJob(d.job);
+        pollJob();
+      };
+
+      $("btn-build").addEventListener("click", () => startJob("/api/job/build"));
+      $("btn-preview").addEventListener("click", () => startJob("/api/job/preview"));
+      $("btn-stop").addEventListener("click", async () => {
+        const d = await api("/api/job/stop", {});
+        if (d.log) flash(d.log, d.ok);
+        pollJob();
+      });
+      $("btn-deploy").addEventListener("click", () => {
+        const message = $("commit-msg").value.trim();
+        const n = gitInfo?.changed.length ?? 0;
+        const tip = n === 0 && !gitInfo?.ahead
+          ? "工作区是干净的，远端也已是最新——继续的话不会有任何改动被推送。"
+          : `将提交 ${n} 处改动并推送到 ${gitInfo?.repo ?? "GitHub"}，随后由 Actions 构建发布。`;
+        if (!confirm(`${tip}\n\n提交说明：${message || "(自动生成)"}\n\n继续？`)) return;
+        startJob("/api/job/deploy", { message });
+      });
+
+      /** 推送之后盯 GitHub Actions 的运行状态 */
+      async function watchRun(sha) {
+        clearTimeout(runTimer);
+        const d = await (await fetch(`/api/deploy/run?sha=${encodeURIComponent(sha)}`)).json();
+        const el = $("job-status");
+        const base = el.innerHTML;
+        const link = d.url ? ` · <a href="${esc(d.url)}" target="_blank" rel="noreferrer">查看 Actions</a>` : "";
+        if (!d.ok) {
+          const why = d.reason === "rate-limit" ? "GitHub 接口限流" : `查询失败（${esc(String(d.reason))}）`;
+          el.innerHTML = `${base}<br>Actions 状态：${why}${d.repo ? ` · <a href="https://github.com/${esc(d.repo)}/actions" target="_blank" rel="noreferrer">去仓库看</a>` : ""}`;
+          return;
+        }
+        if (d.pending) {
+          el.innerHTML = `${base}<br>Actions 状态：已排队…`;
+          runTimer = setTimeout(() => watchRun(sha), 6000);
+          return;
+        }
+        const live = state?.site?.url ? ` · <a href="${esc(state.site.url.replace(/\/$/, ""))}/" target="_blank" rel="noreferrer">打开线上站点</a>` : "";
+        if (d.status === "completed") {
+          const okRun = d.conclusion === "success";
+          el.innerHTML = `${base}<br>Actions 状态：${okRun ? "✓ 已发布" : "✗ " + esc(String(d.conclusion))}${link}${okRun ? live : ""}`;
+          return;
+        }
+        el.innerHTML = `${base}<br>Actions 状态：${esc(d.status)}…${link}`;
+        runTimer = setTimeout(() => watchRun(sha), 6000);
+      }
+
+      showTab("config");
       load();
+      loadPosts();
+      pollJob();
     </script>
   </body>
 </html>

@@ -30,17 +30,48 @@ const assets = {
   ],
 };
 
+// 文章模块用的假数据：两篇（一篇已发布带未提交改动、一篇草稿）
+const stubPosts = {
+  ok: true,
+  posts: [
+    {
+      path: "hello-world.md", title: "Hello World!", date: "2025-12-06T04:00:00.000Z", dateRaw: "2025-12-06",
+      description: "第一篇", tags: ["welcome", "astro"], categories: ["Getting Started"],
+      draft: false, sticky: false, hasFrontmatter: true, gitStatus: "M", mtime: 1, bytes: 100,
+    },
+    {
+      path: "Untitled.md", title: "测试文章", date: "2024-03-11T13:37:00.000Z", dateRaw: "2024-03-11T21:37:00+08:00",
+      description: "", tags: [], categories: [], draft: true, sticky: false, hasFrontmatter: true, gitStatus: null,
+      mtime: 2, bytes: 200,
+    },
+  ],
+  categories: ["Getting Started", "测试"],
+  git: {
+    branch: "main", ahead: 1,
+    changed: [{ status: "M", file: "src/posts/hello-world.md" }],
+    lastCommit: { sha: "abc1234", subject: "post: Hello World!" },
+    suggestion: "post: Hello World!",
+    repo: "ChihoMN/chihomn.github.io",
+  },
+};
+
 const dom = new JSDOM(html, {
   runScripts: "dangerously",
   beforeParse(window) {
+    window.confirm = () => false; // 弹窗在 jsdom 里没实现，测试时按「取消」处理
     // 注意：必须给页面一份深拷贝。页面里的 collect() 会就地修改 state，
     // 若共用同一对象，测试自己的期望值会被改写，导致断言莫名失败。
-    window.fetch = async (url) => ({
-      json: async () =>
-        String(url).includes("/api/state")
-          ? { state: structuredClone(state), assets, categories: ["Tutorial", "Frontend", "公告", "测试", "开发", "指南"] }
-          : { ok: true, log: "stub" },
-    });
+    window.fetch = async (url) => {
+      const u = String(url);
+      const body = u.includes("/api/state")
+        ? { state: structuredClone(state), assets, categories: ["Tutorial", "Frontend", "公告", "测试", "开发", "指南"] }
+        : u.includes("/api/posts")
+          ? structuredClone(stubPosts)
+          : u.includes("/api/job")
+            ? { ok: true, job: null }
+            : { ok: true, log: "stub" };
+      return { json: async () => body };
+    };
   },
 });
 
@@ -131,7 +162,7 @@ const themeOf = () => dom.window.collect?.()?.theme ?? {};
 const jsonBoxes = doc.querySelectorAll('.ctrl[data-type="json"]').length;
 // 列表里的「描述」是多行框，属正常；要确认的是"没有多出来的、需要手写 JSON 的多行框"
 // 多行框现在不止副标题（公告正文、关于页正文、对话答复都是），改判"没有游离在字段外的多行框"
-const strayTextareas = [...doc.querySelectorAll("textarea")].filter((t) => !t.dataset.key && !t.closest(".field")).length;
+const strayTextareas = [...doc.querySelectorAll("#form textarea")].filter((t) => !t.dataset.key && !t.closest(".field")).length;
 const catRows = rowsOf("home.selectedCategories").length;
 const navRows = rowsOf("nav").length;
 const navSubRows = listOf("nav")?.querySelectorAll(".list.nested [data-row]").length ?? 0;
@@ -261,6 +292,62 @@ console.log(
     ` / 歌单 ${playlistRows} 行 / 右栏顺序 ${orderRows} 行；手写 JSON 框 ${jsonBoxes} 个`,
 );
 
+// ── 文章与发布模块 ────────────────────────────────────────────
+const tick = (ms = 80) => new Promise((r) => setTimeout(r, ms));
+const postRows = () => [...doc.querySelectorAll(".post-row")];
+const tabPosts = doc.querySelector('.tab[data-tab="posts"]');
+const tabConfig = doc.querySelector('.tab[data-tab="config"]');
+
+// 默认停在站点配置页，文章页是隐藏的
+const tabCount = doc.querySelectorAll(".tab").length;
+const defaultTab = { configVisible: !doc.getElementById("view-config").hidden, postsHidden: doc.getElementById("view-posts").hidden };
+
+// 切到「文章与发布」：列表、git 摘要、分类候选都要出来
+click(tabPosts);
+await tick(150);
+const postsVisible = !doc.getElementById("view-posts").hidden;
+const configHiddenWhenPosts = doc.getElementById("view-config").hidden;
+const saveHiddenOnPostsTab = doc.getElementById("save").hidden;
+const postRowCount = postRows().length;
+const draftBadges = doc.querySelectorAll(".post-row .badge.draft").length;
+const changedBadges = doc.querySelectorAll(".post-row .badge.changed").length;
+const postCountText = doc.getElementById("post-count").textContent.trim();
+const gitSummaryText = doc.getElementById("git-summary").textContent;
+const commitMsg = doc.getElementById("commit-msg").value;
+const catOptions = doc.querySelectorAll("#cats option").length;
+
+// 三颗按钮 + 初始状态
+const actionButtons = ["btn-preview", "btn-build", "btn-deploy"].every((id) => doc.getElementById(id));
+const deployEnabled = doc.getElementById("btn-deploy").disabled === false;
+const stopDisabled = doc.getElementById("btn-stop").disabled === true;
+const newPostFields = ["np-title", "np-slug", "np-folder", "np-categories", "np-tags", "np-draft", "btn-create"].filter((id) => doc.getElementById(id)).length;
+
+// 改信息：点开编辑器 → 字段带出当前值 → 取消后收起
+click(postRows()[0].querySelector("[data-post-edit]"));
+const editor = postRows()[0].querySelector(".post-editor");
+const editorTitle = editor?.querySelector('[data-edit="title"]')?.value ?? null;
+const editorDate = editor?.querySelector('[data-edit="date"]')?.value ?? null;
+click(postRows()[0].querySelector("[data-editor-cancel]"));
+const editorClosed = postRows()[0].querySelector(".post-editor") === null;
+
+// 筛选：只看草稿 1 篇；搜索「测试」也是 1 篇
+const scopeSel = doc.getElementById("post-scope");
+scopeSel.value = "draft";
+scopeSel.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
+const draftFiltered = postRows().length;
+scopeSel.value = "all";
+scopeSel.dispatchEvent(new dom.window.Event("change", { bubbles: true }));
+const filterInput = doc.getElementById("post-filter");
+setInput(filterInput, "测试");
+const searched = postRows().length;
+setInput(filterInput, "");
+const restored = postRows().length;
+
+// 切回站点配置页，原来的表单与按钮要复原
+click(tabConfig);
+await tick(120);
+const backToConfig = !doc.getElementById("view-config").hidden && doc.getElementById("view-posts").hidden && doc.getElementById("save").hidden === false;
+
 const checks = [
   ["站点名 = 你的值", textOf("siteName"), state.theme.siteName],
   ["副标题 = 你的值", (textOf("brand.subtitle") ?? "").slice(0, 6), state.theme.brand.subtitle.slice(0, 6)],
@@ -309,6 +396,27 @@ const checks = [
   ["封面列表写进配置", coverOut, "images/cover-1.avif"],
   ["加歌单后变 2 条", playlistAfterAdd, 2],
   ["社媒自定义项合并进 social", socialExtraOut, "https://pixiv.example/"],
+  ["页签数量 = 2", tabCount, 2],
+  ["默认停在站点配置页", `${defaultTab.configVisible}/${defaultTab.postsHidden}`, "true/true"],
+  ["切到文章页后可见", `${postsVisible}/${configHiddenWhenPosts}`, "true/true"],
+  ["文章页上隐藏保存按钮", saveHiddenOnPostsTab, true],
+  ["文章列表 = 2 行", postRowCount, 2],
+  ["草稿有标记", draftBadges, 1],
+  ["未提交改动有标记", changedBadges, 1],
+  ["文章计数文案", postCountText, "共 2 篇"],
+  ["git 摘要列出改动文件", gitSummaryText.includes("src/posts/hello-world.md"), true],
+  ["提交说明自动带建议", commitMsg, "post: Hello World!"],
+  ["分类候选来自服务端", catOptions, 2],
+  ["预览/构建/部署三颗按钮都在", actionButtons, true],
+  ["部署按钮可用、停止按钮初始禁用", `${deployEnabled}/${stopDisabled}`, "true/true"],
+  ["新建表单字段齐全 = 7", newPostFields, 7],
+  ["改信息能展开并带出标题", editorTitle, "Hello World!"],
+  ["改信息带出日期", /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(String(editorDate)), true],
+  ["取消后编辑器收起", editorClosed, true],
+  ["只看草稿筛出 1 篇", draftFiltered, 1],
+  ["搜索标题筛出 1 篇", searched, 1],
+  ["清空筛选恢复 2 篇", restored, 2],
+  ["切回配置页后按钮复原", backToConfig, true],
 ];
 
 let bad = 0;
