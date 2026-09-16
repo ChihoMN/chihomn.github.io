@@ -121,6 +121,8 @@ pnpm new-post "带子目录的" --folder 技术 --draft
 
 **其它可用字段**：`description`（摘要）、`cover`（封面）、`sticky`（置顶）、`license`（版权协议）、`encrypted` + `password`（构建时加密）。
 
+**公式只写在 `.md` 里**：主题的公式渲染（remarkMath + KaTeX）对 `.md` 生效，在 `.mdx` 里写 `$…$` 或 `$$…$$` 会让构建直接失败（报错信息是含糊的 `Vite module runner has been closed`）。`.mdx` 里要放公式，就用预渲染好的 KaTeX HTML（`node -e` 调 `katex.renderToString(...)` 生成后贴进正文即可）；反过来，MDX 组件（`<Note>` / `<Quiz>` / `<Spoiler>` / `<Tabs>` 等）只有 `.mdx` 能用。另外正文里裸写 `$state` 这种成对的 `$` 也会被当成公式，套上反引号写成 `` `$state` `` 即可。
+
 ---
 
 ## 四、发布到线上
