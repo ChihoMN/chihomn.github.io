@@ -15,172 +15,585 @@
         --warn: #b45309;
         --ok: #15803d;
       }
-      * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
       body {
         margin: 0;
         background: var(--bg);
         color: var(--fg);
-        font: 14px/1.6 -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+        font:
+          14px/1.6 -apple-system,
+          "PingFang SC",
+          "Helvetica Neue",
+          sans-serif;
       }
       header {
-        position: sticky; top: 0; z-index: 10;
-        background: var(--card); border-bottom: 1px solid var(--line);
-        padding: 12px 20px; display: flex; align-items: center; gap: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--card);
+        border-bottom: 1px solid var(--line);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
-      header h1 { font-size: 16px; margin: 0; flex: 1; }
+      header h1 {
+        font-size: 16px;
+        margin: 0;
+        flex: 1;
+      }
       button {
-        font: inherit; padding: 7px 14px; border-radius: 6px; cursor: pointer;
-        border: 1px solid var(--line); background: #fff;
+        font: inherit;
+        padding: 7px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 1px solid var(--line);
+        background: #fff;
       }
-      button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
-      main { max-width: 980px; margin: 0 auto; padding: 20px; }
+      button.primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        font-weight: 600;
+      }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 20px;
+      }
       section {
-        background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-        margin-bottom: 16px; overflow: hidden;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        margin-bottom: 16px;
+        overflow: hidden;
       }
       section > h2 {
-        font-size: 14px; margin: 0; padding: 11px 16px;
-        background: #fafbfc; border-bottom: 1px solid var(--line);
+        font-size: 14px;
+        margin: 0;
+        padding: 11px 16px;
+        background: #fafbfc;
+        border-bottom: 1px solid var(--line);
       }
       .field {
-        display: grid; grid-template-columns: 240px 1fr; gap: 10px;
-        padding: 10px 16px; border-bottom: 1px solid #f1f2f4; align-items: start;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 10px;
+        padding: 10px 16px;
+        border-bottom: 1px solid #f1f2f4;
+        align-items: start;
       }
-      .field:last-child { border-bottom: 0; }
-      .field > label { color: var(--fg); padding-top: 5px; }
-      .field .path { display: block; color: var(--dim); font-size: 11px; font-family: ui-monospace, monospace; }
-      .field .hint { display: block; color: var(--warn); font-size: 11.5px; margin-top: 3px; }
-      .field .ctrl { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-      input[type="text"], input[type="number"], textarea, select {
-        font: inherit; padding: 6px 9px; border: 1px solid var(--line);
-        border-radius: 6px; background: #fff; color: var(--fg); width: 100%; max-width: 560px;
+      .field:last-child {
+        border-bottom: 0;
       }
-      textarea { font-family: ui-monospace, monospace; font-size: 12.5px; min-height: 68px; resize: vertical; }
-      input[type="number"] { max-width: 140px; }
-      input[type="color"] { width: 38px; height: 32px; padding: 2px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
-      .override { font-size: 11px; color: var(--accent); }
-      .btn-reset { font-size: 11px; padding: 2px 7px; }
-      .thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+      .field > label {
+        color: var(--fg);
+        padding-top: 5px;
+      }
+      .field .path {
+        display: block;
+        color: var(--dim);
+        font-size: 11px;
+        font-family: ui-monospace, monospace;
+      }
+      .field .hint {
+        display: block;
+        color: var(--warn);
+        font-size: 11.5px;
+        margin-top: 3px;
+      }
+      .field .ctrl {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      input[type="text"],
+      input[type="number"],
+      textarea,
+      select {
+        font: inherit;
+        padding: 6px 9px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--fg);
+        width: 100%;
+        max-width: 560px;
+      }
+      textarea {
+        font-family: ui-monospace, monospace;
+        font-size: 12.5px;
+        min-height: 68px;
+        resize: vertical;
+      }
+      input[type="number"] {
+        max-width: 140px;
+      }
+      input[type="color"] {
+        width: 38px;
+        height: 32px;
+        padding: 2px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+      }
+      .override {
+        font-size: 11px;
+        color: var(--accent);
+      }
+      .btn-reset {
+        font-size: 11px;
+        padding: 2px 7px;
+      }
+      .thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
       .thumb {
-        position: relative; display: block; cursor: pointer; width: 118px;
-        border: 2px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff;
+        position: relative;
+        display: block;
+        cursor: pointer;
+        width: 118px;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
       }
-      .thumb.on { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
-      .thumb input { position: absolute; opacity: 0; pointer-events: none; }
-      .thumb img { display: block; width: 100%; height: 74px; object-fit: cover; background: #f2f3f5; }
-      .thumb span { display: block; font-size: 10.5px; color: var(--dim); padding: 3px 5px; word-break: break-all; }
+      .thumb.on {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      }
+      .thumb input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .thumb img {
+        display: block;
+        width: 100%;
+        height: 74px;
+        object-fit: cover;
+        background: #f2f3f5;
+      }
+      .thumb span {
+        display: block;
+        font-size: 10.5px;
+        color: var(--dim);
+        padding: 3px 5px;
+        word-break: break-all;
+      }
       .font-preview {
-        margin-top: 6px; padding: 8px 12px; border: 1px dashed var(--line);
-        border-radius: 6px; background: #fafbfc;
+        margin-top: 6px;
+        padding: 8px 12px;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+        background: #fafbfc;
       }
       /* 列表编辑器：原来要手写 JSON 的地方，全部改成一行行填 */
-      .list { width: 100%; max-width: 660px; }
-      .list-row, .order-row {
-        border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
-        margin-bottom: 8px; background: #fcfcfd;
+      .list {
+        width: 100%;
+        max-width: 660px;
       }
-      .order-row { display: flex; align-items: center; gap: 6px; padding: 5px 10px; margin-bottom: 5px; }
-      .list-row.miss { border-color: var(--warn); background: #fffbeb; }
-      .list-head { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
+      .list-row,
+      .order-row {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 10px;
+        margin-bottom: 8px;
+        background: #fcfcfd;
+      }
+      .order-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+      }
+      .list-row.miss {
+        border-color: var(--warn);
+        background: #fffbeb;
+      }
+      .list-head {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 7px;
+      }
       .list-index {
-        flex: 0 0 22px; text-align: center; font-size: 11px; color: var(--dim);
-        background: #eef1f4; border-radius: 999px; padding: 1px 0;
+        flex: 0 0 22px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--dim);
+        background: #eef1f4;
+        border-radius: 999px;
+        padding: 1px 0;
       }
-      .list-title { flex: 1; font-size: 12.5px; color: var(--dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .order-row .name { flex: 1; font-size: 12.5px; }
-      .list-head button, .order-row button, .list-tools button { font-size: 11px; padding: 1px 8px; line-height: 1.6; }
-      .list-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
-      .list-fields label { display: block; font-size: 11.5px; color: var(--dim); }
-      .list-fields label span { display: block; margin-bottom: 2px; }
-      .list-fields label.wide { grid-column: 1 / -1; }
-      .list-fields input, .list-fields textarea { max-width: none; padding: 4px 8px; font-size: 12.5px; }
-      .list-fields textarea { min-height: 50px; font-family: inherit; }
-      .list-tools { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .list-note { font-size: 11.5px; color: var(--warn); }
-      .list.nested { margin-top: 8px; padding-left: 10px; border-left: 2px solid var(--line); }
-      .list.nested.off { opacity: 0.45; }
-      .sub-toggle { display: block; font-size: 11.5px; color: var(--dim); margin-bottom: 6px; }
-      .sub-toggle input { width: auto; }
-      .icon-cell { display: flex; align-items: center; gap: 6px; }
-      .icon-cell img { flex: 0 0 18px; width: 18px; height: 18px; opacity: 0.85; }
-      .social-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 5px 16px; width: 100%; max-width: 700px; }
-      .social-row { display: flex; align-items: center; gap: 8px; }
-      .social-icon { flex: 0 0 18px; width: 18px; height: 18px; opacity: 0.8; }
-      .social-label { flex: 0 0 84px; font-size: 12.5px; color: var(--dim); }
-      .social-row input { max-width: none; flex: 1; padding: 4px 8px; font-size: 12.5px; }
-      details.adv { margin-top: 10px; width: 100%; }
-      details.adv summary { cursor: pointer; font-size: 12px; color: var(--dim); }
-      .cipher { margin-top: 5px; font-size: 12.5px; color: var(--dim); }
+      .list-title {
+        flex: 1;
+        font-size: 12.5px;
+        color: var(--dim);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .order-row .name {
+        flex: 1;
+        font-size: 12.5px;
+      }
+      .list-head button,
+      .order-row button,
+      .list-tools button {
+        font-size: 11px;
+        padding: 1px 8px;
+        line-height: 1.6;
+      }
+      .list-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 10px;
+      }
+      .list-fields label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--dim);
+      }
+      .list-fields label span {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .list-fields label.wide {
+        grid-column: 1 / -1;
+      }
+      .list-fields input,
+      .list-fields textarea {
+        max-width: none;
+        padding: 4px 8px;
+        font-size: 12.5px;
+      }
+      .list-fields textarea {
+        min-height: 50px;
+        font-family: inherit;
+      }
+      .list-tools {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .list-note {
+        font-size: 11.5px;
+        color: var(--warn);
+      }
+      .list.nested {
+        margin-top: 8px;
+        padding-left: 10px;
+        border-left: 2px solid var(--line);
+      }
+      .list.nested.off {
+        opacity: 0.45;
+      }
+      .sub-toggle {
+        display: block;
+        font-size: 11.5px;
+        color: var(--dim);
+        margin-bottom: 6px;
+      }
+      .sub-toggle input {
+        width: auto;
+      }
+      .icon-cell {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .icon-cell img {
+        flex: 0 0 18px;
+        width: 18px;
+        height: 18px;
+        opacity: 0.85;
+      }
+      .social-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 5px 16px;
+        width: 100%;
+        max-width: 700px;
+      }
+      .social-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .social-icon {
+        flex: 0 0 18px;
+        width: 18px;
+        height: 18px;
+        opacity: 0.8;
+      }
+      .social-label {
+        flex: 0 0 84px;
+        font-size: 12.5px;
+        color: var(--dim);
+      }
+      .social-row input {
+        max-width: none;
+        flex: 1;
+        padding: 4px 8px;
+        font-size: 12.5px;
+      }
+      details.adv {
+        margin-top: 10px;
+        width: 100%;
+      }
+      details.adv summary {
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--dim);
+      }
+      .cipher {
+        margin-top: 5px;
+        font-size: 12.5px;
+        color: var(--dim);
+      }
       .cipher code {
-        font-family: ui-monospace, monospace; background: #eef1f4; padding: 2px 6px;
-        border-radius: 4px; color: var(--fg); user-select: all;
+        font-family: ui-monospace, monospace;
+        background: #eef1f4;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: var(--fg);
+        user-select: all;
       }
       #log {
-        white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 12.5px;
-        background: #0d1117; color: #d1d5db; border-radius: 8px; padding: 12px;
-        margin: 0 0 20px; display: none;
+        white-space: pre-wrap;
+        font-family: ui-monospace, monospace;
+        font-size: 12.5px;
+        background: #0d1117;
+        color: #d1d5db;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 0 0 20px;
+        display: none;
       }
-      #log.ok { display: block; border-left: 3px solid var(--ok); }
-      #log.err { display: block; border-left: 3px solid #dc2626; }
-      .note { color: var(--dim); font-size: 12.5px; padding: 0 0 12px; }
-      .note code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; }
+      #log.ok {
+        display: block;
+        border-left: 3px solid var(--ok);
+      }
+      #log.err {
+        display: block;
+        border-left: 3px solid #dc2626;
+      }
+      .note {
+        color: var(--dim);
+        font-size: 12.5px;
+        padding: 0 0 12px;
+      }
+      .note code {
+        background: #eef1f4;
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
 
       /* ── 顶部页签 ── */
-      .tabs { display: flex; gap: 4px; background: #eef1f4; border-radius: 8px; padding: 3px; }
-      .tab {
-        border: 0; background: transparent; color: var(--dim); font-size: 13px;
-        padding: 5px 14px; border-radius: 6px;
+      .tabs {
+        display: flex;
+        gap: 4px;
+        background: #eef1f4;
+        border-radius: 8px;
+        padding: 3px;
       }
-      .tab.on { background: #fff; color: var(--fg); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06); }
-      button[hidden], .tab[hidden] { display: none; }
+      .tab {
+        border: 0;
+        background: transparent;
+        color: var(--dim);
+        font-size: 13px;
+        padding: 5px 14px;
+        border-radius: 6px;
+      }
+      .tab.on {
+        background: #fff;
+        color: var(--fg);
+        font-weight: 600;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+      }
+      button[hidden],
+      .tab[hidden] {
+        display: none;
+      }
 
       /* ── 文章列表 ── */
-      .post-list { padding: 6px 0; }
+      .post-list {
+        padding: 6px 0;
+      }
       .post-row {
-        display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
-        padding: 9px 16px; border-bottom: 1px solid #f1f2f4;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 9px 16px;
+        border-bottom: 1px solid #f1f2f4;
       }
-      .post-row:last-child { border-bottom: 0; }
-      .post-row.draft .post-title { color: var(--dim); }
-      .post-title { font-size: 13.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .post-meta { color: var(--dim); font-size: 11.5px; font-family: ui-monospace, monospace; margin-top: 2px; }
-      .post-actions { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
-      .post-actions button { font-size: 11.5px; padding: 3px 9px; }
+      .post-row:last-child {
+        border-bottom: 0;
+      }
+      .post-row.draft .post-title {
+        color: var(--dim);
+      }
+      .post-title {
+        font-size: 13.5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .post-meta {
+        color: var(--dim);
+        font-size: 11.5px;
+        font-family: ui-monospace, monospace;
+        margin-top: 2px;
+      }
+      .post-actions {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .post-actions button {
+        font-size: 11.5px;
+        padding: 3px 9px;
+      }
       .badge {
-        font-size: 10.5px; padding: 1px 7px; border-radius: 999px;
-        background: #eef1f4; color: var(--dim); border: 1px solid transparent;
+        font-size: 10.5px;
+        padding: 1px 7px;
+        border-radius: 999px;
+        background: #eef1f4;
+        color: var(--dim);
+        border: 1px solid transparent;
       }
-      .badge.draft { background: #fffbeb; color: var(--warn); border-color: #fde68a; }
-      .badge.changed { background: #eff6ff; color: var(--accent); border-color: #bfdbfe; }
-      .badge.sticky { background: #fdf2f8; color: #9d174d; border-color: #fbcfe8; }
-      .count { color: var(--dim); font-weight: 400; }
+      .badge.draft {
+        background: #fffbeb;
+        color: var(--warn);
+        border-color: #fde68a;
+      }
+      .badge.changed {
+        background: #eff6ff;
+        color: var(--accent);
+        border-color: #bfdbfe;
+      }
+      .badge.sticky {
+        background: #fdf2f8;
+        color: #9d174d;
+        border-color: #fbcfe8;
+      }
+      .count {
+        color: var(--dim);
+        font-weight: 400;
+      }
       .post-editor {
-        grid-column: 1 / -1; margin-top: 8px; padding: 10px 12px;
-        border: 1px solid var(--line); border-radius: 8px; background: #fcfcfd;
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 14px;
+        grid-column: 1 / -1;
+        margin-top: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fcfcfd;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 8px 14px;
       }
-      .post-editor label { display: block; font-size: 11.5px; color: var(--dim); }
-      .post-editor label span { display: block; margin-bottom: 2px; }
-      .post-editor label.wide { grid-column: 1 / -1; }
-      .post-editor input, .post-editor textarea, .post-editor select { max-width: none; padding: 4px 8px; font-size: 12.5px; }
-      .post-editor textarea { min-height: 52px; font-family: inherit; }
-      .post-editor .editor-tools { grid-column: 1 / -1; display: flex; gap: 6px; align-items: center; }
-      .post-toggle { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--fg); }
-      .post-toggle input { width: auto; }
+      .post-editor label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--dim);
+      }
+      .post-editor label span {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .post-editor label.wide {
+        grid-column: 1 / -1;
+      }
+      .post-editor input,
+      .post-editor textarea,
+      .post-editor select {
+        max-width: none;
+        padding: 4px 8px;
+        font-size: 12.5px;
+      }
+      .post-editor textarea {
+        min-height: 52px;
+        font-family: inherit;
+      }
+      .post-editor .editor-tools {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .post-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        color: var(--fg);
+      }
+      .post-toggle input {
+        width: auto;
+      }
 
       /* ── 发布面板 ── */
-      .git-summary { font-size: 12.5px; }
-      .git-summary ul { margin: 4px 0 0; padding-left: 18px; color: var(--dim); font-family: ui-monospace, monospace; font-size: 11.5px; }
-      .git-summary .clean { color: var(--ok); }
-      .job-status { font-size: 12.5px; color: var(--dim); }
-      .job-status a { color: var(--accent); }
-      #job-log {
-        white-space: pre-wrap; font-family: ui-monospace, monospace; font-size: 12px;
-        background: #0d1117; color: #d1d5db; border-radius: 8px; padding: 12px;
-        margin: 0; width: 100%; max-height: 340px; overflow: auto;
+      .git-summary {
+        font-size: 12.5px;
       }
-      .spinner { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); animation: pulse 1s infinite; }
-      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+      .git-summary ul {
+        margin: 4px 0 0;
+        padding-left: 18px;
+        color: var(--dim);
+        font-family: ui-monospace, monospace;
+        font-size: 11.5px;
+      }
+      .git-summary .clean {
+        color: var(--ok);
+      }
+      .job-status {
+        font-size: 12.5px;
+        color: var(--dim);
+      }
+      .job-status a {
+        color: var(--accent);
+      }
+      #job-log {
+        white-space: pre-wrap;
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        background: #0d1117;
+        color: #d1d5db;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 0;
+        width: 100%;
+        max-height: 340px;
+        overflow: auto;
+      }
+      .spinner {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.25;
+        }
+      }
     </style>
   </head>
   <body>
@@ -210,7 +623,8 @@
         <section>
           <h2>发布</h2>
           <div class="field">
-            <label>当前改动
+            <label
+              >当前改动
               <span class="path">git status</span>
             </label>
             <div class="ctrl">
@@ -219,7 +633,8 @@
             </div>
           </div>
           <div class="field">
-            <label for="commit-msg">提交说明
+            <label for="commit-msg"
+              >提交说明
               <span class="path">git commit -m</span>
             </label>
             <div class="ctrl">
@@ -227,9 +642,13 @@
             </div>
           </div>
           <div class="field">
-            <label>操作
+            <label
+              >操作
               <span class="path">本地构建 → 远程部署</span>
-              <span class="hint">「本地构建」只在本机验证产物；「提交并部署」会把改动推上去，由 GitHub Actions 构建发布</span>
+              <span class="hint"
+                >「本地构建」只在本机验证产物；「提交并部署」会把改动推上去，由 GitHub Actions
+                构建发布</span
+              >
             </label>
             <div class="ctrl">
               <button id="btn-preview">本地预览</button>
@@ -240,7 +659,8 @@
             </div>
           </div>
           <div class="field">
-            <label>任务输出
+            <label
+              >任务输出
               <span class="path">完整日志</span>
             </label>
             <div class="ctrl">
@@ -254,7 +674,12 @@
           <div class="field">
             <label>筛选</label>
             <div class="ctrl">
-              <input type="text" id="post-filter" placeholder="按标题 / 分类 / 标签过滤" style="max-width: 240px" />
+              <input
+                type="text"
+                id="post-filter"
+                placeholder="按标题 / 分类 / 标签过滤"
+                style="max-width: 240px"
+              />
               <select id="post-scope" style="max-width: 150px">
                 <option value="all">全部</option>
                 <option value="published">只看已发布</option>
@@ -270,27 +695,35 @@
         <section>
           <h2>新建文章</h2>
           <div class="field">
-            <label for="np-title">标题
+            <label for="np-title"
+              >标题
               <span class="path">title</span>
             </label>
             <div class="ctrl"><input type="text" id="np-title" placeholder="文章标题" /></div>
           </div>
           <div class="field">
-            <label for="np-slug">文件名
+            <label for="np-slug"
+              >文件名
               <span class="path">src/posts/&lt;文件名&gt;.md</span>
               <span class="hint">留空就按标题自动生成；中文会原样保留</span>
             </label>
-            <div class="ctrl"><input type="text" id="np-slug" placeholder="（留空自动生成）" /></div>
+            <div class="ctrl">
+              <input type="text" id="np-slug" placeholder="（留空自动生成）" />
+            </div>
           </div>
           <div class="field">
-            <label for="np-folder">子目录
+            <label for="np-folder"
+              >子目录
               <span class="path">可选</span>
               <span class="hint">放进 src/posts/技术/ 这类子目录，便于自己归档</span>
             </label>
-            <div class="ctrl"><input type="text" id="np-folder" placeholder="（留空就放在 src/posts 根目录）" /></div>
+            <div class="ctrl">
+              <input type="text" id="np-folder" placeholder="（留空就放在 src/posts 根目录）" />
+            </div>
           </div>
           <div class="field">
-            <label for="np-categories">分类
+            <label for="np-categories"
+              >分类
               <span class="path">categories</span>
               <span class="hint">逗号分隔；下面列的是现有文章里已经用过的分类</span>
             </label>
@@ -300,7 +733,8 @@
             </div>
           </div>
           <div class="field">
-            <label for="np-tags">标签
+            <label for="np-tags"
+              >标签
               <span class="path">tags</span>
             </label>
             <div class="ctrl"><input type="text" id="np-tags" placeholder="Typora, 教程" /></div>
@@ -308,7 +742,9 @@
           <div class="field">
             <label>草稿</label>
             <div class="ctrl">
-              <label class="post-toggle"><input type="checkbox" id="np-draft" /> 标为草稿（不上线，本地预览也不显示）</label>
+              <label class="post-toggle"
+                ><input type="checkbox" id="np-draft" /> 标为草稿（不上线，本地预览也不显示）</label
+              >
             </div>
           </div>
           <div class="field">
@@ -341,20 +777,58 @@
       const DEFAULT_NAV = [
         { href: "/", text: "首页", icon: "i-ri-home-line" },
         { text: "关于", href: "/about/", icon: "i-ri-user-3-line" },
-        { text: "文章", href: "/random/", icon: "i-ri-quill-pen-fill", dropbox: { enable: true, items: [
-          { href: "/categories/", text: "分类", icon: "i-ri-book-shelf-fill" },
-          { href: "/tags/", text: "标签", icon: "i-ri-price-tag-3-fill" },
-          { href: "/archives/", text: "归档", icon: "i-ri-archive-line" },
-        ] } },
+        {
+          text: "文章",
+          href: "/random/",
+          icon: "i-ri-quill-pen-fill",
+          dropbox: {
+            enable: true,
+            items: [
+              { href: "/categories/", text: "分类", icon: "i-ri-book-shelf-fill" },
+              { href: "/tags/", text: "标签", icon: "i-ri-price-tag-3-fill" },
+              { href: "/archives/", text: "归档", icon: "i-ri-archive-line" },
+            ],
+          },
+        },
         { text: "友链", href: "/friends/", icon: "i-ri-link" },
         { text: "动态", href: "/moments/", icon: "i-ri-chat-quote-line" },
         { text: "统计", href: "/statistics/", icon: "i-ri-bar-chart-box-line" },
       ];
       const DEFAULT_FRIENDS = [
-        { url: "https://astro.build/", title: "Astro", desc: "全站体验轻快的静态站点框架，适合内容型站点与博客。", author: "Astro Team", avatar: "https://avatars.githubusercontent.com/u/44914786?s=200&v=4", color: "var(--color-orange)", siteImage: "https://astro.build/assets/press/astro-logo-dark.svg" },
-        { url: "https://svelte.dev/", title: "Svelte", desc: "编译时框架，现代与简洁，组件写起来很顺手。", author: "Svelte Team", avatar: "https://avatars.githubusercontent.com/u/23617963?s=200&v=4", color: "var(--color-red)" },
-        { url: "https://vite.dev/", title: "Vite", desc: "快速的前端开发构建工具，HMR 体验很棒。", author: "Vite Team", avatar: "https://avatars.githubusercontent.com/u/65625612?s=200&v=4", color: "var(--color-blue)" },
-        { url: "https://bun.sh/", title: "Bun", desc: "一体化 JavaScript 运行时，速度与工具链兼备。", author: "Bun Team", avatar: "https://avatars.githubusercontent.com/u/108928776?s=200&v=4", color: "var(--color-green)", siteImage: "https://bun.sh/logo.svg" },
+        {
+          url: "https://astro.build/",
+          title: "Astro",
+          desc: "全站体验轻快的静态站点框架，适合内容型站点与博客。",
+          author: "Astro Team",
+          avatar: "https://avatars.githubusercontent.com/u/44914786?s=200&v=4",
+          color: "var(--color-orange)",
+          siteImage: "https://astro.build/assets/press/astro-logo-dark.svg",
+        },
+        {
+          url: "https://svelte.dev/",
+          title: "Svelte",
+          desc: "编译时框架，现代与简洁，组件写起来很顺手。",
+          author: "Svelte Team",
+          avatar: "https://avatars.githubusercontent.com/u/23617963?s=200&v=4",
+          color: "var(--color-red)",
+        },
+        {
+          url: "https://vite.dev/",
+          title: "Vite",
+          desc: "快速的前端开发构建工具，HMR 体验很棒。",
+          author: "Vite Team",
+          avatar: "https://avatars.githubusercontent.com/u/65625612?s=200&v=4",
+          color: "var(--color-blue)",
+        },
+        {
+          url: "https://bun.sh/",
+          title: "Bun",
+          desc: "一体化 JavaScript 运行时，速度与工具链兼备。",
+          author: "Bun Team",
+          avatar: "https://avatars.githubusercontent.com/u/108928776?s=200&v=4",
+          color: "var(--color-green)",
+          siteImage: "https://bun.sh/logo.svg",
+        },
       ];
 
       // 右栏可用的卡片（顺序编辑器按这份清单显示中文名，并挑出"没被排进去"的卡片）
@@ -368,201 +842,889 @@
       ];
 
       const SCHEMA = [
-        { title: "站点", fields: [
-          { root: "state", path: "site.url", label: "站点网址", type: "text", hint: "旧站是 https://chihomn.github.io —— 现在还是主题作者的演示域名，务必改掉" },
-          { root: "state", path: "avatar", label: "头像", type: "asset", assetKey: "images", hint: "主题自带的演示头像，README 要求部署前替换" },
-        ]},
-        { title: "联系方式", fields: [
-          { root: "state", path: "contact.email", label: "联系邮箱（明文）", type: "email",
-            hint: "填明文就行。保存时会自动 ROT13 加密后写进「关于」页面，解密方法也会一并写在页面上——博客产物里不会出现明文。" },
-        ]},
-        { title: "页面内容", fields: [
-          { root: "state", path: "content.announcement.title", label: "公告标题", type: "text",
-            hint: "首屏右侧那张「公告」卡片的标题" },
-          { root: "state", path: "content.announcement.body", label: "公告正文", type: "textarea", rows: 5,
-            hint: "Markdown：空行分段，- 开头是列表项" },
-          { root: "state", path: "content.about.title", label: "关于页标题", type: "text" },
-          { root: "state", path: "content.about.description", label: "关于页描述", type: "text",
-            hint: "页面 meta 与搜索结果里用的那句" },
-          { root: "state", path: "content.about.date", label: "页面日期", type: "text", hint: "frontmatter 的 date，形如 2026-03-29" },
-          { root: "state", path: "content.about.updated", label: "最后更新", type: "text", hint: "frontmatter 的 updated" },
-          { root: "state", path: "content.about.body", label: "关于页正文", type: "textarea", rows: 12,
-            hint: "Markdown；对话组件和联系方式段会自动接在正文后面，不用自己写" },
-          { root: "state", path: "content.about.dialog.title", label: "对话组件标题", type: "text" },
-          { root: "state", path: "content.about.dialog.intro", label: "对话组件说明", type: "text" },
-          { root: "state", path: "content.about.dialog.nodes.intro", label: "对话·第一句", type: "textarea", rows: 2 },
-          { root: "state", path: "content.about.dialog.nodes.identity", label: "答复·你是谁", type: "textarea", rows: 3 },
-          { root: "state", path: "content.about.dialog.nodes.focus", label: "答复·关注什么", type: "textarea", rows: 3 },
-          { root: "state", path: "content.about.dialog.nodes.blog", label: "答复·写什么", type: "textarea", rows: 3 },
-          { root: "state", path: "content.about.dialog.nodes.stack", label: "答复·技术栈", type: "textarea", rows: 3 },
-          { root: "state", path: "content.about.dialog.nodes.contact", label: "答复·怎么联系", type: "textarea", rows: 3 },
-        ]},
-        { title: "字体", fields: [
-          { root: "state", path: "fonts.standard", label: "正文字体", type: "asset", assetKey: "fonts" },
-          { root: "state", path: "fonts.monospace", label: "等宽/代码字体", type: "asset", assetKey: "fonts" },
-        ]},
-        { title: "品牌与信息", fields: [
-          { root: "theme", path: "siteName", label: "站点名", type: "text", def: "ShokaX" },
-          { root: "theme", path: "locale", label: "语言", type: "select", options: ["zh-CN", "en"], def: "zh-CN" },
-          { root: "theme", path: "brand.title", label: "标题", type: "text", def: "ShokaX" },
-          { root: "theme", path: "brand.subtitle", label: "副标题", type: "textarea", def: "A modern blog theme" },
-          { root: "theme", path: "brand.logo", label: "Logo 字符", type: "text", def: "✨" },
-        ]},
-        { title: "侧边栏", fields: [
-          { root: "theme", path: "sidebar.author", label: "作者", type: "text", def: "Your Name" },
-          { root: "theme", path: "sidebar.description", label: "简介", type: "text", def: "A brief introduction" },
-          { root: "theme", path: "sidebar.social", label: "社交链接", type: "social", def: {},
-            hint: "只填链接就行，留空的不写入配置。图标由主题内置的 Remix Icon 提供，不需要你操心。" },
-        ]},
-        { title: "页脚", fields: [
-          { root: "theme", path: "footer.since", label: "建站年份", type: "number", def: 2025 },
-          { root: "theme", path: "footer.icon.name", label: "页脚图标", type: "text", def: "sakura rotate" },
-          { root: "theme", path: "footer.icon.color", label: "图标颜色", type: "color", def: "var(--color-pink)", hint: "三种填法：从下拉选主题色板、用色板挑自定义颜色、或直接填 #ffc0cb / rgb() / hsl()" },
-          { root: "theme", path: "footer.count", label: "显示站点统计", type: "bool", def: true },
-          { root: "theme", path: "footer.powered", label: "显示驱动信息", type: "bool", def: true },
-          { root: "theme", path: "footer.icp.enable", label: "显示 ICP 备案", type: "bool", def: true, hint: "默认值是主题作者的备案号，已关闭" },
-          { root: "theme", path: "footer.icp.icpnumber", label: "备案号", type: "text", def: "津ICP备2022001375号" },
-          { root: "theme", path: "footer.icp.icpurl", label: "备案链接", type: "text", def: "https://beian.miit.gov.cn/" },
-        ]},
-        { title: "标签云", fields: [
-          { root: "theme", path: "tagCloud.startColor", label: "起始颜色", type: "color", def: "var(--grey-6)", hint: "已按你的旧值设为 #72cecf" },
-          { root: "theme", path: "tagCloud.endColor", label: "结束颜色", type: "color", def: "var(--color-blue)", hint: "已按你的旧值设为 #ffbac3" },
-        ]},
-        { title: "小部件", fields: [
-          { root: "theme", path: "widgets.randomPosts", label: "随机文章", type: "bool", def: true },
-          { root: "theme", path: "widgets.randomPostsLimit", label: "随机文章条数", type: "number", def: 3 },
-          { root: "theme", path: "widgets.recentComments", label: "最近评论", type: "bool", def: true },
-          { root: "theme", path: "widgets.recentCommentsLimit", label: "最近评论条数", type: "number", def: 10 },
-        ]},
-        { title: "首页", fields: [
-          { root: "theme", path: "home.pageSize", label: "每页文章数", type: "number", def: 5, hint: "旧站是 10" },
-          { root: "theme", path: "home.selectedCategories", label: "首页分类筛选", type: "list", def: [{ name: "Tutorial" }, { name: "Frontend" }],
-            missKey: "name",
-            hint: "分类名必须与文章里的分类完全一致（大小写敏感），名字对不上首页那张卡片就是空的。全部删掉＝不显示筛选区。",
-            item: [
-              { key: "name", label: "分类名", type: "text", datalist: "dl_categories", ph: "从候选里挑，或自己填" },
-              { key: "cover", label: "封面图（可选）", type: "image", ph: "留空用随机封面" },
-            ] },
-          { root: "theme", path: "home.title.behavior", label: "首页标题行为", type: "select", options: ["default", "custom"], def: "default" },
-          { root: "theme", path: "home.title.customTitle", label: "自定义首页标题", type: "text", def: "" },
-        ]},
-        { title: "布局", fields: [
-          { root: "theme", path: "layout.mode", label: "布局模式", type: "select", options: ["two-column", "three-column"], def: "three-column" },
-          { root: "theme", path: "layout.rightSidebar.order", label: "右栏卡片顺序", type: "order", known: SIDEBAR_CARDS,
-            hint: "用 ↑ ↓ 调顺序；每张卡显示与否由下面那几个开关控制",
-            def: ["announcement", "search", "calendar", "recentMoments", "randomPosts", "tagCloud"] },
-          { root: "theme", path: "layout.rightSidebar.announcement", label: "右栏·公告", type: "bool", def: true },
-          { root: "theme", path: "layout.rightSidebar.search", label: "右栏·搜索", type: "bool", def: true },
-          { root: "theme", path: "layout.rightSidebar.calendar", label: "右栏·日历", type: "bool", def: true },
-          { root: "theme", path: "layout.rightSidebar.recentMoments", label: "右栏·最近动态", type: "bool", def: true },
-          { root: "theme", path: "layout.rightSidebar.randomPosts", label: "右栏·随机文章", type: "bool", def: true },
-          { root: "theme", path: "layout.rightSidebar.tagCloud", label: "右栏·标签云", type: "bool", def: true },
-        ]},
-        { title: "导航与页面", fields: [
-          { root: "theme", path: "nav", label: "顶部导航", type: "list", def: DEFAULT_NAV,
-            hint: "整体替换主题默认导航；每项都可以挂一个下拉子菜单",
-            item: [
-              { key: "text", label: "文字", type: "text", ph: "首页" },
-              { key: "href", label: "链接", type: "text", ph: "/ 或 https://…" },
-              { key: "icon", label: "图标", type: "icon", ph: "i-ri-home-line" },
-            ],
-            nested: { key: "dropbox", label: "展开为下拉子菜单", item: [
-              { key: "text", label: "文字", type: "text" },
-              { key: "href", label: "链接", type: "text" },
-              { key: "icon", label: "图标", type: "icon" },
-            ] } },
-          { root: "theme", path: "cover.enable", label: "启用封面", type: "bool", def: true },
-          { root: "theme", path: "cover.preload", label: "预加载封面", type: "bool", def: true },
-          { root: "theme", path: "cover.fixedCover.enable", label: "固定封面", type: "bool", def: true },
-          { root: "theme", path: "cover.fixedCover.url", label: "固定封面图", type: "text", def: "cover-4" },
-          { root: "theme", path: "cover.coverUrls", label: "自定义封面列表", type: "list", kind: "str", def: [],
-            hint: "旧站是调 loliapi 随机图 API，新版用本地图；一行一张，可以从候选图里挑，也可以填外链",
-            item: [{ key: "__v", label: "图片", type: "image", datalist: "dl_images", ph: "images/cover-1.avif 或 https://…" }] },
-          { root: "theme", path: "friends.title", label: "友链页标题", type: "text", def: "友链" },
-          { root: "theme", path: "friends.description", label: "友链页说明", type: "text", def: "卡片式展示，支持站点预览与主题色点缀。" },
-          { root: "theme", path: "friends.comments", label: "友链页允许评论", type: "bool", def: false },
-          { root: "theme", path: "friends.links", label: "友链列表", type: "list", def: DEFAULT_FRIENDS,
-            hint: "现在是 Astro/Svelte/Vite/Bun 四条演示链接，换成你自己的",
-            item: [
-              { key: "title", label: "站点标题", type: "text", ph: "朋友的小站" },
-              { key: "url", label: "链接", type: "text", ph: "https://…" },
-              { key: "author", label: "主理人", type: "text" },
-              { key: "avatar", label: "头像", type: "image", datalist: "dl_images", ph: "https://… 或图片路径" },
-              { key: "desc", label: "描述", type: "textarea", ph: "一句话介绍" },
-              { key: "siteImage", label: "预览图（可选）", type: "image", datalist: "dl_images" },
-              { key: "color", label: "主题色（可选）", type: "text", datalist: "dl_colors", ph: "var(--color-blue)" },
-            ] },
-          { root: "theme", path: "copyright.license", label: "版权协议", type: "select",
-            options: ["CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-ND-4.0", "CC-BY-NC-4.0", "CC-BY-NC-SA-4.0", "CC-BY-NC-ND-4.0", "NOREPRINT"], def: "CC-BY-NC-SA-4.0",
-            hint: "旧站是 by-nc-sa，与默认一致" },
-          { root: "theme", path: "copyright.show", label: "显示版权声明", type: "bool", def: true },
-        ]},
-        { title: "插件", fields: [
-          { root: "plugins", path: "siteUptime.enabled", label: "站点运行时间", type: "bool", def: true },
-          { root: "plugins", path: "siteUptime.siteCreatedAt", label: "　起始时刻", type: "text", def: "2024-03-11T12:00:00+08:00" },
-          { root: "plugins", path: "siteUptime.prefixText", label: "　前缀文字", type: "text", def: "本站已运行" },
-          { root: "plugins", path: "vercount.enabled", label: "访问统计", type: "bool", def: true },
-          { root: "plugins", path: "mouseFirework.enabled", label: "点击烟花特效", type: "bool", def: true },
-          { root: "plugins", path: "articleStatistics.enabled", label: "文章统计页", type: "bool", def: true },
-          { root: "plugins", path: "articleAgeWarning.enabled", label: "文章过期提醒", type: "bool", def: true },
-          { root: "plugins", path: "articleAgeWarning.maxAgeDays", label: "　提醒天数", type: "number", def: 180 },
-          { root: "plugins", path: "visibilityTitle.enabled", label: "标签页切换提示", type: "bool", def: true },
-          { root: "plugins", path: "visibilityTitle.returnTitle", label: "　回到页面时", type: "text", def: "🎉 欢迎回来！",
-            hint: "你旧站写的是「你回来了！让我们继续吧！🚀」" },
-          { root: "plugins", path: "visibilityTitle.leaveTitle", label: "　离开页面时", type: "text", def: "👀 你先忙，我等你回来~",
-            hint: "你旧站写的是「哦不，你要走了吗？😢」" },
-          { root: "plugins", path: "visibilityTitle.restoreDelay", label: "　恢复延迟 (ms)", type: "number", def: 3000 },
-          { root: "plugins", path: "nyxPlayer.enabled", label: "音乐播放器", type: "bool", def: true },
-          { root: "plugins", path: "nyxPlayer.preset", label: "　播放器主题", type: "select", options: ["shokax", "nyx"], def: "shokax" },
-          { root: "plugins", path: "nyxPlayer.urls", label: "　歌单", type: "list", def: [],
-            hint: "只支持网易云；QQ 音乐后端不支持。VIP 歌需要自建带 cookie 的后端才能放",
-            item: [
-              { key: "name", label: "名称", type: "text", ph: "网易云音乐" },
-              { key: "url", label: "歌单链接", type: "text", ph: "https://music.163.com/#/playlist?id=…" },
-            ] },
-          { root: "plugins", path: "walineComments.enabled", label: "评论系统", type: "bool", def: true },
-          { root: "plugins", path: "walineComments.serverURL", label: "　Waline 地址", type: "text", def: "",
-            hint: "留空则评论不显示；Waline 需要你自己部署一个后端" },
-          { root: "plugins", path: "walineComments.lang", label: "　评论语言", type: "select", options: ["zh-CN", "en"], def: "zh-CN" },
-          { root: "plugins", path: "analytics.enabled", label: "外部分析", type: "bool", def: true },
-          { root: "plugins", path: "analytics.googleAnalytics.measurementId", label: "　Google Analytics ID", type: "text", def: "",
-            hint: "形如 G-XXXXXXXXXX；留空则不注入 GA 脚本" },
-          { root: "plugins", path: "analytics.umami.websiteId", label: "　Umami Website ID", type: "text", def: "",
-            hint: "Umami 面板 Add website 后拿到的那串 UUID；留空则不注入 Umami 脚本" },
-          { root: "plugins", path: "analytics.umami.scriptUrl", label: "　Umami 脚本地址", type: "text", def: "",
-            hint: "用官方云版就留空（默认 https://cloud.umami.is/script.js）；自建才填 https://你的域名/script.js" },
-          { root: "plugins", path: "analytics.umami.domains", label: "　Umami 统计域名", type: "text", def: "",
-            hint: "只有这些域名上的访问会计入（逗号分隔）；留空＝自动用上面「站点网址」的域名，于是本地预览、临时部署都不计入" },
-          { root: "plugins", path: "aiContent.enabled", label: "AI 摘要与推荐", type: "bool", def: false,
-            hint: "需要额外配置，默认关闭" },
-        ]},
+        {
+          title: "站点",
+          fields: [
+            {
+              root: "state",
+              path: "site.url",
+              label: "站点网址",
+              type: "text",
+              hint: "旧站是 https://chihomn.github.io —— 现在还是主题作者的演示域名，务必改掉",
+            },
+            {
+              root: "state",
+              path: "avatar",
+              label: "头像",
+              type: "asset",
+              assetKey: "images",
+              hint: "主题自带的演示头像，README 要求部署前替换",
+            },
+          ],
+        },
+        {
+          title: "联系方式",
+          fields: [
+            {
+              root: "state",
+              path: "contact.email",
+              label: "联系邮箱（明文）",
+              type: "email",
+              hint: "填明文就行。保存时会自动 ROT13 加密后写进「关于」页面，解密方法也会一并写在页面上——博客产物里不会出现明文。",
+            },
+          ],
+        },
+        {
+          title: "页面内容",
+          fields: [
+            {
+              root: "state",
+              path: "content.announcement.title",
+              label: "公告标题",
+              type: "text",
+              hint: "首屏右侧那张「公告」卡片的标题",
+            },
+            {
+              root: "state",
+              path: "content.announcement.body",
+              label: "公告正文",
+              type: "textarea",
+              rows: 5,
+              hint: "Markdown：空行分段，- 开头是列表项",
+            },
+            { root: "state", path: "content.about.title", label: "关于页标题", type: "text" },
+            {
+              root: "state",
+              path: "content.about.description",
+              label: "关于页描述",
+              type: "text",
+              hint: "页面 meta 与搜索结果里用的那句",
+            },
+            {
+              root: "state",
+              path: "content.about.date",
+              label: "页面日期",
+              type: "text",
+              hint: "frontmatter 的 date，形如 2026-03-29",
+            },
+            {
+              root: "state",
+              path: "content.about.updated",
+              label: "最后更新",
+              type: "text",
+              hint: "frontmatter 的 updated",
+            },
+            {
+              root: "state",
+              path: "content.about.body",
+              label: "关于页正文",
+              type: "textarea",
+              rows: 12,
+              hint: "Markdown；对话组件和联系方式段会自动接在正文后面，不用自己写",
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.title",
+              label: "对话组件标题",
+              type: "text",
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.intro",
+              label: "对话组件说明",
+              type: "text",
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.intro",
+              label: "对话·第一句",
+              type: "textarea",
+              rows: 2,
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.identity",
+              label: "答复·你是谁",
+              type: "textarea",
+              rows: 3,
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.focus",
+              label: "答复·关注什么",
+              type: "textarea",
+              rows: 3,
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.blog",
+              label: "答复·写什么",
+              type: "textarea",
+              rows: 3,
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.stack",
+              label: "答复·技术栈",
+              type: "textarea",
+              rows: 3,
+            },
+            {
+              root: "state",
+              path: "content.about.dialog.nodes.contact",
+              label: "答复·怎么联系",
+              type: "textarea",
+              rows: 3,
+            },
+          ],
+        },
+        {
+          title: "字体",
+          fields: [
+            {
+              root: "state",
+              path: "fonts.standard",
+              label: "正文字体",
+              type: "asset",
+              assetKey: "fonts",
+            },
+            {
+              root: "state",
+              path: "fonts.monospace",
+              label: "等宽/代码字体",
+              type: "asset",
+              assetKey: "fonts",
+            },
+          ],
+        },
+        {
+          title: "品牌与信息",
+          fields: [
+            { root: "theme", path: "siteName", label: "站点名", type: "text", def: "ShokaX" },
+            {
+              root: "theme",
+              path: "locale",
+              label: "语言",
+              type: "select",
+              options: ["zh-CN", "en"],
+              def: "zh-CN",
+            },
+            { root: "theme", path: "brand.title", label: "标题", type: "text", def: "ShokaX" },
+            {
+              root: "theme",
+              path: "brand.subtitle",
+              label: "副标题",
+              type: "textarea",
+              def: "A modern blog theme",
+            },
+            { root: "theme", path: "brand.logo", label: "Logo 字符", type: "text", def: "✨" },
+          ],
+        },
+        {
+          title: "侧边栏",
+          fields: [
+            {
+              root: "theme",
+              path: "sidebar.author",
+              label: "作者",
+              type: "text",
+              def: "Your Name",
+            },
+            {
+              root: "theme",
+              path: "sidebar.description",
+              label: "简介",
+              type: "text",
+              def: "A brief introduction",
+            },
+            {
+              root: "theme",
+              path: "sidebar.social",
+              label: "社交链接",
+              type: "social",
+              def: {},
+              hint: "只填链接就行，留空的不写入配置。图标由主题内置的 Remix Icon 提供，不需要你操心。",
+            },
+          ],
+        },
+        {
+          title: "页脚",
+          fields: [
+            { root: "theme", path: "footer.since", label: "建站年份", type: "number", def: 2025 },
+            {
+              root: "theme",
+              path: "footer.icon.name",
+              label: "页脚图标",
+              type: "text",
+              def: "sakura rotate",
+            },
+            {
+              root: "theme",
+              path: "footer.icon.color",
+              label: "图标颜色",
+              type: "color",
+              def: "var(--color-pink)",
+              hint: "三种填法：从下拉选主题色板、用色板挑自定义颜色、或直接填 #ffc0cb / rgb() / hsl()",
+            },
+            { root: "theme", path: "footer.count", label: "显示站点统计", type: "bool", def: true },
+            {
+              root: "theme",
+              path: "footer.powered",
+              label: "显示驱动信息",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "footer.icp.enable",
+              label: "显示 ICP 备案",
+              type: "bool",
+              def: true,
+              hint: "默认值是主题作者的备案号，已关闭",
+            },
+            {
+              root: "theme",
+              path: "footer.icp.icpnumber",
+              label: "备案号",
+              type: "text",
+              def: "津ICP备2022001375号",
+            },
+            {
+              root: "theme",
+              path: "footer.icp.icpurl",
+              label: "备案链接",
+              type: "text",
+              def: "https://beian.miit.gov.cn/",
+            },
+          ],
+        },
+        {
+          title: "标签云",
+          fields: [
+            {
+              root: "theme",
+              path: "tagCloud.startColor",
+              label: "起始颜色",
+              type: "color",
+              def: "var(--grey-6)",
+              hint: "已按你的旧值设为 #72cecf",
+            },
+            {
+              root: "theme",
+              path: "tagCloud.endColor",
+              label: "结束颜色",
+              type: "color",
+              def: "var(--color-blue)",
+              hint: "已按你的旧值设为 #ffbac3",
+            },
+          ],
+        },
+        {
+          title: "小部件",
+          fields: [
+            {
+              root: "theme",
+              path: "widgets.randomPosts",
+              label: "随机文章",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "widgets.randomPostsLimit",
+              label: "随机文章条数",
+              type: "number",
+              def: 3,
+            },
+            {
+              root: "theme",
+              path: "widgets.recentComments",
+              label: "最近评论",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "widgets.recentCommentsLimit",
+              label: "最近评论条数",
+              type: "number",
+              def: 10,
+            },
+          ],
+        },
+        {
+          title: "首页",
+          fields: [
+            {
+              root: "theme",
+              path: "home.pageSize",
+              label: "每页文章数",
+              type: "number",
+              def: 5,
+              hint: "旧站是 10",
+            },
+            {
+              root: "theme",
+              path: "home.selectedCategories",
+              label: "首页分类筛选",
+              type: "list",
+              def: [{ name: "Tutorial" }, { name: "Frontend" }],
+              missKey: "name",
+              hint: "分类名必须与文章里的分类完全一致（大小写敏感），名字对不上首页那张卡片就是空的。全部删掉＝不显示筛选区。",
+              item: [
+                {
+                  key: "name",
+                  label: "分类名",
+                  type: "text",
+                  datalist: "dl_categories",
+                  ph: "从候选里挑，或自己填",
+                },
+                { key: "cover", label: "封面图（可选）", type: "image", ph: "留空用随机封面" },
+              ],
+            },
+            {
+              root: "theme",
+              path: "home.title.behavior",
+              label: "首页标题行为",
+              type: "select",
+              options: ["default", "custom"],
+              def: "default",
+            },
+            {
+              root: "theme",
+              path: "home.title.customTitle",
+              label: "自定义首页标题",
+              type: "text",
+              def: "",
+            },
+          ],
+        },
+        {
+          title: "布局",
+          fields: [
+            {
+              root: "theme",
+              path: "layout.mode",
+              label: "布局模式",
+              type: "select",
+              options: ["two-column", "three-column"],
+              def: "three-column",
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.order",
+              label: "右栏卡片顺序",
+              type: "order",
+              known: SIDEBAR_CARDS,
+              hint: "用 ↑ ↓ 调顺序；每张卡显示与否由下面那几个开关控制",
+              def: [
+                "announcement",
+                "search",
+                "calendar",
+                "recentMoments",
+                "randomPosts",
+                "tagCloud",
+              ],
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.announcement",
+              label: "右栏·公告",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.search",
+              label: "右栏·搜索",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.calendar",
+              label: "右栏·日历",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.recentMoments",
+              label: "右栏·最近动态",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.randomPosts",
+              label: "右栏·随机文章",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "layout.rightSidebar.tagCloud",
+              label: "右栏·标签云",
+              type: "bool",
+              def: true,
+            },
+          ],
+        },
+        {
+          title: "导航与页面",
+          fields: [
+            {
+              root: "theme",
+              path: "nav",
+              label: "顶部导航",
+              type: "list",
+              def: DEFAULT_NAV,
+              hint: "整体替换主题默认导航；每项都可以挂一个下拉子菜单",
+              item: [
+                { key: "text", label: "文字", type: "text", ph: "首页" },
+                { key: "href", label: "链接", type: "text", ph: "/ 或 https://…" },
+                { key: "icon", label: "图标", type: "icon", ph: "i-ri-home-line" },
+              ],
+              nested: {
+                key: "dropbox",
+                label: "展开为下拉子菜单",
+                item: [
+                  { key: "text", label: "文字", type: "text" },
+                  { key: "href", label: "链接", type: "text" },
+                  { key: "icon", label: "图标", type: "icon" },
+                ],
+              },
+            },
+            { root: "theme", path: "cover.enable", label: "启用封面", type: "bool", def: true },
+            { root: "theme", path: "cover.preload", label: "预加载封面", type: "bool", def: true },
+            {
+              root: "theme",
+              path: "cover.fixedCover.enable",
+              label: "固定封面",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "theme",
+              path: "cover.fixedCover.url",
+              label: "固定封面图",
+              type: "text",
+              def: "cover-4",
+            },
+            {
+              root: "theme",
+              path: "cover.coverUrls",
+              label: "自定义封面列表",
+              type: "list",
+              kind: "str",
+              def: [],
+              hint: "旧站是调 loliapi 随机图 API，新版用本地图；一行一张，可以从候选图里挑，也可以填外链",
+              item: [
+                {
+                  key: "__v",
+                  label: "图片",
+                  type: "image",
+                  datalist: "dl_images",
+                  ph: "images/cover-1.avif 或 https://…",
+                },
+              ],
+            },
+            {
+              root: "theme",
+              path: "friends.title",
+              label: "友链页标题",
+              type: "text",
+              def: "友链",
+            },
+            {
+              root: "theme",
+              path: "friends.description",
+              label: "友链页说明",
+              type: "text",
+              def: "卡片式展示，支持站点预览与主题色点缀。",
+            },
+            {
+              root: "theme",
+              path: "friends.comments",
+              label: "友链页允许评论",
+              type: "bool",
+              def: false,
+            },
+            {
+              root: "theme",
+              path: "friends.links",
+              label: "友链列表",
+              type: "list",
+              def: DEFAULT_FRIENDS,
+              hint: "现在是 Astro/Svelte/Vite/Bun 四条演示链接，换成你自己的",
+              item: [
+                { key: "title", label: "站点标题", type: "text", ph: "朋友的小站" },
+                { key: "url", label: "链接", type: "text", ph: "https://…" },
+                { key: "author", label: "主理人", type: "text" },
+                {
+                  key: "avatar",
+                  label: "头像",
+                  type: "image",
+                  datalist: "dl_images",
+                  ph: "https://… 或图片路径",
+                },
+                { key: "desc", label: "描述", type: "textarea", ph: "一句话介绍" },
+                { key: "siteImage", label: "预览图（可选）", type: "image", datalist: "dl_images" },
+                {
+                  key: "color",
+                  label: "主题色（可选）",
+                  type: "text",
+                  datalist: "dl_colors",
+                  ph: "var(--color-blue)",
+                },
+              ],
+            },
+            {
+              root: "theme",
+              path: "copyright.license",
+              label: "版权协议",
+              type: "select",
+              options: [
+                "CC-BY-4.0",
+                "CC-BY-SA-4.0",
+                "CC-BY-ND-4.0",
+                "CC-BY-NC-4.0",
+                "CC-BY-NC-SA-4.0",
+                "CC-BY-NC-ND-4.0",
+                "NOREPRINT",
+              ],
+              def: "CC-BY-NC-SA-4.0",
+              hint: "旧站是 by-nc-sa，与默认一致",
+            },
+            {
+              root: "theme",
+              path: "copyright.show",
+              label: "显示版权声明",
+              type: "bool",
+              def: true,
+            },
+          ],
+        },
+        {
+          title: "插件",
+          fields: [
+            {
+              root: "plugins",
+              path: "siteUptime.enabled",
+              label: "站点运行时间",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "siteUptime.siteCreatedAt",
+              label: "　起始时刻",
+              type: "text",
+              def: "2024-03-11T12:00:00+08:00",
+            },
+            {
+              root: "plugins",
+              path: "siteUptime.prefixText",
+              label: "　前缀文字",
+              type: "text",
+              def: "本站已运行",
+            },
+            {
+              root: "plugins",
+              path: "vercount.enabled",
+              label: "访问统计",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "mouseFirework.enabled",
+              label: "点击烟花特效",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "articleStatistics.enabled",
+              label: "文章统计页",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "articleAgeWarning.enabled",
+              label: "文章过期提醒",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "articleAgeWarning.maxAgeDays",
+              label: "　提醒天数",
+              type: "number",
+              def: 180,
+            },
+            {
+              root: "plugins",
+              path: "visibilityTitle.enabled",
+              label: "标签页切换提示",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "visibilityTitle.returnTitle",
+              label: "　回到页面时",
+              type: "text",
+              def: "🎉 欢迎回来！",
+              hint: "你旧站写的是「你回来了！让我们继续吧！🚀」",
+            },
+            {
+              root: "plugins",
+              path: "visibilityTitle.leaveTitle",
+              label: "　离开页面时",
+              type: "text",
+              def: "👀 你先忙，我等你回来~",
+              hint: "你旧站写的是「哦不，你要走了吗？😢」",
+            },
+            {
+              root: "plugins",
+              path: "visibilityTitle.restoreDelay",
+              label: "　恢复延迟 (ms)",
+              type: "number",
+              def: 3000,
+            },
+            {
+              root: "plugins",
+              path: "nyxPlayer.enabled",
+              label: "音乐播放器",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "nyxPlayer.preset",
+              label: "　播放器主题",
+              type: "select",
+              options: ["shokax", "nyx"],
+              def: "shokax",
+            },
+            {
+              root: "plugins",
+              path: "nyxPlayer.urls",
+              label: "　歌单",
+              type: "list",
+              def: [],
+              hint: "只支持网易云；QQ 音乐后端不支持。VIP 歌需要自建带 cookie 的后端才能放",
+              item: [
+                { key: "name", label: "名称", type: "text", ph: "网易云音乐" },
+                {
+                  key: "url",
+                  label: "歌单链接",
+                  type: "text",
+                  ph: "https://music.163.com/#/playlist?id=…",
+                },
+              ],
+            },
+            {
+              root: "plugins",
+              path: "walineComments.enabled",
+              label: "评论系统",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "walineComments.serverURL",
+              label: "　Waline 地址",
+              type: "text",
+              def: "",
+              hint: "留空则评论不显示；Waline 需要你自己部署一个后端",
+            },
+            {
+              root: "plugins",
+              path: "walineComments.lang",
+              label: "　评论语言",
+              type: "select",
+              options: ["zh-CN", "en"],
+              def: "zh-CN",
+            },
+            {
+              root: "plugins",
+              path: "analytics.enabled",
+              label: "外部分析",
+              type: "bool",
+              def: true,
+            },
+            {
+              root: "plugins",
+              path: "analytics.googleAnalytics.measurementId",
+              label: "　Google Analytics ID",
+              type: "text",
+              def: "",
+              hint: "形如 G-XXXXXXXXXX；留空则不注入 GA 脚本",
+            },
+            {
+              root: "plugins",
+              path: "analytics.umami.websiteId",
+              label: "　Umami Website ID",
+              type: "text",
+              def: "",
+              hint: "Umami 面板 Add website 后拿到的那串 UUID；留空则不注入 Umami 脚本",
+            },
+            {
+              root: "plugins",
+              path: "analytics.umami.scriptUrl",
+              label: "　Umami 脚本地址",
+              type: "text",
+              def: "",
+              hint: "用官方云版就留空（默认 https://cloud.umami.is/script.js）；自建才填 https://你的域名/script.js",
+            },
+            {
+              root: "plugins",
+              path: "analytics.umami.domains",
+              label: "　Umami 统计域名",
+              type: "text",
+              def: "",
+              hint: "只有这些域名上的访问会计入（逗号分隔）；留空＝自动用上面「站点网址」的域名，于是本地预览、临时部署都不计入",
+            },
+            {
+              root: "plugins",
+              path: "aiContent.enabled",
+              label: "AI 摘要与推荐",
+              type: "bool",
+              def: false,
+              hint: "需要额外配置，默认关闭",
+            },
+          ],
+        },
       ];
 
       // 社媒平台清单：图标名已逐个对照项目内 @iconify-json/ri 核实存在
       const SOCIAL_PLATFORMS = [
-        { key: "github", label: "GitHub", icon: "i-ri-github-fill", ph: "https://github.com/你的用户名" },
-        { key: "twitter", label: "X / Twitter", icon: "i-ri-twitter-x-fill", ph: "https://x.com/你的用户名" },
+        {
+          key: "github",
+          label: "GitHub",
+          icon: "i-ri-github-fill",
+          ph: "https://github.com/你的用户名",
+        },
+        {
+          key: "twitter",
+          label: "X / Twitter",
+          icon: "i-ri-twitter-x-fill",
+          ph: "https://x.com/你的用户名",
+        },
         { key: "email", label: "邮箱", icon: "i-ri-mail-fill", ph: "mailto:you@example.com" },
-        { key: "bilibili", label: "哔哩哔哩", icon: "i-ri-bilibili-fill", ph: "https://space.bilibili.com/你的UID" },
-        { key: "weibo", label: "微博", icon: "i-ri-weibo-fill", ph: "https://weibo.com/你的用户名" },
-        { key: "zhihu", label: "知乎", icon: "i-ri-zhihu-fill", ph: "https://www.zhihu.com/people/你的ID" },
+        {
+          key: "bilibili",
+          label: "哔哩哔哩",
+          icon: "i-ri-bilibili-fill",
+          ph: "https://space.bilibili.com/你的UID",
+        },
+        {
+          key: "weibo",
+          label: "微博",
+          icon: "i-ri-weibo-fill",
+          ph: "https://weibo.com/你的用户名",
+        },
+        {
+          key: "zhihu",
+          label: "知乎",
+          icon: "i-ri-zhihu-fill",
+          ph: "https://www.zhihu.com/people/你的ID",
+        },
         { key: "qq", label: "QQ", icon: "i-ri-qq-fill", ph: "https://qm.qq.com/q/你的号" },
-        { key: "wechat", label: "微信", icon: "i-ri-wechat-fill", ph: "（微信一般不放链接，可留空）" },
-        { key: "telegram", label: "Telegram", icon: "i-ri-telegram-fill", ph: "https://t.me/你的用户名" },
-        { key: "discord", label: "Discord", icon: "i-ri-discord-fill", ph: "https://discord.gg/邀请码" },
-        { key: "youtube", label: "YouTube", icon: "i-ri-youtube-fill", ph: "https://youtube.com/@你的频道" },
+        {
+          key: "wechat",
+          label: "微信",
+          icon: "i-ri-wechat-fill",
+          ph: "（微信一般不放链接，可留空）",
+        },
+        {
+          key: "telegram",
+          label: "Telegram",
+          icon: "i-ri-telegram-fill",
+          ph: "https://t.me/你的用户名",
+        },
+        {
+          key: "discord",
+          label: "Discord",
+          icon: "i-ri-discord-fill",
+          ph: "https://discord.gg/邀请码",
+        },
+        {
+          key: "youtube",
+          label: "YouTube",
+          icon: "i-ri-youtube-fill",
+          ph: "https://youtube.com/@你的频道",
+        },
         { key: "rss", label: "RSS 订阅", icon: "i-ri-rss-fill", ph: "/atom.xml" },
-        { key: "netease", label: "网易云音乐", icon: "i-ri-netease-cloud-music-fill", ph: "https://music.163.com/#/user/home?id=你的ID" },
-        { key: "steam", label: "Steam", icon: "i-ri-steam-fill", ph: "https://steamcommunity.com/id/你的ID" },
-        { key: "douban", label: "豆瓣", icon: "i-ri-douban-fill", ph: "https://www.douban.com/people/你的ID/" },
-        { key: "instagram", label: "Instagram", icon: "i-ri-instagram-fill", ph: "https://instagram.com/你的用户名" },
-        { key: "reddit", label: "Reddit", icon: "i-ri-reddit-fill", ph: "https://reddit.com/user/你的用户名" },
-        { key: "mastodon", label: "Mastodon", icon: "i-ri-mastodon-fill", ph: "https://实例/@你的用户名" },
-        { key: "bluesky", label: "Bluesky", icon: "i-ri-bluesky-fill", ph: "https://bsky.app/profile/你的handle" },
-        { key: "threads", label: "Threads", icon: "i-ri-threads-fill", ph: "https://www.threads.net/@你的用户名" },
-        { key: "spotify", label: "Spotify", icon: "i-ri-spotify-fill", ph: "https://open.spotify.com/user/你的ID" },
-        { key: "twitch", label: "Twitch", icon: "i-ri-twitch-fill", ph: "https://twitch.tv/你的用户名" },
-        { key: "notion", label: "Notion", icon: "i-ri-notion-fill", ph: "https://你的域名.notion.site" },
+        {
+          key: "netease",
+          label: "网易云音乐",
+          icon: "i-ri-netease-cloud-music-fill",
+          ph: "https://music.163.com/#/user/home?id=你的ID",
+        },
+        {
+          key: "steam",
+          label: "Steam",
+          icon: "i-ri-steam-fill",
+          ph: "https://steamcommunity.com/id/你的ID",
+        },
+        {
+          key: "douban",
+          label: "豆瓣",
+          icon: "i-ri-douban-fill",
+          ph: "https://www.douban.com/people/你的ID/",
+        },
+        {
+          key: "instagram",
+          label: "Instagram",
+          icon: "i-ri-instagram-fill",
+          ph: "https://instagram.com/你的用户名",
+        },
+        {
+          key: "reddit",
+          label: "Reddit",
+          icon: "i-ri-reddit-fill",
+          ph: "https://reddit.com/user/你的用户名",
+        },
+        {
+          key: "mastodon",
+          label: "Mastodon",
+          icon: "i-ri-mastodon-fill",
+          ph: "https://实例/@你的用户名",
+        },
+        {
+          key: "bluesky",
+          label: "Bluesky",
+          icon: "i-ri-bluesky-fill",
+          ph: "https://bsky.app/profile/你的handle",
+        },
+        {
+          key: "threads",
+          label: "Threads",
+          icon: "i-ri-threads-fill",
+          ph: "https://www.threads.net/@你的用户名",
+        },
+        {
+          key: "spotify",
+          label: "Spotify",
+          icon: "i-ri-spotify-fill",
+          ph: "https://open.spotify.com/user/你的ID",
+        },
+        {
+          key: "twitch",
+          label: "Twitch",
+          icon: "i-ri-twitch-fill",
+          ph: "https://twitch.tv/你的用户名",
+        },
+        {
+          key: "notion",
+          label: "Notion",
+          icon: "i-ri-notion-fill",
+          ph: "https://你的域名.notion.site",
+        },
         { key: "site", label: "个人网站", icon: "i-ri-global-fill", ph: "https://example.com" },
         { key: "link", label: "其他链接", icon: "i-ri-link", ph: "https://…" },
       ];
@@ -577,8 +1739,37 @@
 
       // 主题内置的颜色 token（来自 src/styles 里的 CSS 变量定义）
       const COLOR_TOKENS = [
-        { label: "主题色", values: ["color-aqua", "color-blue", "color-cyan-light", "color-green", "color-grey", "color-orange", "color-pink", "color-pink-light", "color-purple", "color-red", "color-yellow"] },
-        { label: "灰阶", values: ["grey-0", "grey-1", "grey-2", "grey-3", "grey-4", "grey-5", "grey-6", "grey-7", "grey-8", "grey-9"] },
+        {
+          label: "主题色",
+          values: [
+            "color-aqua",
+            "color-blue",
+            "color-cyan-light",
+            "color-green",
+            "color-grey",
+            "color-orange",
+            "color-pink",
+            "color-pink-light",
+            "color-purple",
+            "color-red",
+            "color-yellow",
+          ],
+        },
+        {
+          label: "灰阶",
+          values: [
+            "grey-0",
+            "grey-1",
+            "grey-2",
+            "grey-3",
+            "grey-4",
+            "grey-5",
+            "grey-6",
+            "grey-7",
+            "grey-8",
+            "grey-9",
+          ],
+        },
       ];
 
       /** <input type="color"> 只认 6 位 hex；把 #abc / #rrggbbaa 归一化后才能塞进去 */
@@ -586,21 +1777,32 @@
         const m = /^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(String(v ?? "").trim());
         if (!m) return "#ffffff";
         let t = m[1];
-        if (t.length === 3) t = t.split("").map((c) => c + c).join("");
+        if (t.length === 3)
+          t = t
+            .split("")
+            .map((c) => c + c)
+            .join("");
         return "#" + t.slice(0, 6);
       }
 
-      let state = null, assets = { fonts: [], images: [] }, categories = [];
+      let state = null,
+        assets = { fonts: [], images: [] },
+        categories = [];
 
       /** 候选值：项目里的图片、文章里真实存在的分类、主题色 token */
       function datalistsHTML() {
-        const img = (assets.images ?? []).map((x) => `<option value="${esc(x.rel)}">${esc(x.name)}</option>`).join("");
+        const img = (assets.images ?? [])
+          .map((x) => `<option value="${esc(x.rel)}">${esc(x.name)}</option>`)
+          .join("");
         const cat = (categories ?? []).map((c) => `<option value="${esc(c)}"></option>`).join("");
-        const col = COLOR_TOKENS.flatMap((g) => g.values.map((n) => `<option value="var(--${n})"></option>`)).join("");
+        const col = COLOR_TOKENS.flatMap((g) =>
+          g.values.map((n) => `<option value="var(--${n})"></option>`),
+        ).join("");
         return `<datalist id="dl_images">${img}</datalist><datalist id="dl_categories">${cat}</datalist><datalist id="dl_colors">${col}</datalist>`;
       }
 
-      const getPath = (obj, path) => path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
+      const getPath = (obj, path) =>
+        path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), obj);
       function setPath(obj, path, val) {
         const keys = path.split(".");
         let o = obj;
@@ -631,20 +1833,30 @@
       }
 
       const opts = (list, cur) =>
-        list.map((v) => `<option value="${v}"${v === cur ? " selected" : ""}>${v}</option>`).join("");
+        list
+          .map((v) => `<option value="${v}"${v === cur ? " selected" : ""}>${v}</option>`)
+          .join("");
 
       // ── 列表编辑器 ────────────────────────────────────────────
       // 以前这几处要在文本框里手写 JSON。现在统一渲染成「一行一项」，可以加/删/上下移，
       // 保存时直接从 DOM 读回来，不再经过 JSON.parse。
 
       const esc = (s) =>
-        String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        String(s ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
 
       /** 键顺序无关的相等判断：{a:1,b:2} 与 {b:2,a:1} 算同一个值 */
       function canon(v) {
         if (Array.isArray(v)) return v.map(canon);
         if (v && typeof v === "object")
-          return Object.fromEntries(Object.keys(v).sort().map((k) => [k, canon(v[k])]));
+          return Object.fromEntries(
+            Object.keys(v)
+              .sort()
+              .map((k) => [k, canon(v[k])]),
+          );
         return v;
       }
       const sameJSON = (a, b) => JSON.stringify(canon(a)) === JSON.stringify(canon(b));
@@ -724,7 +1936,10 @@
           .join("");
         const missing = known.filter((k) => !cur.includes(k.id));
         const adds = missing
-          .map((k) => `<button type="button" data-order-add="${esc(k.id)}" data-order-label="${esc(k.label)}">＋ ${esc(k.label)}</button>`)
+          .map(
+            (k) =>
+              `<button type="button" data-order-add="${esc(k.id)}" data-order-label="${esc(k.label)}">＋ ${esc(k.label)}</button>`,
+          )
           .join("");
         return `<div class="list" data-list data-kind="order">
           <div class="list-body">${rows}</div>
@@ -760,13 +1975,18 @@
           const body = [...listEl.children].find((c) => c.classList.contains("list-body"));
           let miss = 0;
           [...(body?.children ?? [])].forEach((row) => {
-            const v = (row.querySelector(`.list-fields [data-key="${listEl.dataset.missKey}"]`)?.value ?? "").trim();
+            const v = (
+              row.querySelector(`.list-fields [data-key="${listEl.dataset.missKey}"]`)?.value ?? ""
+            ).trim();
             const bad = v !== "" && known.size > 0 && !known.has(v);
             row.classList.toggle("miss", bad);
             if (bad) miss++;
           });
           const note = listEl.querySelector(".list-note");
-          if (note) note.textContent = miss ? `有 ${miss} 个分类名在文章里找不到，首页对应卡片会是空的` : "";
+          if (note)
+            note.textContent = miss
+              ? `有 ${miss} 个分类名在文章里找不到，首页对应卡片会是空的`
+              : "";
         });
       }
 
@@ -775,9 +1995,12 @@
         refreshMissWarnings();
       }
 
-      const bodyOf = (listEl) => [...listEl.children].find((c) => c.classList.contains("list-body"));
+      const bodyOf = (listEl) =>
+        [...listEl.children].find((c) => c.classList.contains("list-body"));
       const templateOf = (listEl) =>
-        [...listEl.querySelectorAll("template.list-tpl")].find((t) => t.closest(".list") === listEl);
+        [...listEl.querySelectorAll("template.list-tpl")].find(
+          (t) => t.closest(".list") === listEl,
+        );
 
       /** 从列表 DOM 里把值读回来（不经过 JSON） */
       function collectList(listEl) {
@@ -797,7 +2020,9 @@
             const v = String(el.value ?? "").trim();
             if (v !== "") obj[el.dataset.key] = v;
           });
-          const nested = [...row.children].find((c) => c.classList?.contains("list") && c.dataset.nested);
+          const nested = [...row.children].find(
+            (c) => c.classList?.contains("list") && c.dataset.nested,
+          );
           if (nested) {
             const on = row.querySelector("[data-nested-enable]")?.checked ?? false;
             const items = collectList(nested);
@@ -827,98 +2052,114 @@
 
       function render() {
         const form = document.getElementById("form");
-        form.innerHTML = SCHEMA.map((sec, si) => {
-          const rows = sec.fields.map((f, fi) => {
-            const val = currentValue(f);
-            const id = `f_${si}_${fi}`;
-            // data-def 存的是「主题默认值」，点「恢复默认」时把控件还原成它
-            const d = esc(JSON.stringify(f.def ?? null));
-            const isDefault = sameJSON(val, f.def);
-            let ctrl = "";
-            if (f.type === "bool") {
-              ctrl = `<input type="checkbox" id="${id}" ${val ? "checked" : ""} />`;
-            } else if (f.type === "number") {
-              ctrl = `<input type="number" id="${id}" value="${val ?? ""}" />`;
-            } else if (f.type === "select") {
-              ctrl = `<select id="${id}">${opts(f.options, val)}</select>`;
-            } else if (f.type === "textarea") {
-              ctrl = `<textarea id="${id}"${f.rows ? ` rows="${Number(f.rows)}"` : ""}>${val ?? ""}</textarea>`;
-            } else if (f.type === "social") {
-              const cur = val && typeof val === "object" ? val : {};
-              const known = new Set(SOCIAL_PLATFORMS.map((x) => x.key));
-              const extraItems = Object.entries(cur)
-                .filter(([k]) => !known.has(k))
-                .map(([k, v2]) => ({ key: k, icon: v2?.icon ?? "", url: v2?.url ?? "" }));
-              const rows = SOCIAL_PLATFORMS.map((pf) => {
-                const u = String(cur[pf.key]?.url ?? "").replace(/"/g, "&quot;");
-                return `<div class="social-row">
+        form.innerHTML =
+          SCHEMA.map((sec, si) => {
+            const rows = sec.fields
+              .map((f, fi) => {
+                const val = currentValue(f);
+                const id = `f_${si}_${fi}`;
+                // data-def 存的是「主题默认值」，点「恢复默认」时把控件还原成它
+                const d = esc(JSON.stringify(f.def ?? null));
+                const isDefault = sameJSON(val, f.def);
+                let ctrl = "";
+                if (f.type === "bool") {
+                  ctrl = `<input type="checkbox" id="${id}" ${val ? "checked" : ""} />`;
+                } else if (f.type === "number") {
+                  ctrl = `<input type="number" id="${id}" value="${val ?? ""}" />`;
+                } else if (f.type === "select") {
+                  ctrl = `<select id="${id}">${opts(f.options, val)}</select>`;
+                } else if (f.type === "textarea") {
+                  ctrl = `<textarea id="${id}"${f.rows ? ` rows="${Number(f.rows)}"` : ""}>${val ?? ""}</textarea>`;
+                } else if (f.type === "social") {
+                  const cur = val && typeof val === "object" ? val : {};
+                  const known = new Set(SOCIAL_PLATFORMS.map((x) => x.key));
+                  const extraItems = Object.entries(cur)
+                    .filter(([k]) => !known.has(k))
+                    .map(([k, v2]) => ({ key: k, icon: v2?.icon ?? "", url: v2?.url ?? "" }));
+                  const rows = SOCIAL_PLATFORMS.map((pf) => {
+                    const u = String(cur[pf.key]?.url ?? "").replace(/"/g, "&quot;");
+                    return `<div class="social-row">
                   <img class="social-icon" src="/icon?name=${encodeURIComponent(pf.icon)}" alt="" />
                   <span class="social-label">${pf.label}</span>
                   <input type="text" class="social-url" data-key="${pf.key}" data-icon="${pf.icon}" placeholder="${pf.ph ?? ""}" value="${u}" />
                 </div>`;
-              }).join("");
-              ctrl = `<div class="social-list">${rows}</div>
-                <div class="social-extra">${listHTML({ item: [
-                  { key: "key", label: "平台键名", type: "text", ph: "pixiv" },
-                  { key: "icon", label: "图标", type: "icon", ph: "i-ri-pixiv-fill" },
-                  { key: "url", label: "链接", type: "text", ph: "https://…" },
-                ] }, extraItems)}</div>
+                  }).join("");
+                  ctrl = `<div class="social-list">${rows}</div>
+                <div class="social-extra">${listHTML(
+                  {
+                    item: [
+                      { key: "key", label: "平台键名", type: "text", ph: "pixiv" },
+                      { key: "icon", label: "图标", type: "icon", ph: "i-ri-pixiv-fill" },
+                      { key: "url", label: "链接", type: "text", ph: "https://…" },
+                    ],
+                  },
+                  extraItems,
+                )}</div>
                 <span class="hint">上面 25 个平台不够用时在这里自己加：键名随你取，图标填 Remix Icon 名（如 i-ri-pixiv-fill）。</span>`;
-            } else if (f.type === "email") {
-              const shown = rot13(val ?? "");
-              ctrl = `<input type="text" id="${id}" placeholder="you@example.com" value="${(val ?? "").replace(/"/g, "&quot;")}" />
+                } else if (f.type === "email") {
+                  const shown = rot13(val ?? "");
+                  ctrl = `<input type="text" id="${id}" placeholder="you@example.com" value="${(val ?? "").replace(/"/g, "&quot;")}" />
                 <div class="cipher">博客上会显示（ROT13 密文）：<code id="${id}_c">${shown || "（未填写）"}</code></div>`;
-            } else if (f.type === "list") {
-              ctrl = listHTML(f, val);
-            } else if (f.type === "order") {
-              ctrl = orderHTML(f, val);
-            } else if (f.type === "color") {
-              const cur = String(val ?? "").trim();
-              const groups = COLOR_TOKENS.map(
-                (g) =>
-                  `<optgroup label="${g.label}">${g.values
-                    .map((n) => {
-                      const v = `var(--${n})`;
-                      return `<option value="${v}"${cur === v ? " selected" : ""}>${v}</option>`;
-                    })
-                    .join("")}</optgroup>`,
-              ).join("");
-              ctrl = `<input type="color" id="${id}_p" value="${toPickerHex(cur)}" />
+                } else if (f.type === "list") {
+                  ctrl = listHTML(f, val);
+                } else if (f.type === "order") {
+                  ctrl = orderHTML(f, val);
+                } else if (f.type === "color") {
+                  const cur = String(val ?? "").trim();
+                  const groups = COLOR_TOKENS.map(
+                    (g) =>
+                      `<optgroup label="${g.label}">${g.values
+                        .map((n) => {
+                          const v = `var(--${n})`;
+                          return `<option value="${v}"${cur === v ? " selected" : ""}>${v}</option>`;
+                        })
+                        .join("")}</optgroup>`,
+                  ).join("");
+                  ctrl = `<input type="color" id="${id}_p" value="${toPickerHex(cur)}" />
                 <select id="${id}_t" style="max-width:186px">
                   <option value="__custom__"${cur && !cur.startsWith("var(--") ? " selected" : ""}>自定义颜色…</option>
                   ${groups}
                 </select>
                 <input type="text" id="${id}" value="${cur.replace(/"/g, "&quot;")}" style="max-width:186px" />`;
-            } else if (f.type === "asset" && f.assetKey === "images") {
-              const cur = (val ?? "").replace(/^src\/assets\//, "");
-              const imgs = assets.images || [];
-              // 当前值不在候选目录里时，也要显示出来，否则界面上会"什么都没选中"
-              const shown =
-                !cur || imgs.some((x) => x.rel === cur)
-                  ? imgs
-                  : [{ name: `${cur}（未在目录中找到）`, rel: cur }, ...imgs];
-              ctrl = `<div class="thumbs">${shown
-                .map(
-                  (x) => `<label class="thumb${x.rel === cur ? " on" : ""}" title="${x.rel}">
+                } else if (f.type === "asset" && f.assetKey === "images") {
+                  const cur = (val ?? "").replace(/^src\/assets\//, "");
+                  const imgs = assets.images || [];
+                  // 当前值不在候选目录里时，也要显示出来，否则界面上会"什么都没选中"
+                  const shown =
+                    !cur || imgs.some((x) => x.rel === cur)
+                      ? imgs
+                      : [{ name: `${cur}（未在目录中找到）`, rel: cur }, ...imgs];
+                  ctrl = `<div class="thumbs">${shown
+                    .map(
+                      (x) => `<label class="thumb${x.rel === cur ? " on" : ""}" title="${x.rel}">
                   <input type="radio" name="${id}" value="${x.rel}"${x.rel === cur ? " checked" : ""} />
                   <img src="/asset?rel=${encodeURIComponent(x.rel)}" alt="${x.name}" loading="lazy" />
                   <span>${x.name}</span>
                 </label>`,
-                )
-                .join("")}</div>`;
-            } else if (f.type === "asset") {
-              const list = assets[f.assetKey] || [];
-              const cur = (val ?? "").replace(/^src\/assets\//, "");
-              const has = list.some((x) => x.rel === cur);
-              ctrl = `<select id="${id}">${has ? "" : `<option value="${cur}" selected>${cur}（当前，未在目录中找到）</option>`}${
-                list.map((x) => `<option value="${x.rel}"${x.rel === cur ? " selected" : ""}>${x.rel}</option>`).join("")
-              }</select><div class="font-preview" data-for="${id}">中文示例 ABCabc 123 —— 这段话会用所选字体渲染</div>`;
-            } else {
-              ctrl = `<input type="text" id="${id}" value="${(val ?? "").replace(/"/g, "&quot;")}" />`;
-            }
-            const badge = f.root === "theme" && !isDefault ? '<span class="override">已覆盖</span>' : "";
-            const reset = f.root === "theme" ? `<button class="btn-reset" data-del="${f.path}">恢复默认</button>` : "";
-            return `<div class="field">
+                    )
+                    .join("")}</div>`;
+                } else if (f.type === "asset") {
+                  const list = assets[f.assetKey] || [];
+                  const cur = (val ?? "").replace(/^src\/assets\//, "");
+                  const has = list.some((x) => x.rel === cur);
+                  ctrl = `<select id="${id}">${has ? "" : `<option value="${cur}" selected>${cur}（当前，未在目录中找到）</option>`}${list
+                    .map(
+                      (x) =>
+                        `<option value="${x.rel}"${x.rel === cur ? " selected" : ""}>${x.rel}</option>`,
+                    )
+                    .join(
+                      "",
+                    )}</select><div class="font-preview" data-for="${id}">中文示例 ABCabc 123 —— 这段话会用所选字体渲染</div>`;
+                } else {
+                  ctrl = `<input type="text" id="${id}" value="${(val ?? "").replace(/"/g, "&quot;")}" />`;
+                }
+                const badge =
+                  f.root === "theme" && !isDefault ? '<span class="override">已覆盖</span>' : "";
+                const reset =
+                  f.root === "theme"
+                    ? `<button class="btn-reset" data-del="${f.path}">恢复默认</button>`
+                    : "";
+                return `<div class="field">
               <label for="${id}">${f.label}
                 <span class="path">${f.root === "theme" ? "" : f.root + "."}${f.path}</span>
                 ${f.hint ? `<span class="hint">${f.hint}</span>` : ""}
@@ -927,9 +2168,10 @@
                 ${ctrl}${badge}${reset}
               </div>
             </div>`;
-          }).join("");
-          return `<section><h2>${sec.title}</h2>${rows}</section>`;
-        }).join("") + datalistsHTML();
+              })
+              .join("");
+            return `<section><h2>${sec.title}</h2>${rows}</section>`;
+          }).join("") + datalistsHTML();
 
         refreshAllLists();
         // 字体字段：渲染预览并跟随选择实时更新
@@ -995,11 +2237,15 @@
       }
 
       function findField(root, path) {
-        for (const sec of SCHEMA) for (const f of sec.fields) if (f.root === root && f.path === path) return f;
+        for (const sec of SCHEMA)
+          for (const f of sec.fields) if (f.root === root && f.path === path) return f;
         return null;
       }
 
-      const orderRowHTML = (id, label) => `<div class="order-row" data-row data-order-id="${esc(id)}">
+      const orderRowHTML = (
+        id,
+        label,
+      ) => `<div class="order-row" data-row data-order-id="${esc(id)}">
           <span class="list-index"></span>
           <span class="name">${esc(label)}</span>
           <button type="button" data-list-up title="上移">↑</button>
@@ -1024,7 +2270,10 @@
           if (f && (f.type === "list" || f.type === "order")) {
             const old = wrap.querySelector(".list");
             if (old) {
-              old.insertAdjacentHTML("beforebegin", f.type === "list" ? listHTML(f, def) : orderHTML(f, def));
+              old.insertAdjacentHTML(
+                "beforebegin",
+                f.type === "list" ? listHTML(f, def) : orderHTML(f, def),
+              );
               old.remove();
             }
           } else {
@@ -1039,7 +2288,10 @@
           return;
         }
         if (btn.dataset.orderAdd !== undefined && listEl) {
-          bodyOf(listEl)?.insertAdjacentHTML("beforeend", orderRowHTML(btn.dataset.orderAdd, btn.dataset.orderLabel));
+          bodyOf(listEl)?.insertAdjacentHTML(
+            "beforeend",
+            orderRowHTML(btn.dataset.orderAdd, btn.dataset.orderLabel),
+          );
           btn.remove();
           refreshAllLists();
           markDirty();
@@ -1092,7 +2344,9 @@
         const nextTheme = {};
         for (const sec of SCHEMA) {
           for (const f of sec.fields) {
-            const wrap = document.querySelector(`.ctrl[data-path="${f.path}"][data-root="${f.root}"]`);
+            const wrap = document.querySelector(
+              `.ctrl[data-path="${f.path}"][data-root="${f.root}"]`,
+            );
             if (!wrap) continue;
             const input = document.getElementById(wrap.dataset.id);
             let v;
@@ -1148,14 +2402,27 @@
       document.getElementById("save").addEventListener("click", async () => {
         const log = document.getElementById("log");
         let payload;
-        try { payload = collect(); }
-        catch (e) { log.className = "err"; log.textContent = "✗ " + e.message; return; }
-        log.className = ""; log.textContent = "正在写入…";
-        const r = await fetch("/api/save", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
+        try {
+          payload = collect();
+        } catch (e) {
+          log.className = "err";
+          log.textContent = "✗ " + e.message;
+          return;
+        }
+        log.className = "";
+        log.textContent = "正在写入…";
+        const r = await fetch("/api/save", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(payload),
+        });
         const d = await r.json();
         log.className = d.ok ? "ok" : "err";
         log.textContent = (d.ok ? "✓ " : "✗ ") + d.log;
-        if (d.ok) { document.getElementById("dirty").textContent = ""; await load(); }
+        if (d.ok) {
+          document.getElementById("dirty").textContent = "";
+          await load();
+        }
       });
 
       document.getElementById("reload").addEventListener("click", load);
@@ -1164,24 +2431,31 @@
       // 文章的去向：写 src/posts 里的 .md → 本地构建检查 → 推送到 GitHub → Actions 发布。
       // 界面上永远只传「数据」（文章字段、提交说明），命令都是服务端写死的。
 
-      let posts = [];        // 当前文章列表（服务端返回）
-      let gitInfo = null;    // 工作区状态
-      let jobTimer = null;   // 任务轮询
-      let runTimer = null;   // GitHub Actions 运行状态轮询
+      let posts = []; // 当前文章列表（服务端返回）
+      let gitInfo = null; // 工作区状态
+      let jobTimer = null; // 任务轮询
+      let runTimer = null; // GitHub Actions 运行状态轮询
       let lastJobKey = "";
-      let lastJob = null;    // 最近一次任务（切换页签后重绘时要用）
-      let runLine = "";      // GitHub Actions 的状态行，重绘时补回去
+      let lastJob = null; // 最近一次任务（切换页签后重绘时要用）
+      let runLine = ""; // GitHub Actions 的状态行，重绘时补回去
 
       const $ = (id) => document.getElementById(id);
 
       function showTab(name) {
         $("view-config").hidden = name !== "config";
         $("view-posts").hidden = name !== "posts";
-        document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.tab === name));
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.toggle("on", t.dataset.tab === name));
         for (const id of ["save", "reload", "dirty"]) $(id).hidden = name !== "config";
-        if (name === "posts") { loadPosts(); pollJob(); }
+        if (name === "posts") {
+          loadPosts();
+          pollJob();
+        }
       }
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
+      document
+        .querySelectorAll(".tab")
+        .forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
 
       // ── 文章列表 ──
       function fmtDate(iso) {
@@ -1197,7 +2471,9 @@
         return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
       };
 
-      const postRow = (p) => `<div class="post-row${p.draft ? " draft" : ""}" data-post-path="${esc(p.path)}">
+      const postRow = (
+        p,
+      ) => `<div class="post-row${p.draft ? " draft" : ""}" data-post-path="${esc(p.path)}">
           <div class="post-main">
             <div class="post-title">${esc(p.title)}
               ${p.draft ? '<span class="badge draft">草稿</span>' : ""}
@@ -1224,7 +2500,8 @@
           if (!q) return true;
           return [p.title, p.path, ...p.categories, ...p.tags].join(" ").toLowerCase().includes(q);
         });
-        $("post-count").textContent = `共 ${posts.length} 篇${list.length === posts.length ? "" : `，筛出 ${list.length} 篇`}`;
+        $("post-count").textContent =
+          `共 ${posts.length} 篇${list.length === posts.length ? "" : `，筛出 ${list.length} 篇`}`;
         $("post-list").innerHTML = list.length
           ? list.map(postRow).join("")
           : '<div class="field"><label></label><div class="ctrl" style="color:var(--dim)">没有匹配的文章</div></div>';
@@ -1232,15 +2509,25 @@
 
       function renderGit() {
         const box = $("git-summary");
-        if (!gitInfo) { box.textContent = "读取失败"; return; }
+        if (!gitInfo) {
+          box.textContent = "读取失败";
+          return;
+        }
         const n = gitInfo.changed.length;
-        const head = n === 0
-          ? `<span class="clean">工作区干净，没有未提交的改动${gitInfo.ahead ? `（有 ${gitInfo.ahead} 个提交待推送）` : ""}</span>`
-          : `有 <b>${n}</b> 处改动${gitInfo.ahead ? `，另有 ${gitInfo.ahead} 个提交待推送` : ""}`;
-        const items = gitInfo.changed.slice(0, 8).map((c) => `<li>${esc(c.status)} ${esc(c.file)}</li>`).join("");
+        const head =
+          n === 0
+            ? `<span class="clean">工作区干净，没有未提交的改动${gitInfo.ahead ? `（有 ${gitInfo.ahead} 个提交待推送）` : ""}</span>`
+            : `有 <b>${n}</b> 处改动${gitInfo.ahead ? `，另有 ${gitInfo.ahead} 个提交待推送` : ""}`;
+        const items = gitInfo.changed
+          .slice(0, 8)
+          .map((c) => `<li>${esc(c.status)} ${esc(c.file)}</li>`)
+          .join("");
         const more = n > 8 ? `<li>…还有 ${n - 8} 处</li>` : "";
-        box.innerHTML = `${head}<ul>${items}${more}</ul>` +
-          (gitInfo.ahead && !gitInfo.changed.length ? "" : `<div style="margin-top:2px;color:var(--dim);font-size:11.5px">最近提交：${esc(gitInfo.lastCommit?.sha ?? "")} ${esc(gitInfo.lastCommit?.subject ?? "")}</div>`);
+        box.innerHTML =
+          `${head}<ul>${items}${more}</ul>` +
+          (gitInfo.ahead && !gitInfo.changed.length
+            ? ""
+            : `<div style="margin-top:2px;color:var(--dim);font-size:11.5px">最近提交：${esc(gitInfo.lastCommit?.sha ?? "")} ${esc(gitInfo.lastCommit?.subject ?? "")}</div>`);
         // 提交说明只在用户没改过的时候自动跟随
         const msg = $("commit-msg");
         if (!msg.dataset.touched) msg.value = gitInfo.suggestion ?? "";
@@ -1253,18 +2540,28 @@
           if (!d.ok) throw new Error(d.log || "读取失败");
           posts = d.posts ?? [];
           gitInfo = d.git ?? null;
-          $("cats").innerHTML = (d.categories ?? []).map((c) => `<option value="${esc(c)}"></option>`).join("");
+          $("cats").innerHTML = (d.categories ?? [])
+            .map((c) => `<option value="${esc(c)}"></option>`)
+            .join("");
           renderPosts();
           renderGit();
         } catch (e) {
-          $("post-list").innerHTML = `<div class="field"><label></label><div class="ctrl">读取文章失败：${esc(e.message)}</div></div>`;
+          $("post-list").innerHTML =
+            `<div class="field"><label></label><div class="ctrl">读取文章失败：${esc(e.message)}</div></div>`;
         }
       }
 
       const api = async (path, body) => {
-        const r = await fetch(path, body === undefined
-          ? undefined
-          : { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+        const r = await fetch(
+          path,
+          body === undefined
+            ? undefined
+            : {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(body),
+              },
+        );
         return r.json();
       };
 
@@ -1291,7 +2588,12 @@
         }
         if (btn.hasAttribute("data-post-del")) {
           const extra = `同目录的 ${p.path.replace(/\.mdx?$/i, ".assets")}/ 图片目录也会一起删除`;
-          if (!confirm(`删除「${p.title}」？\n\nsrc/posts/${p.path}\n${extra}\n\n（删除会在下次「提交并部署」时同步到线上）`)) return;
+          if (
+            !confirm(
+              `删除「${p.title}」？\n\nsrc/posts/${p.path}\n${extra}\n\n（删除会在下次「提交并部署」时同步到线上）`,
+            )
+          )
+            return;
           const d = await api("/api/posts/delete", { path: p.path });
           flash(d.ok ? `已删除 ${p.title}` : d.log, d.ok);
           if (d.ok) applyPosts(d);
@@ -1299,7 +2601,10 @@
         }
         if (btn.hasAttribute("data-post-edit")) {
           const box = row.querySelector(".post-editor");
-          if (box) { box.remove(); return; }
+          if (box) {
+            box.remove();
+            return;
+          }
           row.insertAdjacentHTML("beforeend", editorHTML(p));
           btn.textContent = "收起";
           return;
@@ -1315,8 +2620,14 @@
           const patch = {
             title: val("title").value.trim(),
             date: val("date").value,
-            categories: val("categories").value.split(",").map((s) => s.trim()).filter(Boolean),
-            tags: val("tags").value.split(",").map((s) => s.trim()).filter(Boolean),
+            categories: val("categories")
+              .value.split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
+            tags: val("tags")
+              .value.split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
             description: val("description").value.trim(),
             draft: val("draft").checked,
             sticky: val("sticky").checked,
@@ -1370,8 +2681,14 @@
           title,
           slug: $("np-slug").value.trim(),
           folder: $("np-folder").value.trim(),
-          categories: $("np-categories").value.split(",").map((s) => s.trim()).filter(Boolean),
-          tags: $("np-tags").value.split(",").map((s) => s.trim()).filter(Boolean),
+          categories: $("np-categories")
+            .value.split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+          tags: $("np-tags")
+            .value.split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
           draft: $("np-draft").checked,
         };
         const d = await api("/api/posts/create", body);
@@ -1390,10 +2707,15 @@
       function renderJob(job) {
         const log = $("job-log");
         lastJob = job ?? null;
-        if (!job) { $("job-status").innerHTML = "空闲" + runLine; return; }
+        if (!job) {
+          $("job-status").innerHTML = "空闲" + runLine;
+          return;
+        }
         log.textContent = job.log?.trim() ? job.log : "（暂无输出）";
         log.scrollTop = log.scrollHeight;
-        const secs = Math.round(((job.endedAt ?? Date.now()) - (job.startedAt ?? Date.now())) / 1000);
+        const secs = Math.round(
+          ((job.endedAt ?? Date.now()) - (job.startedAt ?? Date.now())) / 1000,
+        );
         const running = job.status === "running";
         let text = `${JOB_LABEL[job.kind] ?? job.kind}：`;
         if (running) text += `<span class="spinner"></span> 进行中（${secs}s）`;
@@ -1416,7 +2738,9 @@
         try {
           const d = await (await fetch("/api/job")).json();
           job = d.job;
-        } catch { /* 服务重启的瞬间忽略 */ }
+        } catch {
+          /* 服务重启的瞬间忽略 */
+        }
         const key = job ? `${job.kind}:${job.startedAt}:${job.status}` : "none";
         const changed = key !== lastJobKey;
         lastJobKey = key;
@@ -1426,7 +2750,7 @@
           return;
         }
         if (changed && job && job.kind) {
-          await loadPosts();                                   // 构建/部署后列表与 git 状态都会变
+          await loadPosts(); // 构建/部署后列表与 git 状态都会变
           if (job.kind === "deploy" && job.code === 0 && job.sha) watchRun(job.sha);
         } else if (job?.status !== "running" && !job) {
           $("job-log").textContent = "（还没有任务）";
@@ -1436,7 +2760,11 @@
       const startJob = async (path, body) => {
         runLine = "";
         const d = await api(path, body);
-        if (!d.ok) { flash(d.log, false); renderJob(d.job); return; }
+        if (!d.ok) {
+          flash(d.log, false);
+          renderJob(d.job);
+          return;
+        }
         lastJobKey = "";
         renderJob(d.job);
         pollJob();
@@ -1452,9 +2780,10 @@
       $("btn-deploy").addEventListener("click", () => {
         const message = $("commit-msg").value.trim();
         const n = gitInfo?.changed.length ?? 0;
-        const tip = n === 0 && !gitInfo?.ahead
-          ? "工作区是干净的，远端也已是最新——继续的话不会有任何改动被推送。"
-          : `将提交 ${n} 处改动并推送到 ${gitInfo?.repo ?? "GitHub"}，随后由 Actions 构建发布。`;
+        const tip =
+          n === 0 && !gitInfo?.ahead
+            ? "工作区是干净的，远端也已是最新——继续的话不会有任何改动被推送。"
+            : `将提交 ${n} 处改动并推送到 ${gitInfo?.repo ?? "GitHub"}，随后由 Actions 构建发布。`;
         if (!confirm(`${tip}\n\n提交说明：${message || "(自动生成)"}\n\n继续？`)) return;
         startJob("/api/job/deploy", { message });
       });
@@ -1465,29 +2794,47 @@
         renderJob(job ?? lastJob);
       }
 
-      async function watchRun(sha) {
+      const RUN_POLL_MS = 15000; // GitHub 未登录接口限流很紧，别查太勤
+      const RUN_POLL_MAX = 60; // 最多盯 15 分钟，之后交给人去 Actions 页面看
+
+      async function watchRun(sha, attempt = 0) {
         clearTimeout(runTimer);
+        if (attempt > RUN_POLL_MAX) {
+          showRun(
+            `Actions 状态：查询已暂停（跑了超过 ${Math.round((RUN_POLL_MS * RUN_POLL_MAX) / 60000)} 分钟），直接看 Actions 页面`,
+          );
+          return;
+        }
         const d = await (await fetch(`/api/deploy/run?sha=${encodeURIComponent(sha)}`)).json();
-        const link = d.url ? ` · <a href="${esc(d.url)}" target="_blank" rel="noreferrer">查看 Actions</a>` : "";
+        const link = d.url
+          ? ` · <a href="${esc(d.url)}" target="_blank" rel="noreferrer">查看 Actions</a>`
+          : "";
         if (!d.ok) {
-          const why = d.reason === "rate-limit" ? "GitHub 接口限流" : `查询失败（${esc(String(d.reason))}）`;
-          const repo = d.repo ? ` · <a href="https://github.com/${esc(d.repo)}/actions" target="_blank" rel="noreferrer">去仓库看</a>` : "";
+          const why =
+            d.reason === "rate-limit" ? "GitHub 接口限流" : `查询失败（${esc(String(d.reason))}）`;
+          const repo = d.repo
+            ? ` · <a href="https://github.com/${esc(d.repo)}/actions" target="_blank" rel="noreferrer">去仓库看</a>`
+            : "";
           showRun(`Actions 状态：${why}${repo}`);
           return;
         }
         if (d.pending) {
           showRun("Actions 状态：已排队…");
-          runTimer = setTimeout(() => watchRun(sha), 6000);
+          runTimer = setTimeout(() => watchRun(sha, attempt + 1), RUN_POLL_MS);
           return;
         }
-        const live = state?.site?.url ? ` · <a href="${esc(state.site.url.replace(/\/$/, ""))}/" target="_blank" rel="noreferrer">打开线上站点</a>` : "";
+        const live = state?.site?.url
+          ? ` · <a href="${esc(state.site.url.replace(/\/$/, ""))}/" target="_blank" rel="noreferrer">打开线上站点</a>`
+          : "";
         if (d.status === "completed") {
           const okRun = d.conclusion === "success";
-          showRun(`Actions 状态：${okRun ? "✓ 已发布" : "✗ " + esc(String(d.conclusion))}${link}${okRun ? live : ""}`);
+          showRun(
+            `Actions 状态：${okRun ? "✓ 已发布" : "✗ " + esc(String(d.conclusion))}${link}${okRun ? live : ""}`,
+          );
           return;
         }
         showRun(`Actions 状态：${esc(d.status)}…${link}`);
-        runTimer = setTimeout(() => watchRun(sha), 6000);
+        runTimer = setTimeout(() => watchRun(sha, attempt + 1), RUN_POLL_MS);
       }
 
       showTab("config");
