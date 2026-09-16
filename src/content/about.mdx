@@ -1,8 +1,8 @@
 ---
 title: 关于
 description: 这里记录我是谁、这个博客在做什么，以及如何和我交流。
-date: 2026-03-29
-updated: 2026-03-29
+date: 2026-09-16
+updated: 2026-09-16
 ---
 
 import AboutDialog from "@/components/AboutDialog";
@@ -41,7 +41,7 @@ export const aboutDialogNodes = [
   },
   {
     id: "identity",
-    text: "我是一名喜欢写作和折腾前端体验的开发者。这里主要记录实践、思考与长期维护过程中的经验。",
+    text: "一个普通CS学生。平时写代码、看点书，偶尔把折腾的过程记下来。",
     options: [
       {
         label: "继续：你平时最关注什么？",
@@ -57,7 +57,7 @@ export const aboutDialogNodes = [
   },
   {
     id: "focus",
-    text: "我更关注：可维护的内容结构、可读性高的代码、以及长期可演进的主题与组件设计。",
+    text: "更常折腾的是编程语言、计算机基础和课程里那些绕不过去的概念；也喜欢把一件事从头做到尾、写清楚。",
     options: [
       {
         label: "返回话题菜单",
@@ -68,7 +68,7 @@ export const aboutDialogNodes = [
   },
   {
     id: "blog",
-    text: "内容会覆盖 Astro、Svelte、工程化实践、主题设计，以及一些开发过程中的踩坑和复盘。",
+    text: "大致三类：技术笔记（语言、系统、工具链）、课程与项目里的整理，以及一些生活碎片和随想。",
     options: [
       {
         label: "返回话题菜单",
@@ -79,7 +79,7 @@ export const aboutDialogNodes = [
   },
   {
     id: "stack",
-    text: "当前站点使用 Astro + Svelte，运行时以 Bun 为主；并且会保持文章页面、搜索与组件交互体验的一致性。",
+    text: "这个站点是 Astro 生成的静态站，交互组件用 SolidJS，样式走 UnoCSS，搜索用 Pagefind 在本地建索引。没有后端，全文都是静态文件。",
     options: [
       {
         label: "返回话题菜单",
@@ -90,7 +90,7 @@ export const aboutDialogNodes = [
   },
   {
     id: "contact",
-    text: "你可以通过评论区或社交链接联系我。通常我会优先回复和文章主题相关的问题与建议。",
+    text: "写信给我就行！邮箱加密过，在本页末尾，旁边写了怎么解。和文章内容相关的问题我会优先回。",
     options: [
       {
         label: "返回话题菜单",
@@ -103,25 +103,42 @@ export const aboutDialogNodes = [
 
 你好，欢迎来到这里。
 
-这个页面会长期维护，主要包含三部分：
+## 关于我
 
-1. 我是谁，以及我在持续关注什么。
-2. 这个博客会写什么、怎么写、为什么这样写。
-3. 如果你想交流，可以通过哪些方式联系我。
+### 教育经历
 
-为了减少“一次性介绍信息”带来的阅读负担，下面放了一个可交互的对话组件。你可以点击不同选项查看对应回复。
+> **香港城市大学** · 计算机科学 理学硕士
+> 2025.09 – 2026.10（在读，预计 2026.10 毕业）　City University of Hong Kong, M.Sc. in Computer Science
+> **大连理工大学** · 软件工程 工学学士
+> 2020.09 – 2024.06　Dalian University of Technology, B.Eng. in Software Engineering
+
+这个博客主要是我的技术笔记，投资复盘，以及生活碎片和胡思乱想。随缘更新。
+
+如果哪一篇对你有用，或者你发现错误，欢迎写信告诉我。
+
+想先快速了解，可以点开下面这个对话：
 
 <AboutDialog
   client:load
   title="快速对话"
-  intro="选择一个回复选项继续对话。你可以在 about.mdx 里预先定义分支与回复。"
+  intro="挑一个话题，我照着回答。"
   authorName={aboutAuthorName}
   authorAvatar={aboutAuthorAvatar}
   nodes={aboutDialogNodes}
 />
 
-你可以直接编辑 `src/content/about.mdx` 里的 `aboutDialogNodes` 来预先定义：
+{/* contact-email:start */}
+## 联系方式
 
-- 对话内容（每个节点的文本）
-- 可选回复（每个按钮）
-- 对应回复（按钮跳转到哪个节点）
+我的邮箱是下面这串——**它被 ROT13 编码过**，照抄是发不出去的：
+
+```
+mvnapura4-p@zl.pvglh.rqh.ux
+```
+
+**怎么解**：把每个英文字母往后推 13 位（`a`→`n`、`b`→`o`、`l`→`y`……），`@` 和 `.` 原样不动。
+不想手推的话，搜「ROT13 解码」，随便点一个在线工具把这串贴进去即可。
+
+> 为什么这样写：博客上直接放明文邮箱，很快会被爬虫收走，随之而来的就是无穷无尽的垃圾邮件。
+> 上面这串的字母全部移位过了，爬虫抓到的会是一个**发不出去的地址**。
+{/* contact-email:end */}
