@@ -33,7 +33,7 @@ fi
 
 echo "仓库:   $(pwd)"
 echo "远端:   site → $REPO"
-echo "分支:   $BRANCH（当前 $(git rev-parse --short HEAD)）"
+echo "分支:   ${BRANCH}（当前 $(git rev-parse --short HEAD)）"
 echo
 echo "即将强推，远端现有历史会被这份历史取代。"
 read -r -p "确认请输入 yes: " ok
