@@ -3,6 +3,7 @@ title: Hello World
 date: 2024-03-11T21:37:00+08:00
 tags: []
 categories: []
+cover: ../assets/images/cover/穗穗-横.jpg
 ---
 
 **2024旧站的测试帖子**

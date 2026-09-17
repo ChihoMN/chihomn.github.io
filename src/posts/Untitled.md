@@ -3,6 +3,7 @@ title: 测试文章
 date: 2024-03-11T21:37:00+08:00
 tags: []
 categories: []
+cover: ../assets/images/cover/祥子联动.png
 ---
 **2024旧站的测试帖子**
 *由GPT4生成*
