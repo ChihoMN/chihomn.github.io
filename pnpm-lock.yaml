@@ -15,6 +15,7 @@ patchedDependencies:
   '@hyacine/plugin-analytics': 590d86c5ff56d40536525808638887cbc8a814ff928aa07f8a7b7297dd2f0cbf
   '@hyacine/plugin-nyx-player': 23a327f9a39f00e879d7213ae5c2b2421078b2b3e3ae2f464d311b48192ac4cd
   '@hyacine/plugin-waline-comments': 6495c7229ddc25617bc24da063ed335c5a1f2f350fa9c4b8f6b9d700e3f64050
+  nyx-player-solid: 93fe0ca8e56702d4ff4df88b4ad43fab51f6a3d8cde248c47bfedf4e3373bf61
 
 importers:
 
@@ -6332,7 +6333,7 @@ snapshots:
     dependencies:
       '@hyacine/contract': 0.1.1
       '@hyacine/plugin-core': 0.2.0
-      nyx-player-solid: 0.1.5
+      nyx-player-solid: 0.1.5(patch_hash=93fe0ca8e56702d4ff4df88b4ad43fab51f6a3d8cde248c47bfedf4e3373bf61)
       solid-js: 1.9.15
 
   '@hyacine/plugin-site-uptime@0.2.1':
@@ -9924,7 +9925,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nyx-player-solid@0.1.5:
+  nyx-player-solid@0.1.5(patch_hash=93fe0ca8e56702d4ff4df88b4ad43fab51f6a3d8cde248c47bfedf4e3373bf61):
     dependencies:
       solid-element: 1.9.2(solid-js@1.9.15)
       solid-js: 1.9.15

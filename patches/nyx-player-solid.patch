@@ -1,0 +1,16 @@
+diff --git a/dist/NyxPlayer-CbIY5vNS.js b/dist/NyxPlayer-CbIY5vNS.js
+index 163a0798d763ec5f8d40b4cd1155fec1398d1217..65404467048da076fad1e717c21d6e28a6aa4853 100644
+--- a/dist/NyxPlayer-CbIY5vNS.js
++++ b/dist/NyxPlayer-CbIY5vNS.js
+@@ -469,8 +469,9 @@ function Ne(e) {
+ function Pe(e) {
+ 	let t = je(e) ? e : {};
+ 	return {
+-		name: L(t.name),
+-		artist: L(t.artist),
++		// 标准 meting 接口返回的是 title / author（name / artist 是另一套写法），这里两种都认
++		name: L(t.name) || L(t.title),
++		artist: L(t.artist) || L(t.author),
+ 		url: L(t.url),
+ 		pic: Ne(L(t.pic)),
+ 		lrc: L(t.lrc)
