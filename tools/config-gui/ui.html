@@ -934,6 +934,7 @@
               label: "头像",
               type: "asset",
               assetKey: "images",
+              assetScope: "images/avatar/",
               hint: "主题自带的演示头像，README 要求部署前替换",
             },
           ],
@@ -1255,7 +1256,13 @@
                   datalist: "dl_categories",
                   ph: "从候选里挑，或自己填",
                 },
-                { key: "cover", label: "封面图（可选）", type: "image", ph: "留空用随机封面" },
+                {
+                  key: "cover",
+                  label: "封面图（可选）",
+                  type: "image",
+                  scope: "images/cover/",
+                  ph: "留空用随机封面",
+                },
               ],
             },
             {
@@ -1400,8 +1407,8 @@
                   key: "__v",
                   label: "图片",
                   type: "image",
-                  datalist: "dl_images",
-                  ph: "images/cover-1.avif 或 https://…",
+                  scope: "images/cover/",
+                  ph: "images/cover/cover-1.avif 或 https://…",
                 },
               ],
             },
@@ -1441,7 +1448,7 @@
                   key: "avatar",
                   label: "头像",
                   type: "image",
-                  datalist: "dl_images",
+                  scope: "images/avatar/",
                   ph: "https://… 或图片路径",
                 },
                 { key: "desc", label: "描述", type: "textarea", ph: "一句话介绍" },
@@ -1866,15 +1873,40 @@
         categories = [];
 
       /** 候选值：项目里的图片、文章里真实存在的分类、主题色 token */
+      /** 按范围取图库：scope 形如 "images/cover/"，不传就是全部 */
+      const imagesIn = (scope) =>
+        (assets.images ?? []).filter((x) => !scope || x.rel.startsWith(scope));
+      const scopeDatalistId = (scope) => "dl_scope_" + String(scope).replace(/[^a-z0-9]+/gi, "_");
+
+      /** 从 SCHEMA 里收集所有用到的范围，逐个生成 datalist */
+      function collectScopes() {
+        const found = new Set();
+        for (const sec of SCHEMA) {
+          for (const f of sec.fields) {
+            if (f.assetScope) found.add(f.assetScope);
+            for (const it of [...(f.item ?? []), ...(f.nested?.item ?? [])]) {
+              if (it.scope) found.add(it.scope);
+            }
+          }
+        }
+        return [...found];
+      }
+
       function datalistsHTML() {
-        const img = (assets.images ?? [])
-          .map((x) => `<option value="${esc(x.rel)}">${esc(x.name)}</option>`)
+        const list = (rows) =>
+          rows.map((x) => `<option value="${esc(x.rel)}">${esc(x.name)}</option>`).join("");
+        const scoped = collectScopes()
+          .map(
+            (scope) =>
+              `<datalist id="${scopeDatalistId(scope)}">${list(imagesIn(scope))}</datalist>`,
+          )
           .join("");
+        const img = list(imagesIn(null));
         const cat = (categories ?? []).map((c) => `<option value="${esc(c)}"></option>`).join("");
         const col = COLOR_TOKENS.flatMap((g) =>
           g.values.map((n) => `<option value="var(--${n})"></option>`),
         ).join("");
-        return `<datalist id="dl_images">${img}</datalist><datalist id="dl_categories">${cat}</datalist><datalist id="dl_colors">${col}</datalist>`;
+        return `<datalist id="dl_images">${img}</datalist>${scoped}<datalist id="dl_categories">${cat}</datalist><datalist id="dl_colors">${col}</datalist>`;
       }
 
       const getPath = (obj, path) =>
@@ -1951,7 +1983,8 @@
             <input type="text" data-key="${k}" value="${esc(value)}" placeholder="${ph || "i-ri-home-line"}" />
           </span></label>`;
         }
-        const dl = item.datalist ? ` list="${esc(item.datalist)}"` : "";
+        const dlId = item.scope ? scopeDatalistId(item.scope) : item.datalist;
+        const dl = dlId ? ` list="${esc(dlId)}"` : "";
         return `<label><span>${esc(item.label)}</span><input type="text" data-key="${k}" value="${esc(value)}" placeholder="${ph}"${dl} /></label>`;
       }
 
@@ -2200,7 +2233,7 @@
                 <input type="text" id="${id}" value="${cur.replace(/"/g, "&quot;")}" style="max-width:186px" />`;
                 } else if (f.type === "asset" && f.assetKey === "images") {
                   const cur = (val ?? "").replace(/^src\/assets\//, "");
-                  const imgs = assets.images || [];
+                  const imgs = imagesIn(f.assetScope ?? null);
                   // 当前值不在候选目录里时，也要显示出来，否则界面上会"什么都没选中"
                   const shown =
                     !cur || imgs.some((x) => x.rel === cur)
@@ -2216,7 +2249,10 @@
                     )
                     .join("")}</div>`;
                 } else if (f.type === "asset") {
-                  const list = assets[f.assetKey] || [];
+                  const list =
+                    f.assetKey === "images"
+                      ? imagesIn(f.assetScope ?? null)
+                      : assets[f.assetKey] || [];
                   const cur = (val ?? "").replace(/^src\/assets\//, "");
                   const has = list.some((x) => x.rel === cur);
                   ctrl = `<select id="${id}">${has ? "" : `<option value="${cur}" selected>${cur}（当前，未在目录中找到）</option>`}${list
@@ -2574,9 +2610,9 @@
       /** 图库：src/assets 里的图片，点一下就填成该文章可用的相对路径 */
       const coverGalleryHTML = (p) => {
         const prefix = assetPrefix(p.path);
-        const imgs = assets.images ?? [];
+        const imgs = imagesIn("images/cover/");
         if (!imgs.length)
-          return '<span class="hint">图库里没有图片（把图片放进 src/assets/images/ 即可）</span>';
+          return '<span class="hint">封面目录里没有图片（把图片放进 src/assets/images/cover/ 即可）</span>';
         return imgs
           .map(
             (
@@ -2800,11 +2836,11 @@
           <label>标签<span></span><input type="text" data-edit="tags" value="${esc(p.tags.join(", "))}" /></label>
           <label class="wide">摘要<span></span><textarea data-edit="description">${esc(p.description)}</textarea></label>
           <label class="wide">封面
-            <span class="hint">相对文章文件的路径（如 ../assets/images/cover-2.avif），也可以填远程 https 地址；留空＝用主题默认封面</span>
+            <span class="hint">相对文章文件的路径（如 ../assets/images/cover/cover-2.avif），也可以填远程 https 地址；留空＝用主题默认封面</span>
             <div class="cover-row">
               <img class="cover-prev" alt="" data-cover-prev hidden />
               <div class="cover-inputs">
-                <input type="text" data-edit="cover" placeholder="../assets/images/cover-2.avif" value="${esc(p.cover ?? "")}" />
+                <input type="text" data-edit="cover" placeholder="../assets/images/cover/cover-2.avif" value="${esc(p.cover ?? "")}" />
                 <div class="cover-tools">
                   <button type="button" data-cover-pick>从图库选</button>
                   <button type="button" data-cover-clear>清空（用默认）</button>

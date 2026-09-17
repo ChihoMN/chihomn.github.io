@@ -19,11 +19,12 @@ fonts:
     type: monospace
 
 images:
-  - path: src/assets/images/avatar.jpg
-  - path: src/assets/avatar-default.avif
-  - path: src/assets/images/cover-1.avif
-  - path: src/assets/images/cover-2.avif
-  - path: src/assets/images/cover-3.avif
-  - path: src/assets/images/cover-4.avif
-  - path: src/assets/images/cover-5.avif
-  - path: src/assets/images/cover-6.avif
+  - path: src/assets/images/avatar/avatar.jpg
+  - path: src/assets/images/avatar/avatar-default.avif
+  - path: src/assets/images/avatar/avatar-old.png
+  - path: src/assets/images/cover/cover-1.avif
+  - path: src/assets/images/cover/cover-2.avif
+  - path: src/assets/images/cover/cover-3.avif
+  - path: src/assets/images/cover/cover-4.avif
+  - path: src/assets/images/cover/cover-5.avif
+  - path: src/assets/images/cover/cover-6.avif

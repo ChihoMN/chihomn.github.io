@@ -28,11 +28,11 @@ const DEPLOY_REMOTE = "site";
 const DEPLOY_BRANCH = "main";
 let iconCache = null;
 
-/** 列出可选资产：字体与图片 */
+/** 列出可选资产：字体与图片（图片递归扫描，支持 images/cover、images/avatar 这类子目录） */
 function listAssets() {
-  const fontsDir = path.join(root, "src/assets/fonts");
   const assetsDir = path.join(root, "src/assets");
-  const imagesDir = path.join(assetsDir, "images");
+  const fontsDir = path.join(assetsDir, "fonts");
+  const IMAGE_EXTS = [".avif", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"];
   const read = (dir, exts) =>
     fs.existsSync(dir)
       ? fs
@@ -41,15 +41,22 @@ function listAssets() {
           .map((f) => ({ name: f, rel: path.relative(assetsDir, path.join(dir, f)) }))
       : [];
 
+  const images = [];
+  const walk = (dir) => {
+    for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (ent.name.startsWith(".")) continue;
+      const abs = path.join(dir, ent.name);
+      if (ent.isDirectory()) walk(abs);
+      else if (IMAGE_EXTS.some((e) => ent.name.toLowerCase().endsWith(e))) {
+        images.push({ name: ent.name, rel: path.relative(assetsDir, abs).split(path.sep).join("/") });
+      }
+    }
+  };
+  if (fs.existsSync(assetsDir)) walk(assetsDir);
+
   return {
     fonts: read(fontsDir, [".ttf", ".otf", ".woff2"]),
-    images: [
-      ...read(assetsDir, [".avif", ".png", ".jpg", ".jpeg", ".webp"]),
-      ...read(imagesDir, [".avif", ".png", ".jpg", ".jpeg", ".webp"]).map((x) => ({
-        name: x.name,
-        rel: `images/${x.name}`,
-      })),
-    ],
+    images: images.toSorted((a, b) => a.rel.localeCompare(b.rel)),
   };
 }
 

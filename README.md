@@ -229,7 +229,7 @@ docs/                 上游主题的原始 README
 
 - **基础**：站点名「云烟成雨」、副标题、作者 Edward Chen、建站年份 2022、ICP 关闭、社交只留 GitHub
 - **字体**：正文 LXGW WenKai、代码 JetBrains Mono（`fontDisplay` 改为 `swap`，避免首屏回到系统字体）；`src/assets/fonts` 里的 MapleMono 保留未用
-- **头像**：`src/assets/images/avatar.jpg`（裁剪版）
+- **头像**：`src/assets/images/avatar/avatar.jpg`（裁剪版）
 - **favicon**：沿用旧站的图标，`public/favicon.svg` + `public/favicon.ico`
 - **页脚访问量**：主题的 vercount 插件只注入统计脚本、没有显示位，所以加了本地插件 `tools/hyacine-plugin-visits`（沿用它约定的元素 id）
 - **随机文章条数**：`widgets.randomPostsLimit`，本站设为 3（默认值也改成 3）
