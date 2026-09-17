@@ -56,15 +56,16 @@
         "enable": false
       },
       "coverUrls": [
-        "images/cover/你哲哥.jpg",
-        "images/cover/扫会长.jpg",
-        "images/cover/木头.jpg",
-        "images/cover/祥子联动.png",
-        "images/cover/秧秧玄翎-摄影.png",
-        "images/cover/秧秧玄翎-摄影2.png",
-        "images/cover/秧秧玄翎-摄影3.png",
-        "images/cover/穗穗-横.jpg"
-      ]
+        "/images/cover/你哲哥.jpg",
+        "/images/cover/扫会长.jpg",
+        "/images/cover/木头.jpg",
+        "/images/cover/祥子联动.jpg",
+        "/images/cover/秧秧玄翎-摄影.jpg",
+        "/images/cover/秧秧玄翎-摄影2.jpg",
+        "/images/cover/秧秧玄翎-摄影3.jpg",
+        "/images/cover/穗穗-横.jpg"
+      ],
+      "advancedCarousel": true
     },
     "friends": {
       "description": "想交换友链的话，把站点信息发到我的邮箱即可。地址在「关于」页。",
