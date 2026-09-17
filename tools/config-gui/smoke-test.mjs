@@ -317,7 +317,7 @@ let coverOut = null,
 if (addBtn("cover.coverUrls")) {
   click(addBtn("cover.coverUrls"));
   const row = rowsOf("cover.coverUrls").at(-1);
-  setInput(field(row, "__v"), "images/cover-1.avif");
+  setInput(field(row, "__v"), "/images/cover/cover-1.avif");
   coverOut = themeOf().cover?.coverUrls?.[0] ?? null;
 }
 if (addBtn("nyxPlayer.urls")) {
@@ -519,7 +519,7 @@ const checks = [
   ["子菜单第一项仍是分类", navMovedFirstSub, "分类"],
   ["挪回原位后不留覆盖", navUntouched, "无覆盖"],
   ["右栏上移生效", orderAfterMove, "search"],
-  ["封面列表写进配置", coverOut, "images/cover-1.avif"],
+  ["封面列表写进配置", coverOut, "/images/cover/cover-1.avif"],
   ["加歌单后变 2 条", playlistAfterAdd, 2],
   ["社媒自定义项合并进 social", socialExtraOut, "https://pixiv.example/"],
   ["页签数量 = 2", tabCount, 2],
