@@ -48,7 +48,10 @@ function listAssets() {
       const abs = path.join(dir, ent.name);
       if (ent.isDirectory()) walk(abs);
       else if (IMAGE_EXTS.some((e) => ent.name.toLowerCase().endsWith(e))) {
-        images.push({ name: ent.name, rel: path.relative(assetsDir, abs).split(path.sep).join("/") });
+        images.push({
+          name: ent.name,
+          rel: path.relative(assetsDir, abs).split(path.sep).join("/"),
+        });
       }
     }
   };
@@ -365,6 +368,24 @@ async function deployRun(sha) {
 
 // ── HTTP ──────────────────────────────────────────────────────
 
+/** 按扩展名给 MIME（图片与字体预览用） */
+function mimeOf(file) {
+  return (
+    {
+      ".avif": "image/avif",
+      ".png": "image/png",
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".webp": "image/webp",
+      ".gif": "image/gif",
+      ".svg": "image/svg+xml",
+      ".ttf": "font/ttf",
+      ".otf": "font/otf",
+      ".woff2": "font/woff2",
+    }[path.extname(file).toLowerCase()] ?? "application/octet-stream"
+  );
+}
+
 function sendJson(res, code, obj) {
   const body = JSON.stringify(obj);
   res.writeHead(code, { "content-type": "application/json; charset=utf-8" });
@@ -443,31 +464,19 @@ const server = http.createServer((req, res) => {
   }
 
   // 读取项目里的资产文件（供界面预览图片与字体）
-  if (req.method === "GET" && url.pathname === "/asset") {
-    const rel = url.searchParams.get("rel") ?? "";
-    const base = path.join(root, "src/assets");
+  if (req.method === "GET" && (url.pathname === "/asset" || url.pathname === "/pubasset")) {
+    // /asset 读 src/assets（文章图片、字体），/pubasset 读 public（首页封面这类 web 路径）
+    const fromPublic = url.pathname === "/pubasset";
+    const base = path.join(root, fromPublic ? "public" : "src/assets");
+    const rel = (url.searchParams.get("rel") ?? "").replace(/^\/+/, "");
     const abs = path.resolve(base, rel);
     if (!abs.startsWith(base + path.sep) || !fs.existsSync(abs) || !fs.statSync(abs).isFile()) {
       res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       return res.end("404");
     }
-    const ext = path.extname(abs).toLowerCase();
-    const mime =
-      {
-        ".avif": "image/avif",
-        ".png": "image/png",
-        ".jpg": "image/jpeg",
-        ".jpeg": "image/jpeg",
-        ".webp": "image/webp",
-        ".gif": "image/gif",
-        ".svg": "image/svg+xml",
-        ".ttf": "font/ttf",
-        ".otf": "font/otf",
-        ".woff2": "font/woff2",
-      }[ext] ?? "application/octet-stream";
     const buf = fs.readFileSync(abs);
     res.writeHead(200, {
-      "content-type": mime,
+      "content-type": mimeOf(abs),
       "content-length": buf.length,
       "cache-control": "no-cache",
     });

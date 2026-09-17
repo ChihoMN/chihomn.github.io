@@ -305,6 +305,28 @@
       .sub-toggle input {
         width: auto;
       }
+      .img-cell {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .img-cell input {
+        flex: 1;
+      }
+      .img-prev {
+        flex: 0 0 46px;
+        width: 46px;
+        height: 30px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid var(--line);
+        background: #f2f3f5;
+      }
+      .img-prev.lg {
+        flex: 0 0 96px;
+        width: 96px;
+        height: 54px;
+      }
       .icon-cell {
         display: flex;
         align-items: center;
@@ -1416,6 +1438,7 @@
               path: "cover.fixedCover.url",
               label: "固定封面图",
               type: "text",
+              preview: "image",
               def: "cover-4",
               hint: "可填预设 cover-1 ~ cover-6、public 路径 /images/xxx.jpg，或 https 链接",
             },
@@ -1455,7 +1478,7 @@
                 {
                   key: "__v",
                   label: "图片地址",
-                  type: "text",
+                  type: "image",
                   ph: "/images/cover/xxx.jpg 或 https://…",
                 },
               ],
@@ -1921,6 +1944,33 @@
         categories = [];
 
       /** 候选值：项目里的图片、文章里真实存在的分类、主题色 token */
+      /**
+       * 字段值 → 控制台里可预览的图片地址：
+       *   预设 key（cover-1…）→ src/assets 里的预设图
+       *   /images/xxx 这类 public 路径 → /pubasset 路由
+       *   https://… → 直接用（浏览器自己拉）
+       *   images/xxx、../assets/xxx → /asset 路由（相对 src/assets）
+       */
+      function imagePreviewSrc(value) {
+        const v = String(value ?? "").trim();
+        if (!v) return null;
+        if (/^https?:\/\//i.test(v)) return v;
+        if (/^cover-[1-6]$/.test(v))
+          return `/asset?rel=${encodeURIComponent(`images/cover/${v}.avif`)}`;
+        if (v.startsWith("/")) return `/pubasset?rel=${encodeURIComponent(v.replace(/^\/+/, ""))}`;
+        const assetRel = v.replace(/^(\.\.\/)+assets\//, "").replace(/^src\/assets\//, "");
+        if (assetRel !== v || /^(images|fonts|storage|icons)\//.test(v)) {
+          return `/asset?rel=${encodeURIComponent(assetRel)}`;
+        }
+        return null;
+      }
+
+      /** 缩略图（取不到就隐藏，避免出现破图） */
+      const imgPreviewHTML = (value, cls = "img-prev") => {
+        const src = imagePreviewSrc(value);
+        return `<img class="${cls}" data-img-prev src="${src ? esc(src) : ""}" alt="" ${src ? "" : "hidden"} />`;
+      };
+
       /** 按范围取图库：scope 形如 "images/cover/"，不传就是全部 */
       const imagesIn = (scope) =>
         (assets.images ?? []).filter((x) => !scope || x.rel.startsWith(scope));
@@ -2033,6 +2083,12 @@
         }
         const dlId = item.scope ? scopeDatalistId(item.scope) : item.datalist;
         const dl = dlId ? ` list="${esc(dlId)}"` : "";
+        if (item.type === "image") {
+          return `<label><span>${esc(item.label)}</span><span class="img-cell">
+            ${imgPreviewHTML(value)}
+            <input type="text" data-key="${k}" value="${esc(value)}" placeholder="${ph}"${dl} />
+          </span></label>`;
+        }
         return `<label><span>${esc(item.label)}</span><input type="text" data-key="${k}" value="${esc(value)}" placeholder="${ph}"${dl} /></label>`;
       }
 
@@ -2317,6 +2373,11 @@
                     .join(
                       "",
                     )}</select><div class="font-preview" data-for="${id}">中文示例 ABCabc 123 —— 这段话会用所选字体渲染</div>`;
+                } else if (f.preview === "image") {
+                  ctrl = `<span class="img-cell">
+                    ${imgPreviewHTML(val, "img-prev lg")}
+                    <input type="text" id="${id}" value="${(val ?? "").replace(/"/g, "&quot;")}" />
+                  </span>`;
                 } else {
                   ctrl = `<input type="text" id="${id}" value="${(val ?? "").replace(/"/g, "&quot;")}" />`;
                 }
@@ -2492,6 +2553,15 @@
 
       formEl.addEventListener("input", (e) => {
         const el = e.target;
+        if (el.tagName === "INPUT" && (el.dataset?.key !== undefined || el.closest(".img-cell"))) {
+          const img = el.closest(".img-cell")?.querySelector("[data-img-prev]");
+          if (img) {
+            const src = imagePreviewSrc(el.value);
+            img.hidden = !src;
+            if (src) img.src = src;
+            else img.removeAttribute("src");
+          }
+        }
         if (el.dataset?.key === "icon") {
           const img = el.closest(".icon-cell")?.querySelector(".icon-prev");
           if (img) img.src = "/icon?name=" + encodeURIComponent(el.value.trim() || "i-ri-link");
@@ -2909,6 +2979,7 @@
             <span class="hint">点下面的图直接选（和头像一样）；也可以自己填相对路径或远程 https 地址，留空＝用主题默认封面</span>
             <div class="cover-gallery" data-cover-gallery>${coverGalleryHTML(p)}</div>
             <div class="cover-row">
+              ${imgPreviewHTML(p.cover, "img-prev lg")}
               <input type="text" data-edit="cover" placeholder="../assets/images/cover/cover-2.avif" value="${esc(p.cover ?? "")}" />
               <button type="button" data-cover-clear>清空（用默认封面）</button>
             </div>

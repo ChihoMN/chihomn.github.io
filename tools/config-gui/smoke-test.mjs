@@ -469,6 +469,21 @@ const saveCall = (dom.window.__calls ?? [])
   .find((c) => String(c.url).includes("/api/posts/update"));
 const savedCover = saveCall?.body?.patch?.cover ?? null;
 
+// 图片字段的缩略图：界面上直接看到用的是哪张
+const coverListThumb =
+  doc
+    .querySelector('.ctrl[data-path="cover.coverUrls"] .list-body [data-row] .img-prev')
+    ?.getAttribute("src") ?? null;
+const fixedCoverThumb =
+  doc.querySelector('.ctrl[data-path="cover.fixedCover.url"] .img-prev')?.getAttribute("src") ??
+  null;
+const friendAvatarThumb =
+  doc
+    .querySelector('.ctrl[data-path="friends.links"] .list-body [data-row] [data-key="avatar"]')
+    ?.closest(".img-cell")
+    ?.querySelector(".img-prev")
+    ?.getAttribute("src") ?? null;
+
 const checks = [
   ["站点名 = 你的值", textOf("siteName"), state.theme.siteName],
   [
@@ -567,6 +582,17 @@ const checks = [
   ["范围 datalist：封面候选", doc.querySelectorAll("#dl_scope_images_cover_ option").length, 2],
   ["字符串列表行数 = 配置条数", coverListRows.length, coverListCount],
   ["字符串列表的值会回填（不再显示未填）", coverListEmpty, 0],
+  [
+    "封面列表每行有缩略图（走 /pubasset）",
+    String(coverListThumb).startsWith("/pubasset?rel="),
+    true,
+  ],
+  ["固定封面 key 会映射成缩略图", fixedCoverThumb, "/asset?rel=images%2Fcover%2Fcover-4.avif"],
+  [
+    "友链头像有缩略图（本地 / public / 远程都行）",
+    /^(https?:|\/(pub)?asset\?rel=)/.test(String(friendAvatarThumb)),
+    true,
+  ],
   ["第一行就是配置里的值", coverListFirst, state.theme?.cover?.coverUrls?.[0] ?? null],
   ["范围 datalist：头像候选", doc.querySelectorAll("#dl_scope_images_avatar_ option").length, 2],
   ["范围 datalist：全部候选仍在", doc.querySelectorAll("#dl_images option").length, 5],
