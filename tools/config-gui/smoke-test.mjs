@@ -443,17 +443,17 @@ click(row0.querySelector("[data-post-edit]"));
 await tick(140);
 const coverInput = row0.querySelector('[data-edit="cover"]');
 const coverVal = coverInput?.value ?? null;
-const coverPrevEl = row0.querySelector("[data-cover-prev]");
-const coverPrevSrc = coverPrevEl && !coverPrevEl.hidden ? coverPrevEl.getAttribute("src") : null;
 const rowThumbs = doc.querySelectorAll(".post-thumb").length;
-click(row0.querySelector("[data-cover-pick]"));
 const gallery = row0.querySelector("[data-cover-gallery]");
-const galleryOpen = gallery ? !gallery.hidden : false;
+const galleryAlwaysVisible = gallery ? !gallery.hidden : false; // 和头像一样常驻显示
 const pickBtns = [...row0.querySelectorAll(".cover-pick")];
+const pickThumbSrc = pickBtns[0]?.querySelector("img")?.getAttribute("src") ?? null;
 const lastPickValue = pickBtns.at(-1)?.dataset.coverValue ?? null;
 if (pickBtns.length) click(pickBtns.at(-1));
 const pickedValue = coverInput.value;
-const galleryClosedAfterPick = gallery ? gallery.hidden : false;
+const pickedHighlighted = pickBtns.at(-1)?.classList.contains("on") ?? false;
+const coverStatusText = row0.querySelector("[data-cover-status]")?.textContent ?? "";
+const saveBtnLabel = row0.querySelector("[data-editor-save]")?.textContent?.trim() ?? null;
 const callsBeforeSave = (dom.window.__calls ?? []).length;
 click(row0.querySelector("[data-editor-save]"));
 await tick(160);
@@ -547,13 +547,15 @@ const checks = [
   ["邮箱预览显示密文", emailPreview, "mvnapura4-p@zl.pvglh.rqh.ux"],
   ["保存时邮箱写成密文", emailSaved, "fbzrbar@rknzcyr.pbz"],
   ["编辑器带出封面值", coverVal, "../assets/images/cover/cover-1.avif"],
-  ["封面缩略图走 /asset 路由", String(coverPrevSrc).startsWith("/asset?rel="), true],
+  ["封面缩略图走 /asset 路由", String(pickThumbSrc).startsWith("/asset?rel="), true],
+  ["封面网格常驻显示（不用先展开）", galleryAlwaysVisible, true],
   ["列表行显示封面缩略图", rowThumbs, 1],
-  ["点「从图库选」展开图库", galleryOpen, true],
+  ["保存按钮文案醒目", saveBtnLabel, "保存这篇文章"],
   ["封面图库只列 images/cover/", pickBtns.length, 2],
   ["图库路径按文章深度算", lastPickValue, "../assets/images/cover/cover-2.avif"],
   ["选图后填进输入框", pickedValue, "../assets/images/cover/cover-2.avif"],
-  ["选完自动收起图库", galleryClosedAfterPick, true],
+  ["点图后该图高亮", pickedHighlighted, true],
+  ["选图后给出提示", coverStatusText.includes("保存这篇文章"), true],
   ["保存时把封面写进 patch", savedCover, "../assets/images/cover/cover-2.avif"],
   ["范围 datalist：封面候选", doc.querySelectorAll("#dl_scope_images_cover_ option").length, 2],
   ["范围 datalist：头像候选", doc.querySelectorAll("#dl_scope_images_avatar_ option").length, 2],

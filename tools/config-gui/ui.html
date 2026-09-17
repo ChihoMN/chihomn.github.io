@@ -590,11 +590,35 @@
         border-radius: 5px;
         border: 1px solid var(--line);
       }
+      .cover-field {
+        grid-column: 1 / -1;
+      }
+      .cover-label {
+        display: block;
+        font-size: 11.5px;
+        color: var(--dim);
+      }
       .cover-row {
         display: flex;
-        gap: 10px;
-        align-items: flex-start;
+        gap: 8px;
+        align-items: center;
+        margin-top: 6px;
+      }
+      .cover-row input {
+        max-width: 420px;
+      }
+      .cover-row button {
+        font-size: 11.5px;
+        padding: 4px 10px;
+        white-space: nowrap;
+      }
+      .cover-status {
+        display: block;
+        font-size: 11.5px;
         margin-top: 4px;
+      }
+      .editor-status {
+        font-size: 11.5px;
       }
       .cover-prev {
         flex: 0 0 132px;
@@ -2761,27 +2785,22 @@
             return;
           }
           row.insertAdjacentHTML("beforeend", editorHTML(p));
-          updateCoverPreview(row);
+          syncCoverUI(row);
           btn.textContent = "收起";
-          return;
-        }
-        if (btn.hasAttribute("data-cover-pick")) {
-          const box = row.querySelector("[data-cover-gallery]");
-          if (box) box.hidden = !box.hidden;
           return;
         }
         if (btn.classList.contains("cover-pick")) {
           const input = row.querySelector('[data-edit="cover"]');
           input.value = btn.dataset.coverValue;
-          updateCoverPreview(row);
-          const box = row.querySelector("[data-cover-gallery]");
-          if (box) box.hidden = true;
+          syncCoverUI(row);
+          setCoverStatus(row, `已选 ${btn.dataset.coverValue}，记得点「保存这篇文章」`, true);
           return;
         }
         if (btn.hasAttribute("data-cover-clear")) {
           const input = row.querySelector('[data-edit="cover"]');
           input.value = "";
-          updateCoverPreview(row);
+          syncCoverUI(row);
+          setCoverStatus(row, "已清空，保存后使用主题默认封面", true);
           return;
         }
         if (btn.hasAttribute("data-editor-cancel")) {
@@ -2808,25 +2827,45 @@
             draft: val("draft").checked,
             sticky: val("sticky").checked,
           };
+          const status = (text, ok) => {
+            const el = box.querySelector("[data-editor-status]");
+            if (!el) return;
+            el.textContent = text ?? "";
+            el.style.color = ok ? "var(--ok)" : "#dc2626";
+          };
+          status("正在保存…", true);
           const d = await api("/api/posts/update", { path: p.path, patch });
           flash(d.ok ? `已更新 ${patch.title}` : d.log, d.ok);
-          if (d.ok) applyPosts(d);
+          if (d.ok) {
+            applyPosts(d); // 重绘列表会关掉编辑器
+          } else {
+            status(`✗ ${d.log}`, false); // 失败时把原因留在这里，编辑器不关
+          }
         }
       });
 
-      /** 封面预览：能换算成 src/assets 路径的就显示缩略图，远程/其它就藏起来 */
-      function updateCoverPreview(row) {
+      const setCoverStatus = (row, text, ok) => {
+        const el = row.querySelector("[data-cover-status]");
+        if (!el) return;
+        el.textContent = text ?? "";
+        el.style.color = ok ? "var(--ok)" : "#dc2626";
+      };
+
+      /** 输入框的值 → 高亮对应的缩略图（远程地址或手填路径时都不高亮） */
+      function syncCoverUI(row) {
         const input = row.querySelector('[data-edit="cover"]');
-        const img = row.querySelector("[data-cover-prev]");
-        if (!input || !img) return;
-        const rel = coverAssetRel(input.value, row.dataset.postPath);
-        if (rel) {
-          img.src = `/asset?rel=${encodeURIComponent(rel)}`;
-          img.hidden = false;
-        } else {
-          img.removeAttribute("src");
-          img.hidden = true;
+        if (!input) return;
+        const value = input.value.trim();
+        let hit = false;
+        for (const btn of row.querySelectorAll(".cover-pick")) {
+          const on = btn.dataset.coverValue === value;
+          btn.classList.toggle("on", on);
+          if (on) hit = true;
         }
+        if (!value) setCoverStatus(row, "未设置封面 → 使用主题默认封面", true);
+        else if (hit) setCoverStatus(row, "");
+        else if (/^https?:\/\//i.test(value)) setCoverStatus(row, "使用远程图片", true);
+        else setCoverStatus(row, "手填路径，保存时会检查文件是否存在", true);
       }
 
       const editorHTML = (p) => `<div class="post-editor">
@@ -2835,25 +2874,22 @@
           <label>分类<span></span><input type="text" data-edit="categories" list="cats" value="${esc(p.categories.join(", "))}" /></label>
           <label>标签<span></span><input type="text" data-edit="tags" value="${esc(p.tags.join(", "))}" /></label>
           <label class="wide">摘要<span></span><textarea data-edit="description">${esc(p.description)}</textarea></label>
-          <label class="wide">封面
-            <span class="hint">相对文章文件的路径（如 ../assets/images/cover/cover-2.avif），也可以填远程 https 地址；留空＝用主题默认封面</span>
+          <div class="wide cover-field">
+            <span class="cover-label">封面</span>
+            <span class="hint">点下面的图直接选（和头像一样）；也可以自己填相对路径或远程 https 地址，留空＝用主题默认封面</span>
+            <div class="cover-gallery" data-cover-gallery>${coverGalleryHTML(p)}</div>
             <div class="cover-row">
-              <img class="cover-prev" alt="" data-cover-prev hidden />
-              <div class="cover-inputs">
-                <input type="text" data-edit="cover" placeholder="../assets/images/cover/cover-2.avif" value="${esc(p.cover ?? "")}" />
-                <div class="cover-tools">
-                  <button type="button" data-cover-pick>从图库选</button>
-                  <button type="button" data-cover-clear>清空（用默认）</button>
-                </div>
-              </div>
+              <input type="text" data-edit="cover" placeholder="../assets/images/cover/cover-2.avif" value="${esc(p.cover ?? "")}" />
+              <button type="button" data-cover-clear>清空（用默认封面）</button>
             </div>
-            <div class="cover-gallery" data-cover-gallery hidden>${coverGalleryHTML(p)}</div>
-          </label>
+            <span class="cover-status" data-cover-status></span>
+          </div>
           <div class="editor-tools">
+            <button data-editor-save class="primary">保存这篇文章</button>
+            <button data-editor-cancel>取消</button>
+            <span class="editor-status" data-editor-status></span>
             <label class="post-toggle"><input type="checkbox" data-edit="draft" ${p.draft ? "checked" : ""} /> 草稿</label>
             <label class="post-toggle"><input type="checkbox" data-edit="sticky" ${p.sticky ? "checked" : ""} /> 置顶</label>
-            <button data-editor-save class="primary">保存</button>
-            <button data-editor-cancel>取消</button>
           </div>
         </div>`;
 
@@ -2875,7 +2911,7 @@
 
       $("post-list").addEventListener("input", (e) => {
         if (e.target.matches('[data-edit="cover"]'))
-          updateCoverPreview(e.target.closest("[data-post-path]"));
+          syncCoverUI(e.target.closest("[data-post-path]"));
       });
 
       $("post-filter").addEventListener("input", renderPosts);

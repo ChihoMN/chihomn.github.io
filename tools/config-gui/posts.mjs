@@ -273,7 +273,7 @@ export function validateCover(postsDir, rel, value) {
   if (!abs.startsWith(repoRoot + path.sep)) throw new Error(`封面路径超出了项目目录：${v}`);
   if (!fs.existsSync(abs)) {
     throw new Error(
-      `封面文件不存在：${v}（路径要相对于这篇文章，比如 ../assets/images/cover-2.avif）`,
+      `封面文件不存在：${v}（路径要相对于这篇文章，比如 ../assets/images/cover/cover-2.avif）`,
     );
   }
   return v;

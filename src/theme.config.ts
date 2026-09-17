@@ -50,6 +50,21 @@ export default defineConfig({
       }
     ]
   },
+  "cover": {
+    "fixedCover": {
+      "enable": false
+    },
+    "coverUrls": [
+      "images/cover/你哲哥.jpg",
+      "images/cover/扫会长.jpg",
+      "images/cover/木头.jpg",
+      "images/cover/祥子联动.png",
+      "images/cover/秧秧玄翎-摄影.png",
+      "images/cover/秧秧玄翎-摄影2.png",
+      "images/cover/秧秧玄翎-摄影3.png",
+      "images/cover/穗穗-横.jpg"
+    ]
+  },
   "friends": {
     "description": "想交换友链的话，把站点信息发到我的邮箱即可。地址在「关于」页。",
     "links": [
@@ -58,7 +73,7 @@ export default defineConfig({
         "url": "https://chihomn.github.io/",
         "author": "Edward Chen",
         "avatar": "/images/avatar.jpg",
-        "desc": "香港城市大学 / 计算机科学",
+        "desc": "生存太久，瘫痪的是时间。",
         "color": "#66CCFF"
       },
       {
