@@ -117,7 +117,7 @@ function genPluginConfig(state) {
       .map((line, i) => (i === 0 ? line : "      " + line))
       .join("\n");
     calls.push(
-      `    nyxPlayer({\n      enable: ${o.enabled !== false},\n      urls: ${urls},\n      preset: ${JSON.stringify(o.preset ?? "shokax")},\n      darkModeTarget: ":root[data-theme=dark]",\n      metingBaseURL: "https://meting.api.zkz098.cn/",\n      metingUrlSource: "outer",\n    })`,
+      `    nyxPlayer({\n      enable: ${o.enabled !== false},\n      urls: ${urls},\n      preset: ${JSON.stringify(o.preset ?? "shokax")},\n      darkModeTarget: ":root[data-theme=dark]",\n      metingBaseURL: ${JSON.stringify(o.metingBaseURL ?? "https://meting.api.zkz098.cn/")},\n      metingUrlSource: ${JSON.stringify(o.metingUrlSource ?? "outer")},\n    })`,
     );
   }
   if (on("articleStatistics")) {

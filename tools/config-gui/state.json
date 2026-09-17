@@ -148,7 +148,8 @@
           "url": "https://music.163.com/#/playlist?id=9419380942"
         }
       ],
-      "preset": "shokax"
+      "preset": "shokax",
+      "metingBaseURL": "https://meting.mysqil.com/"
     },
     "articleStatistics": {
       "enabled": true

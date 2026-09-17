@@ -74,7 +74,7 @@ export default defineConfig({
       ],
       preset: "shokax",
       darkModeTarget: ":root[data-theme=dark]",
-      metingBaseURL: "https://meting.api.zkz098.cn/",
+      metingBaseURL: "https://meting.mysqil.com/",
       metingUrlSource: "outer",
     }),
     articleStatistics(),

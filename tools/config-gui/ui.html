@@ -1682,6 +1682,23 @@
             },
             {
               root: "plugins",
+              path: "nyxPlayer.metingBaseURL",
+              label: "　Meting 接口地址",
+              type: "text",
+              def: "https://meting.api.zkz098.cn/",
+              hint: "歌单是靠第三方 Meting 接口解析成音频直链的，这些公共实例经常挂（默认那个已经被 Cloudflare 拦了）。换一个能用的地址即可，注意结尾要有斜杠、且必须支持跨域",
+            },
+            {
+              root: "plugins",
+              path: "nyxPlayer.metingUrlSource",
+              label: "　音频取址方式",
+              type: "select",
+              options: ["outer", "proxy"],
+              def: "outer",
+              hint: "outer＝直接给网易云直链（省流量）；proxy＝音频也走这个接口中转（换地址没用时可以试试）",
+            },
+            {
+              root: "plugins",
               path: "walineComments.enabled",
               label: "评论系统",
               type: "bool",
