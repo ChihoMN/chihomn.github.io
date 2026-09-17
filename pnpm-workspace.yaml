@@ -47,4 +47,5 @@ overrides:
 
 patchedDependencies:
   '@hyacine/plugin-analytics': patches/@hyacine__plugin-analytics.patch
+  '@hyacine/plugin-nyx-player': patches/@hyacine__plugin-nyx-player.patch
   '@hyacine/plugin-waline-comments': patches/@hyacine__plugin-waline-comments.patch

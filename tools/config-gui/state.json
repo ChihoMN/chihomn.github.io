@@ -149,7 +149,7 @@
         }
       ],
       "preset": "shokax",
-      "metingBaseURL": "https://meting.mysqil.com/"
+      "metingBaseURL": "https://meting.mysqil.com/api"
     },
     "articleStatistics": {
       "enabled": true

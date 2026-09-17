@@ -1,0 +1,26 @@
+diff --git a/src/NyxPlayerWrapper.tsx b/src/NyxPlayerWrapper.tsx
+index 0d79775716305f96a762a12a121bd2534e5ef310..490007fd522235e25633c7185e4e876415a1a0a4 100644
+--- a/src/NyxPlayerWrapper.tsx
++++ b/src/NyxPlayerWrapper.tsx
+@@ -1,4 +1,4 @@
+-import { createModernMetingProvider, NyxPlayer } from "nyx-player-solid";
++import { createMetingProvider, NyxPlayer } from "nyx-player-solid";
+ import "nyx-player-solid/style";
+ 
+ export interface NyxPlayerPlaylist {
+@@ -17,11 +17,11 @@ export interface NyxPlayerWrapperProps {
+ }
+ 
+ export default function NyxPlayerWrapper(props: NyxPlayerWrapperProps) {
++  // 用老式 meting 接口（baseURL?type=…&id=…&server=…）：
++  // 现代接口（/v1/…）只对 meting-api-rs 部署有效，主题默认的那个实例已经不可用；
++  // 老式接口的公共实例更多，换地址即可恢复。
+   const metingProvider = props.metingBaseURL
+-    ? createModernMetingProvider({
+-        baseURL: props.metingBaseURL,
+-        urlSource: props.metingUrlSource ?? "outer",
+-      })
++    ? createMetingProvider({ baseURL: props.metingBaseURL })
+     : undefined;
+ 
+   return (
