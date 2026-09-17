@@ -218,6 +218,13 @@ const friendBase = state.theme?.friends?.links?.length ?? 4;
 const friendRows = rowsOf("friends.links").length;
 const playlistRows = rowsOf("nyxPlayer.urls").length;
 const orderRows = rowsOf("layout.rightSidebar.order").length;
+
+// 字符串列表（自定义封面列表）：值必须回填，不能全部显示「(未填)」
+const coverListRows = rowsOf("cover.coverUrls");
+const coverListValues = coverListRows.map((r) => field(r, "__v")?.value ?? "");
+const coverListEmpty = coverListValues.filter((v) => !v).length;
+const coverListFirst = coverListValues[0] ?? null;
+const coverListCount = state.theme?.cover?.coverUrls?.length ?? 0;
 const iconPreviews = doc.querySelectorAll(".icon-prev").length;
 // 子菜单每行的标题应显示自己的文字（而不是"未填"）
 const navSubTitles = [...(listOf("nav")?.querySelectorAll(".list.nested .list-title") ?? [])]
@@ -318,7 +325,7 @@ if (addBtn("cover.coverUrls")) {
   click(addBtn("cover.coverUrls"));
   const row = rowsOf("cover.coverUrls").at(-1);
   setInput(field(row, "__v"), "/images/cover/cover-1.avif");
-  coverOut = themeOf().cover?.coverUrls?.[0] ?? null;
+  coverOut = themeOf().cover?.coverUrls?.at(-1) ?? null;
 }
 if (addBtn("nyxPlayer.urls")) {
   click(addBtn("nyxPlayer.urls"));
@@ -558,6 +565,9 @@ const checks = [
   ["选图后给出提示", coverStatusText.includes("保存这篇文章"), true],
   ["保存时把封面写进 patch", savedCover, "../assets/images/cover/cover-2.avif"],
   ["范围 datalist：封面候选", doc.querySelectorAll("#dl_scope_images_cover_ option").length, 2],
+  ["字符串列表行数 = 配置条数", coverListRows.length, coverListCount],
+  ["字符串列表的值会回填（不再显示未填）", coverListEmpty, 0],
+  ["第一行就是配置里的值", coverListFirst, state.theme?.cover?.coverUrls?.[0] ?? null],
   ["范围 datalist：头像候选", doc.querySelectorAll("#dl_scope_images_avatar_ option").length, 2],
   ["范围 datalist：全部候选仍在", doc.querySelectorAll("#dl_images option").length, 5],
 ];

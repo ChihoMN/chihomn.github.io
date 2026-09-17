@@ -2066,8 +2066,14 @@
 
       /** 一个完整的列表控件 */
       function listHTML(field, value) {
-        const rows = Array.isArray(value) ? value : [];
         const labelKey = field.item[0]?.key ?? "";
+        // 字符串列表（kind: "str"）里存的是纯字符串，渲染前先套成 { [labelKey]: 值 }
+        // 否则每一行都读不到值，界面上会全部显示「(未填)」
+        const rows = (Array.isArray(value) ? value : []).map((row) =>
+          (field.kind ?? "obj") === "str"
+            ? { [labelKey]: typeof row === "string" ? row : "" }
+            : row,
+        );
         return `<div class="list" data-list data-kind="${esc(field.kind ?? "obj")}" data-label-key="${esc(labelKey)}"${field.missKey ? ` data-miss-key="${esc(field.missKey)}"` : ""}>
           <div class="list-body">${rows.map((r) => rowHTML(field, r)).join("")}</div>
           <div class="list-tools"><button type="button" data-list-add>＋ 添加一项</button>${field.missKey ? '<span class="list-note"></span>' : ""}</div>
