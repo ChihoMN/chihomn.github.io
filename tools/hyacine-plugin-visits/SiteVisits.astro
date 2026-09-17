@@ -1,21 +1,17 @@
 ---
-// 只在正式构建里渲染统计容器：本地 dev 的 vercount 数字是全网共用 localhost 池，没有意义
-const showStats = import.meta.env.PROD;
 // 站点访问量：数字由主题内置的 vercount 脚本填充。
 // vercount 会寻找 id 为 vercount_container_* 的容器与 vercount_value_* 的数字节点，
 // 取到数据后把容器从 display:none 改成 inline —— 所以拿不到数据时不会留个空壳。
 ---
 
-{showStats && (
-  <div class="visit-stats" aria-label="访问统计">
-    <span id="vercount_container_site_uv" class="visit-item" style="display:none">
-      访客 <span id="vercount_value_site_uv">-</span>
-    </span>
-    <span id="vercount_container_site_pv" class="visit-item" style="display:none">
-      访问 <span id="vercount_value_site_pv">-</span>
-    </span>
-  </div>
-)}
+<div class="visit-stats" aria-label="访问统计">
+  <span id="vercount_container_site_uv" class="visit-item" style="display:none">
+    访客 <span id="vercount_value_site_uv">-</span>
+  </span>
+  <span id="vercount_container_site_pv" class="visit-item" style="display:none">
+    访问 <span id="vercount_value_site_pv">-</span>
+  </span>
+</div>
 
 <style>
   .visit-stats {

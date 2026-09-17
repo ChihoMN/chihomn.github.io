@@ -1,16 +1,12 @@
 ---
-// 只在正式构建里渲染统计容器：本地 dev 的 vercount 数字是全网共用 localhost 池，没有意义
-const showStats = import.meta.env.PROD;
 // 单篇文章阅读量：同样由 vercount 脚本填充（它按当前页面 URL 统计 page_pv）。
 ---
 
-{showStats && (
-  <div class="post-visits" aria-label="阅读量">
-    <span id="vercount_container_page_pv" style="display:none">
-      阅读 <span id="vercount_value_page_pv">-</span>
-    </span>
-  </div>
-)}
+<div class="post-visits" aria-label="阅读量">
+  <span id="vercount_container_page_pv" style="display:none">
+    阅读 <span id="vercount_value_page_pv">-</span>
+  </span>
+</div>
 
 <style>
   .post-visits {
